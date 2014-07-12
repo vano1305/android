@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Курсы валют</string>
+    <string name="title_section1">НБУ</string>
+    <string name="title_section2">Межбанк</string>
+    <string name="title_section3">Металлы</string>
+    <string name="refresh">Обновить</string>
+    <string name="no_internet_connection">Нет интернет соединения!</string>
+    <string name="exit">Нажмите еще раз чтобы выйти</string>
+    <string name="loading">Загрузка...</string>
+    <string name="commercial_average">СРЕДНИЕ ПО РЫНКУ</string>
+    <string name="nbu_rates">ПО БАНКАМ</string>
+    <string name="for_items">за</string>
+    <string name="items">единиц</string>
+    <string name="buy">ПОКУПКА</string>
+    <string name="sell">ПРОДАЖА</string>
+    <string name="ounce">унций</string>
+    <string name="settings">Настройки</string>
+    <string name="dialog_title">Выбор валют</string>
+    
+    <string-array name="Currency_value">
+        <item>USD - Доллары США</item>
+        <item>EUR - Евро</item>
+        <item>RUB - Рубли</item>
+    </string-array>
+    
+    <string-array name="Currency_key">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>RUB</item>
+    </string-array>
+    
+    <string name="XAU">Золото</string>
+    <string name="XAG">Серебро</string>
+    <string name="XPT">Платина</string>
+    <string name="XPD">Паладий</string>
+    
+    <string name="CZK">Чешские кроны</string>
+    <string name="UZS">Узбекские сумы</string>
+    <string name="HUF">Венгерские форинты</string>
+    <string name="SGD">Сингапурские доллары</string>
+    <string name="RUB">Российские рубли</string>
+    <string name="PLN">Польские злотые</string>
+    <string name="NOK">Норвежские кроны</string>
+    <string name="MDL">Молдавские леи</string>
+    <string name="LTL">Литовские литы</string>
+    <string name="CAD">Канадские доллары</string>
+    <string name="KZT">Казахстанские тенге</string>
+    <string name="ISK">Исландские кроны</string>
+    <string name="EUR">Евро</string>
+    <string name="USD">Доллары США</string>
+    <string name="DKK">Датские кроны</string>
+    <string name="BYR">Белорусские рубли</string>
+    <string name="GBP">Английские фунты</string>
+    <string name="AUD">Австралийские доллары</string>
+    <string name="SEK">Шведские кроны</string>
+    <string name="CHF">Швейцарские франки</string>
+    <string name="CNY">Китайские юани</string>
+    <string name="JPY">Японские иены</string>
+    
+    <string name="citycommercebank">Городской Коммерческий Банк</string>
+    <string name="cominvest">КомИнвестБанк</string>
+    <string name="deltabank">Дельта Банк</string>
+    <string name="energobank">ЭнергоБанк</string>
+    <string name="eximbank">УкрЭксимБанк</string>
+    <string name="fcbank">Банк «Финансы и Кредит»</string>
+    <string name="finbank">Банк «Финансовая Инициатива»</string>
+    <string name="imexbank">ИмэксБанк</string>
+    <string name="industrialbank">ИндустриалБанк</string>
+    <string name="kontrakt">Банк «Контракт»</string>
+    <string name="kreditprombank">КредитПромБанк</string>
+    <string name="nadra">Банк «Надра»</string>
+    <string name="oschadnybank">ОщадБанк</string>
+    <string name="otpbank">ОТП Банк</string>
+    <string name="pib">ПромИнвестБанк</string>
+    <string name="piraeusbank">Пиреус Банк</string>
+    <string name="pravexbank">Правэкс-Банк</string>
+    <string name="privatbank">ПриватБанк</string>
+    <string name="pumb">ПУМБ</string>
+    <string name="rodovidbank">Родовид Банк</string>
+    <string name="ukrgasbank">УкрГазБанк</string>
+    <string name="unicredit">УкрСоцБанк</string>
+    <string name="universalbank">Universal Bank</string>
+    <string name="vabbank">VAB Банк</string>
+    <string name="vtb">ВТБ</string>
+    
+    <string-array name="currency_dialog">
+        <item>CZK</item>
+        <item>UZS</item>
+        <item>HUF</item>
+        <item>SGD</item>
+        <item>RUB</item>
+        <item>PLN</item>
+        <item>NOK</item>
+        <item>MDL</item>
+        <item>LTL</item>
+        <item>CAD</item>
+        <item>KZT</item>
+        <item>ISK</item>
+        <item>EUR</item>
+        <item>USD</item>
+        <item>DKK</item>
+        <item>BYR</item>
+        <item>GBP</item>
+        <item>AUD</item>
+        <item>SEK</item>
+        <item>CHF</item>
+        <item>CNY</item>
+        <item>JPY</item>
+    </string-array>
+    
+    <string name="ok">Ок</string>
+    <string name="cancel">Отмена</string>
+
+</resources>

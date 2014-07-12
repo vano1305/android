@@ -1,0 +1,90 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/nbu_pattern2" >
+        
+        <ImageView
+            android:layout_width="11dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/country_icon"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center"
+            android:padding="2dp" />
+
+        <TextView
+            android:id="@+id/lstItemNbuLbl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:fontFamily="sans-serif-light" />
+
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center" />
+        
+        <ImageView
+            android:layout_width="11dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center" />
+            
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/nbu_pattern1" >
+        
+        <ImageView
+            android:layout_width="11dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center" />
+        
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/lstItemNbuRate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:fontFamily="sans-serif-thin" />
+        
+        <ImageView
+            android:id="@+id/nbu_direction"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center"
+            android:padding="2dp" />
+        
+        <ImageView
+            android:layout_width="11dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp" >
+        
+    </LinearLayout>
+
+</LinearLayout>
