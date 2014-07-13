@@ -32,7 +32,9 @@
         <ImageView
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:src="@drawable/buy"
+            android:padding="6dp" />
 
         <TextView
             android:id="@+id/average_buy_txt"
@@ -89,7 +91,9 @@
         <ImageView
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:src="@drawable/sell"
+            android:padding="6dp" />
 
         <TextView
             android:id="@+id/average_sell_txt"

@@ -45,7 +45,7 @@ public class NbuFragment extends Fragment {
 			setData(rates);
 		}
 		else {
-			((MainActivity) getActivity()).loadRates(null);
+			((MainActivity) getActivity()).loadRates();
 		}
 
 		return rootView;
@@ -167,7 +167,7 @@ public class NbuFragment extends Fragment {
 					public void onClick(DialogInterface dialog, int id) {
 						
 						addSet2Pref("nbu_currency", new HashSet<String>(mSelectedItems));						
-						((MainActivity)getActivity()).loadRates(null);
+						((MainActivity)getActivity()).loadRates();
 					}
 				});
 		builder.setNegativeButton(R.string.cancel,

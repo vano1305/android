@@ -7,83 +7,124 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="5dp" >
+        android:padding="3dp" >
         
         <FrameLayout 
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal"
-        	android:background="@drawable/commercial_average_background_pattern" >
+        	android:background="@drawable/widget_background_header_pattern" >
         	
             <ProgressBar
                 android:id="@+id/progressBar_widget"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_gravity="right" />
+                android:layout_gravity="right|center_vertical" />
             
             <TextView
-        		android:id="@+id/date_lbl"
-        		android:layout_width="wrap_content"
-        		android:layout_height="24dp"
-        		android:layout_gravity="center"
-        		android:textColor="#000000" />
+                android:id="@+id/date_lbl"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                android:fontFamily="sans-serif-light" />
             
             <ImageView
-            	android:id="@+id/refresh_widget"
-            	android:layout_width="24dp"
-            	android:layout_height="24dp"
-            	android:layout_gravity="right"
-            	android:src="@drawable/refresh" />
+                android:id="@+id/refresh_widget"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/refresh" />
         	
         </FrameLayout>        
         
         <LinearLayout
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:orientation="vertical"
-        	android:background="@drawable/background_pattern" >
-        	
-            <TextView
-        		android:id="@+id/usd_lbl"
-        		android:layout_width="match_parent"
-        		android:layout_height="24dp"
-        		android:gravity="center"
-        		android:textColor="#FFFFFF" />
-        	
-            <TextView
-        		android:id="@+id/usd_txt"
-        		android:layout_width="match_parent"
-        		android:layout_height="24dp"
-        		android:gravity="center"
-        		android:textColor="#FFFFFF" />
-            
-            <TextView
-        		android:id="@+id/eur_lbl"
-        		android:layout_width="match_parent"
-        		android:layout_height="24dp"
-        		android:gravity="center"
-        		android:textColor="#FFFFFF" />
-        
-    		<TextView
-        		android:id="@+id/eur_txt"
-        		android:layout_width="match_parent"
-        		android:layout_height="24dp"
-        		android:gravity="center"
-        		android:textColor="#FFFFFF" />
-    		
-    		<TextView
-        		android:id="@+id/rub_lbl"
-        		android:layout_width="match_parent"
-        		android:layout_height="24dp"
-        		android:gravity="center"
-        		android:textColor="#FFFFFF" />
-    
-    		<TextView
-        		android:id="@+id/rub_txt"
-        		android:layout_width="match_parent"
-        		android:layout_height="24dp"
-        		android:gravity="center"
-        		android:textColor="#FFFFFF" />
+        	android:orientation="vertical" >
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+    		    android:orientation="vertical"
+    		    android:background="@drawable/widget_background_item_pattern" >
+
+    			<TextView
+    			    android:id="@+id/usd_lbl"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="24dp"
+    			    android:gravity="center"
+    			    android:textColor="#FFFFFF" />
+
+    			<TextView
+    			    android:id="@+id/usd_txt"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="24dp"
+    			    android:gravity="center"
+    			    android:textColor="#FFFFFF"
+    			    android:fontFamily="sans-serif-thin" />
+
+    		</LinearLayout>
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="3dp"
+    		    android:orientation="vertical" >
+    		</LinearLayout>
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+    		    android:orientation="vertical"
+    		    android:background="@drawable/widget_background_item_pattern" >
+
+    			<TextView
+    			    android:id="@+id/eur_lbl"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="24dp"
+    			    android:gravity="center"
+    			    android:textColor="#FFFFFF" />
+
+    			<TextView
+    			    android:id="@+id/eur_txt"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="24dp"
+    			    android:gravity="center"
+    			    android:textColor="#FFFFFF"
+    			    android:fontFamily="sans-serif-thin" />
+
+    		</LinearLayout>
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="3dp"
+    		    android:orientation="vertical" >
+    		</LinearLayout>
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+    		    android:orientation="vertical"
+    		    android:background="@drawable/widget_background_item_pattern" >
+
+    			<TextView
+    			    android:id="@+id/rub_lbl"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="24dp"
+    			    android:gravity="center"
+    			    android:textColor="#FFFFFF" />
+
+    			<TextView
+    			    android:id="@+id/rub_txt"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="24dp"
+    			    android:gravity="center"
+    			    android:textColor="#FFFFFF"
+    			    android:fontFamily="sans-serif-thin" />
+
+    		</LinearLayout>
         
         </LinearLayout>       
         

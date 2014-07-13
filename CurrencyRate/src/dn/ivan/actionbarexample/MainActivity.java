@@ -2,8 +2,6 @@ package dn.ivan.actionbarexample;
 
 import java.util.ArrayList;
 
-import com.bugsense.trace.BugSenseHandler;
-
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -16,9 +14,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+
+import com.bugsense.trace.BugSenseHandler;
+
 import dn.ivan.actionbarexample.fragments.CommercialFragment;
 import dn.ivan.actionbarexample.fragments.MetalsFragment;
 import dn.ivan.actionbarexample.fragments.NbuFragment;
@@ -58,9 +57,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 	
 	private BroadcastReceiver br1;
 	private BroadcastReceiver br2;
-	
-	private MenuItem menuItem;
-	private Animation rotation;
 	
 	private ProgressDialog pd;
 
@@ -112,9 +108,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
 		getMenuInflater().inflate(R.menu.main, menu);
 		
-		rotation = AnimationUtils.loadAnimation(this, R.anim.rotate_refresh);
-        rotation.setRepeatCount(Animation.INFINITE);
-		
 		return true;
 	}
 
@@ -124,7 +117,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 		switch (item.getItemId()) {
 		
 	    	case R.id.refresh:
-	    		loadRates(item);
+	    		loadRates();
 	    		break;
 	    		
 	    	case R.id.settings:
@@ -181,19 +174,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 				
 				// //////////////////////////////////////////////////////////////////////////////////
 				
-				if (menuItem != null) {
-					
-					hideProgress();
-					
-					/*menuItem.getActionView().clearAnimation();
-					menuItem.setActionView(null);*/
-					
-					//menuItem.collapseActionView();
-					//menuItem.setActionView(null);
-				}
-				else {					
-					hideProgress();
-				}
+				hideProgress();
 			}
 		};
 		registerReceiver(br1, new IntentFilter(FINISH_LOAD));
@@ -204,22 +185,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
 			public void onReceive(Context context, Intent intent) {
 				
-				if (menuItem != null) {
-					
-					showProgress();
-					
-					/*LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				    ImageView iv = (ImageView) inflater.inflate(R.layout.anim_refresh, null);
-					
-					menuItem.setActionView(iv);				
-					menuItem.getActionView().startAnimation(rotation);*/
-					
-					//menuItem.setActionView(R.layout.refresh);
-				    //menuItem.expandActionView();
-				}
-				else {					
-					showProgress();
-				}
+				showProgress();
 			}
 		};
 		registerReceiver(br2, new IntentFilter(START_LOAD));
@@ -240,9 +206,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 		}
 	}
 	
-	public void loadRates(MenuItem item) {
-		
-		menuItem = item;
+	public void loadRates() {
 		
 		if (!NetworkManager.checkInternetConnection(this)) {
 			

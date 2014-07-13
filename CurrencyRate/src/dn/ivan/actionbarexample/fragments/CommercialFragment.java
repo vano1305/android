@@ -240,7 +240,7 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		currencyCode = getResources().getStringArray(R.array.Currency_key)[((Spinner) mainLayout.findViewById(R.id.currencys_spinner)).getSelectedItemPosition()];
 		
 		if (notSortRates == null) {
-			((MainActivity)getActivity()).loadRates(null);
+			((MainActivity)getActivity()).loadRates();
 		}
 		else {
 			setData(notSortRates);

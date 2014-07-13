@@ -40,7 +40,7 @@ public class MetalsFragment extends Fragment {
 			setData(rates);
 		}
 		else {
-			((MainActivity)getActivity()).loadRates(null);
+			((MainActivity)getActivity()).loadRates();
 		}
 		
 		return rootView;
