@@ -2,21 +2,22 @@ package dn.ivan.actionbarexample;
 
 import java.util.ArrayList;
 
-import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import dn.ivan.actionbarexample.fragments.CommercialFragment;
 import dn.ivan.actionbarexample.fragments.MetalsFragment;
@@ -26,7 +27,7 @@ import dn.ivan.actionbarexample.fragments.logic.SpinnerNavItem;
 import dn.ivan.actionbarexample.fragments.logic.TitleNavigationAdapter;
 import dn.ivan.actionbarexample.service.BackgroundService;
 
-public class MainActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
+public class MainActivity extends SherlockFragmentActivity implements ActionBar.OnNavigationListener {
 	
 	public static final int ANIMATION_DURATION = 200;
 	
@@ -73,7 +74,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 				
 		registerReceiver();
 
-		ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
@@ -92,13 +93,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		
 		if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-			getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+			getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
 		}
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar().getSelectedNavigationIndex());
+		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getSupportActionBar().getSelectedNavigationIndex());
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +107,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		getMenuInflater().inflate(R.menu.main, menu);
+		getSupportMenuInflater().inflate(R.menu.main, menu);
 		
 		return true;
 	}
@@ -133,27 +134,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public boolean onNavigationItemSelected(int position, long id) {
+	public boolean onNavigationItemSelected(int position, long id) {		
 		
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 		
 		if (0 == position) {
 			
 			ft.replace(R.id.container, nbuFragment, NBU_FRAGMENT).commit();
-			getActionBar().setIcon(R.drawable.nbu);
+			getSupportActionBar().setIcon(R.drawable.nbu);
 			return true;
 		}
 		else if (1 == position) {
 			
 			ft.replace(R.id.container, currencyFragment, COMMERCIAL_FRAGMENT).commit();
-			getActionBar().setIcon(R.drawable.commercial);
+			getSupportActionBar().setIcon(R.drawable.commercial);
 			return true;
 		}
 		else {	
 			
 			ft.replace(R.id.container,metalsFragment, METALS_FRAGMENT).commit();
-			getActionBar().setIcon(R.drawable.metals);
+			getSupportActionBar().setIcon(R.drawable.metals);
 			return true;
 		}
 	}
@@ -193,16 +194,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 	
 	public void setData(ArrayList<Object> rates, String source) {
 		
-		int index = getActionBar().getSelectedNavigationIndex();
+		int index = getSupportActionBar().getSelectedNavigationIndex();
 		
 		if (0 == index && NBU_SOURCE.equalsIgnoreCase(source)) {
-			((NbuFragment)getFragmentManager().findFragmentByTag(NBU_FRAGMENT)).setData(rates);
+			((NbuFragment)getSupportFragmentManager().findFragmentByTag(NBU_FRAGMENT)).setData(rates);
 		}
 		else if (1 == index && COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
-			((CommercialFragment)getFragmentManager().findFragmentByTag(COMMERCIAL_FRAGMENT)).setData(rates);
+			((CommercialFragment)getSupportFragmentManager().findFragmentByTag(COMMERCIAL_FRAGMENT)).setData(rates);
 		}
 		else if (2 == index && METALS_SOURCE.equalsIgnoreCase(source)){
-			((MetalsFragment)getFragmentManager().findFragmentByTag(METALS_FRAGMENT)).setData(rates);
+			((MetalsFragment)getSupportFragmentManager().findFragmentByTag(METALS_FRAGMENT)).setData(rates);
 		}
 	}
 	
@@ -216,7 +217,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
 		Intent intent = new Intent(MainActivity.this, BackgroundService.class);
 		
-		int index = getActionBar().getSelectedNavigationIndex();
+		int index = getSupportActionBar().getSelectedNavigationIndex();
 		
 		if (0 == index) {
 			intent.putExtra(SOURCE, NBU_SOURCE);
@@ -270,4 +271,20 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
 		back_pressed = System.currentTimeMillis();
 	}
+	
+	@Override
+	  public void onStart() {
+		
+	    super.onStart();
+	   
+	    EasyTracker.getInstance(this).activityStart(this);
+	  }
+
+	@Override
+	  public void onStop() {
+		
+	    super.onStop();
+	    
+	    EasyTracker.getInstance(this).activityStop(this);
+	  }
 }

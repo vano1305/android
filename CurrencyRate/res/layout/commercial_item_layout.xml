@@ -15,7 +15,8 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:textColor="#FFFFFF"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+            android:singleLine="true" />
     </LinearLayout>
 
     <LinearLayout

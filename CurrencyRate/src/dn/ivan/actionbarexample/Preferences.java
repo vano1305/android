@@ -1,10 +1,12 @@
 package dn.ivan.actionbarexample;
 
-import android.app.ActionBar;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
-public class Preferences extends PreferenceActivity {
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
+public class Preferences extends SherlockPreferenceActivity {
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -13,9 +15,15 @@ public class Preferences extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.pref);
 		
-		ActionBar actionBar = getActionBar();		
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayShowHomeEnabled(false);
+		ActionBar actionBar = getSupportActionBar();
+		
+		if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
+			
+			actionBar.setDisplayHomeAsUpEnabled(true);
+			actionBar.setDisplayShowHomeEnabled(false);
+						
+		}
+		
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(R.string.settings);
 		actionBar.setDisplayUseLogoEnabled(false);

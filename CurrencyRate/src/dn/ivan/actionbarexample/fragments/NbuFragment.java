@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -55,7 +57,15 @@ public class NbuFragment extends Fragment {
 		
 		ArrayList<Object> checkedCurrency = null;
 		
-		Set<String> currencySet = getSetFromPref("nbu_currency");
+		Set<String> currencySet = null;
+		
+		if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
+			currencySet = getSetFromPref("nbu_currency");			
+		}
+		else {
+			currencySet = null;
+		}
+		
 		if (currencySet != null) {
 			
 			checkedCurrency = new ArrayList<Object>();
@@ -135,8 +145,9 @@ public class NbuFragment extends Fragment {
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		
 		super.onCreateContextMenu(menu, v, menuInfo);
-		
-	    createDialog();
+		if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
+			createDialog();
+		}	    
 	}
 	
 	public void createDialog() {
@@ -185,6 +196,7 @@ public class NbuFragment extends Fragment {
 	    builder.create().show();
 	}
 	
+	@SuppressLint("NewApi")
 	protected void addSet2Pref(String prefName, HashSet<String> set) {
 		
 		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
@@ -194,6 +206,7 @@ public class NbuFragment extends Fragment {
 		ed.commit();
 	}
 	
+	@SuppressLint("NewApi")
 	protected Set<String> getSetFromPref(String prefName) {
 		
 		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);

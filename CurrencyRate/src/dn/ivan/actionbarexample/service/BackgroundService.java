@@ -1,9 +1,9 @@
 package dn.ivan.actionbarexample.service;
 
-import dn.ivan.actionbarexample.MainActivity;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import dn.ivan.actionbarexample.MainActivity;
 
 public class BackgroundService extends Service {
 	
