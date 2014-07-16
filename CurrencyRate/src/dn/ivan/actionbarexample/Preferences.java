@@ -1,10 +1,11 @@
 package dn.ivan.actionbarexample;
 
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 public class Preferences extends SherlockPreferenceActivity {
 
@@ -17,17 +18,30 @@ public class Preferences extends SherlockPreferenceActivity {
 		
 		ActionBar actionBar = getSupportActionBar();
 		
-		if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
+		/*if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
 			
 			actionBar.setDisplayHomeAsUpEnabled(true);
 			actionBar.setDisplayShowHomeEnabled(false);
 						
-		}
+		}*/
+		
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowHomeEnabled(false);
 		
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(R.string.settings);
 		actionBar.setDisplayUseLogoEnabled(false);
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
 		
-		//getListView().setBackgroundResource(R.drawable.background_pattern);
+		switch (item.getItemId()) {
+		
+			case android.R.id.home:
+				NavUtils.navigateUpFromSameTask(this);
+				return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dn.ivan.actionbarexample"
-    android:versionCode="2"
-    android:versionName="1.1" >
+    android:versionCode="3"
+    android:versionName="1.2" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -45,6 +45,11 @@
             	android:value="dn.ivan.actionbarexample.MainActivity" />
         </activity>
         <service android:name="dn.ivan.actionbarexample.service.BackgroundService" />
+        <activity android:name="dn.ivan.actionbarexample.NbuCheckActivity" android:parentActivityName="dn.ivan.actionbarexample.MainActivity">
+            <meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+            	android:value="dn.ivan.actionbarexample.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

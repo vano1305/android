@@ -199,14 +199,36 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			}
 		}
 		
-		if (MainActivity.FINISH_LOAD.equalsIgnoreCase(intent.getAction()) && MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))) {
+		if (MainActivity.FINISH_LOAD.equalsIgnoreCase(intent.getAction()) && intent.getExtras().getString("error") == null && MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))) {
 			
 			ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(MainActivity.RATES);
 			
 			for (int i=0; i < appWidgetIds.length; i++) {
 	        	updateWidget(rates, context, appWidgetManager, appWidgetIds[i]);
 			}
-		}		
+		}
+		else if (MainActivity.FINISH_LOAD.equalsIgnoreCase(intent.getAction()) && intent.getExtras().getString("error") != null && MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))) {
+			
+			for (int i=0; i < appWidgetIds.length; i++) {
+	        	
+				RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.currency_widget);
+				
+				views.setTextViewText(R.id.date_lbl, ":( Что-то не так...");
+				
+				views.setViewVisibility(R.id.progressBar_widget, ProgressBar.INVISIBLE);
+				views.setViewVisibility(R.id.refresh_widget, ProgressBar.VISIBLE);
+				
+				// /////////////////////////////////////////////////////////////////////////////////////////
+				
+				Intent intent2 = new Intent(context, BackgroundService.class);
+				intent2.putExtra(MainActivity.SOURCE, MainActivity.COMMERCIAL_SOURCE);
+				views.setOnClickPendingIntent(R.id.refresh_widget, PendingIntent.getService(context, 0, intent2, 0));
+				
+				// /////////////////////////////////////////////////////////////////////////////////////////
+			    
+			    appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+			}			
+		}
     }
 	
 	public void stopService(Context context) {

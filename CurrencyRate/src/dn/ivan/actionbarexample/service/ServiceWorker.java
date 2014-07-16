@@ -246,5 +246,13 @@ public class ServiceWorker implements Runnable {
 				}
 			}
 		}
+		
+		if (ratesList == null || ratesList.size() == 0) {
+			
+			Intent intent = new Intent(MainActivity.FINISH_LOAD);
+			intent.putExtra("error", "errorLoad");
+			intent.putExtra(MainActivity.SOURCE, source);
+			service.sendBroadcast(intent);
+		}
 	}
 }

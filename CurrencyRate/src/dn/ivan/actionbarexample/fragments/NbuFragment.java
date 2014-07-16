@@ -7,6 +7,7 @@ import java.util.Set;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
@@ -152,6 +153,8 @@ public class NbuFragment extends Fragment {
 	
 	public void createDialog() {
 		
+		//startActivityForResult(new Intent(getActivity(), NbuCheckActivity.class), 1);
+		
 	    final ArrayList<String> mSelectedItems = new ArrayList<String>();
 	    
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -194,6 +197,11 @@ public class NbuFragment extends Fragment {
 				});
 
 	    builder.create().show();
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		
 	}
 	
 	@SuppressLint("NewApi")

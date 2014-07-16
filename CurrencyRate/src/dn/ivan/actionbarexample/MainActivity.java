@@ -170,8 +170,11 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			@SuppressWarnings("unchecked")
 			public void onReceive(Context context, Intent intent) {
 				
-				ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(RATES);				
-				setData(rates, intent.getExtras().getString(SOURCE));
+				if (intent.getExtras().getString("error") == null) {
+					
+					ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(RATES);				
+					setData(rates, intent.getExtras().getString(SOURCE));
+				}				
 				
 				// //////////////////////////////////////////////////////////////////////////////////
 				
