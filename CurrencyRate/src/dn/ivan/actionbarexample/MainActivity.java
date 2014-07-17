@@ -10,6 +10,10 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -60,6 +64,9 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	private BroadcastReceiver br2;
 	
 	private ProgressDialog pd;
+	
+	private Menu menu;
+	private Animation rotation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +115,10 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		getSupportMenuInflater().inflate(R.menu.main, menu);
+		
+		this.menu = menu;
+		rotation = AnimationUtils.loadAnimation(this, R.anim.rotate_refresh);
+        rotation.setRepeatCount(Animation.INFINITE);
 		
 		return true;
 	}
@@ -172,13 +183,17 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 				
 				if (intent.getExtras().getString("error") == null) {
 					
-					ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(RATES);				
+					ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(RATES);
 					setData(rates, intent.getExtras().getString(SOURCE));
 				}				
 				
 				// //////////////////////////////////////////////////////////////////////////////////
 				
-				hideProgress();
+				//hideProgress();
+				
+				MenuItem menuItem = menu.findItem(R.id.refresh);
+				menuItem.getActionView().clearAnimation();
+				menuItem.setActionView(null);
 			}
 		};
 		registerReceiver(br1, new IntentFilter(FINISH_LOAD));
@@ -189,7 +204,14 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 
 			public void onReceive(Context context, Intent intent) {
 				
-				showProgress();
+				//showProgress();
+				
+				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			    ImageView iv = (ImageView) inflater.inflate(R.layout.iv_refresh, null);
+				
+			    MenuItem menuItem = menu.findItem(R.id.refresh);
+				menuItem.setActionView(iv);
+				menuItem.getActionView().startAnimation(rotation);
 			}
 		};
 		registerReceiver(br2, new IntentFilter(START_LOAD));
