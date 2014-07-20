@@ -2,10 +2,21 @@ package dn.ivan.actionbarexample.fragments;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +34,6 @@ import dn.ivan.actionbarexample.fragments.logic.CommercialRates;
 
 public class CommercialFragment extends Fragment implements OnItemSelectedListener {
 	
-	ArrayList<CommercialRates> rates;
 	ArrayList<CommercialRates> notSortRates;
 	
 	View mainLayout = null;
@@ -105,16 +115,46 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 	public void setData(Object rates_) {
 		
 		notSortRates = (ArrayList<CommercialRates>) rates_;
-				
+						
 		// //////////////////////////////////////////////////////////////////////////////////
 		
-		rates = new ArrayList<CommercialRates>();
+		ArrayList<CommercialRates> rates = new ArrayList<CommercialRates>();
 		for (int i = 0; i < notSortRates.size(); i++) {
 			
 			if (currencyCode.equalsIgnoreCase(notSortRates.get(i).codeAlpha)) {
 				rates.add(notSortRates.get(i));
 			}
 		}
+		
+		// ///////////////////////////////////////////////////////////////////////////
+		
+		ArrayList<CommercialRates> checkedBanks = null;
+		Set<String> banksSet = null;
+		
+		if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
+			banksSet = getSetFromPref("selected_banks");
+		}
+		else {
+			banksSet = null;
+		}
+		
+		if (banksSet != null) {
+			
+			checkedBanks = new ArrayList<CommercialRates>();
+			
+			for (int i = 0; i < rates.size(); i++) {
+				
+				CommercialRates item = (CommercialRates) rates.get(i);
+				if (banksSet.contains(item.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim())) {
+					checkedBanks.add(item);
+				}
+			}
+		}
+		else {			
+			checkedBanks = new ArrayList<CommercialRates>(rates);
+		}
+		
+		rates = checkedBanks;
 		
 		// //////////////////////////////////////////////////////////////////////////////////
 		
@@ -153,6 +193,7 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 			vh.buy_direction = (ImageView) item.findViewById(R.id.commercial_buy_direction_img);
 			vh.lstItemSellResult = (TextView) item.findViewById(R.id.commercial_sell_txt);
 			vh.sell_direction = (ImageView) item.findViewById(R.id.commercial_sell_direction_img);
+			vh.bank_icon = (ImageView) item.findViewById(R.id.bank_icon);
 			
 			vh.lstItemCurrency.setText(Html.fromHtml("<b>" + getResources().getString(getResources().getIdentifier(ratesItem.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim(), "string", getActivity().getPackageName())) + "</b>"));
 
@@ -181,7 +222,15 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 				vh.buy_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			}
 			
-			registerForContextMenu(item) ;			
+			try {
+				vh.bank_icon.setImageDrawable(getResources().getDrawable(getResources().getIdentifier(ratesItem.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim(), "drawable", getActivity().getPackageName())));
+				vh.bank_icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+			catch (Exception e) {
+				
+			}
+			
+			registerForContextMenu(item);
 			
 			list.addView(item);
 			
@@ -218,6 +267,9 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 			sellDirection.setImageDrawable(getResources().getDrawable(R.drawable.down));
 			sellDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
 		}
+		else {
+			sellDirection.setImageDrawable(null);
+		}
 		
 		ImageView buyDirection = (ImageView) averageRatesItem.findViewById(R.id.commercial_average_buy_direction_img);
 		if (Double.valueOf(totalBuyDelta / rates.size()) > 0) {
@@ -230,6 +282,92 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 			buyDirection.setImageDrawable(getResources().getDrawable(R.drawable.down));
 			buyDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
 		}
+		else {
+			buyDirection.setImageDrawable(null);
+		}
+	}
+	
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		
+		super.onCreateContextMenu(menu, v, menuInfo);
+		if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
+			createDialog();
+		}	    
+	}
+	
+	public void createDialog() {
+		
+		//startActivityForResult(new Intent(getActivity(), NbuCheckActivity.class), 1);
+		
+	    final ArrayList<String> mSelectedItems = new ArrayList<String>();
+	    
+	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	    
+	    builder.setTitle("Выбор банков");
+		builder.setMultiChoiceItems(R.array.banks_dialog_value, null,
+				new DialogInterface.OnMultiChoiceClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+						if (isChecked) {
+							mSelectedItems.add(getResources().getStringArray(R.array.banks_dialog_key)[which]);
+						}
+						else if (mSelectedItems.contains(getResources().getStringArray(R.array.banks_dialog_key)[which])) {
+							mSelectedItems.remove(getResources().getStringArray(R.array.banks_dialog_key)[which]);
+						}
+					}
+				});
+		builder.setPositiveButton(R.string.ok,
+				new DialogInterface.OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						
+						addSet2Pref("selected_banks", new HashSet<String>(mSelectedItems));						
+						((MainActivity)getActivity()).loadRates();
+					}
+				});
+		builder.setNegativeButton(R.string.cancel,
+				new DialogInterface.OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+
+						//
+						//
+						//
+					}
+				});
+
+	    builder.create().show();
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		
+	}
+	
+	@SuppressLint("NewApi")
+	protected void addSet2Pref(String prefName, HashSet<String> set) {
+		
+		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
+		Editor ed = shared.edit();
+		ed.remove(prefName);
+		ed.putStringSet(prefName, set);
+		ed.commit();
+	}
+	
+	@SuppressLint("NewApi")
+	protected Set<String> getSetFromPref(String prefName) {
+		
+		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
+		Set<String> stringSet = shared.getStringSet(prefName, null);
+		
+		return stringSet;
 	}
 	
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,5 +403,7 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 			
 		public TextView lstItemSellResult;
 		public ImageView sell_direction;
+		
+		public ImageView bank_icon;
 	}
 }

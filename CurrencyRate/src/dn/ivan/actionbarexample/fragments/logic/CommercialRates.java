@@ -14,4 +14,13 @@ public class CommercialRates implements Serializable{
 	public String rateBuyDelta = "";
 	public String rateSale = "";
 	public String rateSaleDelta = "";
+	
+	@Override
+	public String toString() {
+		return "CommercialRates [date=" + date + ", bankName=" + bankName
+				+ ", sourceUrl=" + sourceUrl + ", codeNumeric=" + codeNumeric
+				+ ", codeAlpha=" + codeAlpha + ", rateBuy=" + rateBuy
+				+ ", rateBuyDelta=" + rateBuyDelta + ", rateSale=" + rateSale
+				+ ", rateSaleDelta=" + rateSaleDelta + "]";
+	}
 }

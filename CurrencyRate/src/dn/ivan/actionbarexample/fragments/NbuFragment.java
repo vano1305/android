@@ -169,7 +169,7 @@ public class NbuFragment extends Fragment {
 						if (isChecked) {
 							mSelectedItems.add(getResources().getStringArray(R.array.currency_dialog)[which]);
 						}
-						else if (mSelectedItems.contains(which)) {
+						else if (mSelectedItems.contains(getResources().getStringArray(R.array.currency_dialog)[which])) {
 							mSelectedItems.remove(getResources().getStringArray(R.array.currency_dialog)[which]);
 						}
 					}

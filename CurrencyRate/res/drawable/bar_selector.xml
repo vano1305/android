@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+ 
+    <item android:drawable="@drawable/abs__spinner_ab_pressed_holo_dark"
+        android:state_pressed="true"/>
+    <item android:drawable="@drawable/bar_spinner_white"/>
+ 
+</selector>

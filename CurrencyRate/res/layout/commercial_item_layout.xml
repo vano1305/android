@@ -7,16 +7,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/nbu_pattern2" >
+        
+        <ImageView
+            android:layout_width="11dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/bank_icon"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center"
+            android:padding="2dp" />
 
         <TextView
             android:id="@+id/bank_name_txt"
-            android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:fontFamily="sans-serif-light"
+            android:layout_weight="1"
             android:gravity="center"
             android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:singleLine="true" />
+        
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center" />
+        
+        <ImageView
+            android:layout_width="11dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center" />
+        
     </LinearLayout>
 
     <LinearLayout
@@ -51,8 +75,7 @@
                     android:id="@+id/commercial_buy_direction_img"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
-                    android:padding="2dp"
-                    android:src="@drawable/up" />
+                    android:padding="2dp" />
             </LinearLayout>
         </FrameLayout>
 
@@ -83,8 +106,7 @@
                     android:id="@+id/commercial_sell_direction_img"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
-                    android:padding="2dp"
-                    android:src="@drawable/down" />
+                    android:padding="2dp" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

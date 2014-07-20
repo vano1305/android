@@ -213,10 +213,17 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 	        	
 				RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.currency_widget);
 				
-				views.setTextViewText(R.id.date_lbl, ":( Что-то не так...");
+				views.setTextViewText(R.id.date_lbl, "");
 				
 				views.setViewVisibility(R.id.progressBar_widget, ProgressBar.INVISIBLE);
 				views.setViewVisibility(R.id.refresh_widget, ProgressBar.VISIBLE);
+				
+				views.setTextViewText(R.id.usd_lbl, "Нет соединения");
+				views.setTextViewText(R.id.usd_txt, "");
+				views.setTextViewText(R.id.eur_lbl, "");
+				views.setTextViewText(R.id.eur_txt, "");
+				views.setTextViewText(R.id.rub_lbl, "");
+				views.setTextViewText(R.id.rub_txt, "");
 				
 				// /////////////////////////////////////////////////////////////////////////////////////////
 				

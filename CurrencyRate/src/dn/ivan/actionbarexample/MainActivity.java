@@ -185,11 +185,10 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 					
 					ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(RATES);
 					setData(rates, intent.getExtras().getString(SOURCE));
-				}				
+				}
+				
 				
 				// //////////////////////////////////////////////////////////////////////////////////
-				
-				//hideProgress();
 				
 				MenuItem menuItem = menu.findItem(R.id.refresh);
 				menuItem.getActionView().clearAnimation();
@@ -203,8 +202,6 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		br2 = new BroadcastReceiver() {
 
 			public void onReceive(Context context, Intent intent) {
-				
-				//showProgress();
 				
 				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			    ImageView iv = (ImageView) inflater.inflate(R.layout.iv_refresh, null);

@@ -9,7 +9,7 @@
     <string name="no_internet_connection">Нет интернет соединения!</string>
     <string name="exit">Нажмите еще раз чтобы выйти</string>
     <string name="loading">Загрузка...</string>
-    <string name="commercial_average">СРЕДНИЕ ПО РЫНКУ</string>
+    <string name="commercial_average">СРЕДНИЕ ПО ВЫБРАННЫМ</string>
     <string name="nbu_rates">ПО БАНКАМ</string>
     <string name="for_items">за</string>
     <string name="items">единиц</string>
@@ -112,5 +112,61 @@
     
     <string name="ok">Ок</string>
     <string name="cancel">Отмена</string>
+    
+    <string-array name="banks_dialog_key">
+        <item>citycommercebank</item>
+        <item>cominvest</item>
+        <item>deltabank</item>
+        <item>energobank</item>
+        <item>eximbank</item>
+        <item>fcbank</item>
+        <item>finbank</item>
+        <item>imexbank</item>
+        <item>industrialbank</item>
+        <item>kontrakt</item>
+        <item>kreditprombank</item>
+        <item>nadra</item>
+        <item>oschadnybank</item>
+        <item>otpbank</item>
+        <item>pib</item>
+        <item>piraeusbank</item>
+        <item>pravexbank</item>
+        <item>privatbank</item>
+        <item>pumb</item>
+        <item>rodovidbank</item>
+        <item>ukrgasbank</item>
+        <item>unicredit</item>
+        <item>universalbank</item>
+        <item>vabbank</item>
+        <item>vtb</item>
+    </string-array>
+    
+    <string-array name="banks_dialog_value">
+       	<item>Городской Коммерческий Банк</item>
+    	<item>КомИнвестБанк</item>
+    	<item>Дельта Банк</item>
+    	<item>ЭнергоБанк</item>
+    	<item>УкрЭксимБанк</item>
+    	<item>Банк «Финансы и Кредит»</item>
+    	<item>Банк «Финансовая Инициатива»</item>
+    	<item>ИмэксБанк</item>
+    	<item>ИндустриалБанк</item>
+    	<item>Банк «Контракт»</item>
+    	<item>КредитПромБанк</item>
+    	<item>Банк «Надра»</item>
+    	<item>ОщадБанк</item>
+    	<item>ОТП Банк</item>
+    	<item>ПромИнвестБанк</item>
+    	<item>Пиреус Банк</item>
+    	<item>Правэкс-Банк</item>
+    	<item>ПриватБанк</item>
+    	<item>ПУМБ</item>
+    	<item>Родовид Банк</item>
+    	<item>УкрГазБанк</item>
+    	<item>УкрСоцБанк</item>
+    	<item>Universal Bank</item>
+    	<item>VAB Банк</item>
+    	<item>ВТБ</item>
+    </string-array>
 
 </resources>
