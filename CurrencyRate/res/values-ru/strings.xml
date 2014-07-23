@@ -5,6 +5,7 @@
     <string name="title_section1">НБУ</string>
     <string name="title_section2">Межбанк</string>
     <string name="title_section3">Металлы</string>
+    <string name="title_section4">История</string>
     <string name="refresh">Обновить</string>
     <string name="no_internet_connection">Нет интернет соединения!</string>
     <string name="exit">Нажмите еще раз чтобы выйти</string>

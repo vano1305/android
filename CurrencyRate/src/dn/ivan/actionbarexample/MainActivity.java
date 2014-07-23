@@ -24,6 +24,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import dn.ivan.actionbarexample.fragments.CommercialFragment;
+import dn.ivan.actionbarexample.fragments.HistoryFragment;
 import dn.ivan.actionbarexample.fragments.MetalsFragment;
 import dn.ivan.actionbarexample.fragments.NbuFragment;
 import dn.ivan.actionbarexample.fragments.logic.NetworkManager;
@@ -43,6 +44,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	private NbuFragment nbuFragment;
 	private CommercialFragment currencyFragment;
 	private MetalsFragment metalsFragment;
+	private HistoryFragment historyFragment;
 	
 	public static final String START_LOAD = "start_load";
 	public static final String FINISH_LOAD = "finish_load";
@@ -54,6 +56,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	public static final String NBU_FRAGMENT = "nbuFragment";
 	public static final String COMMERCIAL_FRAGMENT = "currencyFragment";
 	public static final String METALS_FRAGMENT = "metalsFragment";
+	public static final String HISTORY_FRAGMENT = "historyFragment";
 	
 	public static final String SOURCE = "source";
 	public static final String RATES = "rates";
@@ -78,6 +81,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		nbuFragment = (NbuFragment) Fragment.instantiate(this, NbuFragment.class.getName());
 		currencyFragment = CommercialFragment.newInstance("USD");
 		metalsFragment = (MetalsFragment) Fragment.instantiate(this, MetalsFragment.class.getName());
+		historyFragment = (HistoryFragment) Fragment.instantiate(this, HistoryFragment.class.getName());
 				
 		registerReceiver();
 
@@ -89,6 +93,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section1), R.drawable.nbu));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section2), R.drawable.commercial));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section3), R.drawable.metals));
+        navSpinner.add(new SpinnerNavItem(getString(R.string.title_section4), R.drawable.history));
          
         adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);          
         actionBar.setListNavigationCallbacks(adapter, this);        
@@ -154,18 +159,36 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			
 			ft.replace(R.id.container, nbuFragment, NBU_FRAGMENT).commit();
 			getSupportActionBar().setIcon(R.drawable.nbu);
+			if (menu != null) {
+				menu.findItem(R.id.refresh).setVisible(true);
+			}			
 			return true;
 		}
 		else if (1 == position) {
 			
 			ft.replace(R.id.container, currencyFragment, COMMERCIAL_FRAGMENT).commit();
 			getSupportActionBar().setIcon(R.drawable.commercial);
+			if (menu != null) {
+				menu.findItem(R.id.refresh).setVisible(true);
+			}
 			return true;
 		}
-		else {	
+		else if (2 == position) {	
 			
-			ft.replace(R.id.container,metalsFragment, METALS_FRAGMENT).commit();
+			ft.replace(R.id.container, metalsFragment, METALS_FRAGMENT).commit();
 			getSupportActionBar().setIcon(R.drawable.metals);
+			if (menu != null) {
+				menu.findItem(R.id.refresh).setVisible(true);
+			}
+			return true;
+		}
+		else {
+			
+			ft.replace(R.id.container, historyFragment, HISTORY_FRAGMENT).commit();
+			getSupportActionBar().setIcon(R.drawable.history);
+			if (menu != null) {
+				menu.findItem(R.id.refresh).setVisible(false);
+			}
 			return true;
 		}
 	}
@@ -185,8 +208,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 					
 					ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(RATES);
 					setData(rates, intent.getExtras().getString(SOURCE));
-				}
-				
+				}				
 				
 				// //////////////////////////////////////////////////////////////////////////////////
 				
@@ -247,7 +269,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		else if (1 == index) {
 			intent.putExtra(SOURCE, COMMERCIAL_SOURCE);
 		}
-		else {
+		else if (2 == index) {
 			intent.putExtra(SOURCE, METALS_SOURCE);
 		}
 		
