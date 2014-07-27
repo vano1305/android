@@ -27,9 +27,10 @@ import dn.ivan.actionbarexample.fragments.CommercialFragment;
 import dn.ivan.actionbarexample.fragments.HistoryFragment;
 import dn.ivan.actionbarexample.fragments.MetalsFragment;
 import dn.ivan.actionbarexample.fragments.NbuFragment;
-import dn.ivan.actionbarexample.fragments.logic.NetworkManager;
-import dn.ivan.actionbarexample.fragments.logic.SpinnerNavItem;
-import dn.ivan.actionbarexample.fragments.logic.TitleNavigationAdapter;
+import dn.ivan.actionbarexample.logic.DataManager;
+import dn.ivan.actionbarexample.logic.NetworkManager;
+import dn.ivan.actionbarexample.logic.SpinnerNavItem;
+import dn.ivan.actionbarexample.logic.TitleNavigationAdapter;
 import dn.ivan.actionbarexample.service.BackgroundService;
 
 public class MainActivity extends SherlockFragmentActivity implements ActionBar.OnNavigationListener {
@@ -70,7 +71,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	
 	private Menu menu;
 	private Animation rotation;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -242,6 +243,12 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		
 		if (0 == index && NBU_SOURCE.equalsIgnoreCase(source)) {
 			((NbuFragment)getSupportFragmentManager().findFragmentByTag(NBU_FRAGMENT)).setData(rates);
+			
+			/*
+			 * Сохраняем в БД
+			 * 
+			 * */
+			new DataManager().saveNBURates2DB(this, rates);
 		}
 		else if (1 == index && COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
 			((CommercialFragment)getSupportFragmentManager().findFragmentByTag(COMMERCIAL_FRAGMENT)).setData(rates);

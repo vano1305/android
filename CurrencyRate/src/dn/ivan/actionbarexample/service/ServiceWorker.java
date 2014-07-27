@@ -15,10 +15,10 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.content.Intent;
 import dn.ivan.actionbarexample.MainActivity;
-import dn.ivan.actionbarexample.fragments.logic.CommercialRates;
-import dn.ivan.actionbarexample.fragments.logic.MetalsRates;
-import dn.ivan.actionbarexample.fragments.logic.NbuRates;
-import dn.ivan.actionbarexample.fragments.logic.Rates;
+import dn.ivan.actionbarexample.logic.CommercialRates;
+import dn.ivan.actionbarexample.logic.MetalsRates;
+import dn.ivan.actionbarexample.logic.NbuRates;
+import dn.ivan.actionbarexample.logic.Rates;
 
 public class ServiceWorker implements Runnable {
 

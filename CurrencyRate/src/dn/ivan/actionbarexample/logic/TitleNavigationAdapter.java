@@ -1,4 +1,4 @@
-package dn.ivan.actionbarexample.fragments.logic;
+package dn.ivan.actionbarexample.logic;
 
 import java.util.ArrayList;
 

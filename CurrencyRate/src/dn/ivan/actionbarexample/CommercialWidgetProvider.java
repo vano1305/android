@@ -17,8 +17,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.ProgressBar;
 import android.widget.RemoteViews;
-import dn.ivan.actionbarexample.fragments.logic.CommercialRates;
-import dn.ivan.actionbarexample.fragments.logic.NotifyManager;
+import dn.ivan.actionbarexample.logic.CommercialRates;
+import dn.ivan.actionbarexample.logic.NotifyManager;
 import dn.ivan.actionbarexample.service.BackgroundService;
 
 public class CommercialWidgetProvider extends AppWidgetProvider {

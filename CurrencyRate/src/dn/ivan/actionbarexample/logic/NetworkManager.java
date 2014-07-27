@@ -1,4 +1,4 @@
-package dn.ivan.actionbarexample.fragments.logic;
+package dn.ivan.actionbarexample.logic;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

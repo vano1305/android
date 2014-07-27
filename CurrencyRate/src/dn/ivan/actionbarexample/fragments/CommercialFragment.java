@@ -30,7 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import dn.ivan.actionbarexample.MainActivity;
 import dn.ivan.actionbarexample.R;
-import dn.ivan.actionbarexample.fragments.logic.CommercialRates;
+import dn.ivan.actionbarexample.logic.CommercialRates;
 
 public class CommercialFragment extends Fragment implements OnItemSelectedListener {
 	

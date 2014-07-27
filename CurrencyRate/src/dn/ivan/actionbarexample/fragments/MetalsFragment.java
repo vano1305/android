@@ -14,7 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import dn.ivan.actionbarexample.MainActivity;
 import dn.ivan.actionbarexample.R;
-import dn.ivan.actionbarexample.fragments.logic.Rates;
+import dn.ivan.actionbarexample.logic.Rates;
 
 public class MetalsFragment extends Fragment {
 	
