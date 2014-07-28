@@ -18,6 +18,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.DataManager;
 import dn.ivan.actionbarexample.logic.DataManager.NbuRatesHolderForChart;
@@ -43,10 +45,12 @@ public class HistoryFragment extends Fragment {
 	
 	private ArrayList<DataManager.NbuRatesHolderForChart> ratesHolder;
 	
+	private String currency = "";
+	
 	private double min = 0;
 	private double max = 0;
 	
-	public static final int TEXT_SIZE_XXHDPI = 30;
+	public static final int TEXT_SIZE_XXHDPI = 31;
 	public static final int TEXT_SIZE_XHDPI = 24;
 	public static final int TEXT_SIZE_HDPI = 20;
 	public static final int TEXT_SIZE_MDPI = 18;
@@ -89,6 +93,13 @@ public class HistoryFragment extends Fragment {
 			}
 		});
 		
+		if (Build.VERSION.RELEASE.startsWith("2.")) {
+			
+			((EditText)rootView.findViewById(R.id.date1)).setTextColor(Color.BLACK);
+			((EditText)rootView.findViewById(R.id.date2)).setTextColor(Color.BLACK);
+			((Button)rootView.findViewById(R.id.reload_chart)).setTextColor(Color.BLACK);
+		}
+		
 		// /////////////////////////////////////////////////////////////////////////
 		
 		((Button)rootView.findViewById(R.id.reload_chart)).setOnClickListener(new OnClickListener() {
@@ -97,10 +108,15 @@ public class HistoryFragment extends Fragment {
 			public void onClick(View v) {
 				
 				String selectedCurrency = getResources().getStringArray(R.array.nbu_currencys)[((Spinner) rootView.findViewById(R.id.nbu_currency_history_spinner)).getSelectedItemPosition()];
-				String currency = selectedCurrency.substring(0, 3);
+				currency = selectedCurrency.substring(0, 3);
 				
 				String date1 = ((EditText)rootView.findViewById(R.id.date1)).getText().toString();
 				String date2 = ((EditText)rootView.findViewById(R.id.date2)).getText().toString();
+				
+				if ("".equalsIgnoreCase(date1) || "".equalsIgnoreCase(date2)) {
+					Toast.makeText(getActivity(), "Введите диапазон дат!", Toast.LENGTH_SHORT).show();
+					return;
+				}
 				
 				ratesHolder = new DataManager().selectRatesNbu(getActivity(), currency, date1, date2);
 				
@@ -124,6 +140,7 @@ public class HistoryFragment extends Fragment {
 		GraphicalView lineChartView = null;
 		try {
 			lineChartView = ChartFactory.getTimeChartView(getActivity(), getDemoDataset(ratesHolder), getDemoRenderer(ratesHolder), "dd/MM/yyyy");
+			((TextView)rootView.findViewById(R.id.chart_title)).setText("Динамика изменения курса " + currency);
 		}
 		catch (Exception e) {
 			Log.v("CHART", e.toString());
@@ -167,9 +184,14 @@ public class HistoryFragment extends Fragment {
 	    r.setColor(Color.WHITE);
 	    r.setPointStyle(PointStyle.CIRCLE);
 	    r.setFillPoints(true);
-	    r.setLineWidth(2);
 	    renderer.addSeriesRenderer(r);
 	    
+	    if (getResources().getDisplayMetrics().densityDpi == DisplayMetrics.DENSITY_XXHIGH || getResources().getDisplayMetrics().densityDpi == DisplayMetrics.DENSITY_XHIGH) {
+	    	r.setLineWidth(4);
+	    }
+	    else {
+	    	r.setLineWidth(2);
+	    }
 	    // //////////////////////////////////////////////////////////
 	    
 	    setChartSettings(renderer);
@@ -197,35 +219,35 @@ public class HistoryFragment extends Fragment {
 		
 		switch (getResources().getDisplayMetrics().densityDpi) {
 		case DisplayMetrics.DENSITY_XXHIGH:
-			renderer.setMargins(new int[] { 10, 130, 45, 10 });
+			renderer.setMargins(new int[] { 10, 130, 50, 10 });
 			renderer.setAxisTitleTextSize(TEXT_SIZE_XXHDPI);
 			renderer.setChartTitleTextSize(TEXT_SIZE_XXHDPI);
 			renderer.setLabelsTextSize(TEXT_SIZE_XXHDPI);
 			renderer.setLegendTextSize(TEXT_SIZE_XXHDPI);
 			break;
 		case DisplayMetrics.DENSITY_XHIGH:
-			renderer.setMargins(new int[] { 10,100, 45, 10 });
+			renderer.setMargins(new int[] { 10,100, 50, 10 });
 			renderer.setAxisTitleTextSize(TEXT_SIZE_XHDPI);
 			renderer.setChartTitleTextSize(TEXT_SIZE_XHDPI);
 			renderer.setLabelsTextSize(TEXT_SIZE_XHDPI);
 			renderer.setLegendTextSize(TEXT_SIZE_XHDPI);
 			break;
 		case DisplayMetrics.DENSITY_HIGH:
-			renderer.setMargins(new int[] { 10, 50, 30, 10 });
+			renderer.setMargins(new int[] { 10, 60, 30, 10 });
 			renderer.setAxisTitleTextSize(TEXT_SIZE_HDPI);
 			renderer.setChartTitleTextSize(TEXT_SIZE_HDPI);
 			renderer.setLabelsTextSize(TEXT_SIZE_HDPI);
 			renderer.setLegendTextSize(TEXT_SIZE_HDPI);
 			break;
 		case DisplayMetrics.DENSITY_MEDIUM:
-			renderer.setMargins(new int[] { 10, 50, 30, 10 });
+			renderer.setMargins(new int[] { 10, 60, 30, 10 });
 			renderer.setAxisTitleTextSize(TEXT_SIZE_MDPI);
 			renderer.setChartTitleTextSize(TEXT_SIZE_MDPI);
 			renderer.setLabelsTextSize(TEXT_SIZE_MDPI);
 			renderer.setLegendTextSize(TEXT_SIZE_MDPI);
 			break;
 		default:
-			renderer.setMargins(new int[] { 10, 50, 30, 10 });
+			renderer.setMargins(new int[] { 10, 60, 30, 10 });
 			renderer.setAxisTitleTextSize(TEXT_SIZE_LDPI);
 			renderer.setChartTitleTextSize(TEXT_SIZE_LDPI);
 			renderer.setLabelsTextSize(TEXT_SIZE_LDPI);
@@ -237,9 +259,9 @@ public class HistoryFragment extends Fragment {
 		renderer.setXLabelsAlign(Align.LEFT);
 		renderer.setYLabelsAlign(Align.RIGHT);
 		
-		renderer.setMarginsColor(Color.argb(0x00, 0xff, 0x00, 0x00));
+		renderer.setMarginsColor(Color.rgb(80, 118, 153));
 		
-		renderer.setPanEnabled(true, false);
+		renderer.setPanEnabled(true, true);
 		renderer.setShowGrid(true);
 	}
 	
