@@ -1,8 +1,10 @@
 package dn.ivan.actionbarexample.fragments;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -28,6 +30,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -41,7 +45,7 @@ import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.DataManager;
 import dn.ivan.actionbarexample.logic.DataManager.NbuRatesHolderForChart;
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements OnItemSelectedListener {
 	
 	private ArrayList<DataManager.NbuRatesHolderForChart> ratesHolder;
 	
@@ -76,6 +80,7 @@ public class HistoryFragment extends Fragment {
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.nbu_currencys, R.layout.currency_spinner_pattern);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
+		spinner.setOnItemSelectedListener(this);
 		
 		((ImageView)rootView.findViewById(R.id.imageView1)).setOnClickListener(new OnClickListener() {
 			
@@ -100,42 +105,73 @@ public class HistoryFragment extends Fragment {
 			((Button)rootView.findViewById(R.id.reload_chart)).setTextColor(Color.BLACK);
 		}
 		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+		
+		Calendar ca1 = Calendar.getInstance();
+        ca1.setTime(new Date());
+        
+        long milisecond = ca1.getTimeInMillis();
+        
+        milisecond = milisecond - (3 * 24 * 60 * 60 * 1000);
+        
+        Calendar ca2 = Calendar.getInstance();
+        ca2.setTimeInMillis(milisecond);
+		
+		((EditText)rootView.findViewById(R.id.date2)).setText(dateFormat.format(new Date()));
+		((EditText)rootView.findViewById(R.id.date1)).setText(dateFormat.format(ca2.getTime()));
+		
 		// /////////////////////////////////////////////////////////////////////////
 		
 		((Button)rootView.findViewById(R.id.reload_chart)).setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				
-				String selectedCurrency = getResources().getStringArray(R.array.nbu_currencys)[((Spinner) rootView.findViewById(R.id.nbu_currency_history_spinner)).getSelectedItemPosition()];
-				currency = selectedCurrency.substring(0, 3);
-				
-				String date1 = ((EditText)rootView.findViewById(R.id.date1)).getText().toString();
-				String date2 = ((EditText)rootView.findViewById(R.id.date2)).getText().toString();
-				
-				if ("".equalsIgnoreCase(date1) || "".equalsIgnoreCase(date2)) {
-					Toast.makeText(getActivity(), "Введите диапазон дат!", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				
-				ratesHolder = new DataManager().selectRatesNbu(getActivity(), currency, date1, date2);
-				
-				GraphicalView lineChartView = null;
-				try {
-					lineChartView = ChartFactory.getTimeChartView(getActivity(), getDemoDataset(ratesHolder), getDemoRenderer(ratesHolder), "dd/MM/yyyy");
-					((TextView)rootView.findViewById(R.id.chart_title)).setText("Динамика изменения курса " + currency);
-				}
-				catch (Exception e) {
-					Log.v("CHART", e.toString());
-				}		
-				
-				LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.chart);
-				layout.removeAllViews();
-				layout.addView(lineChartView);
+				createChart();
 			}
 		});
 		
 		// /////////////////////////////////////////////////////////////////////////
+		
+		if (ratesHolder == null) {
+			createChart();
+		}
+		else {
+			reinitChart();			
+		}		
+		
+		return rootView;
+	}
+	
+	protected void createChart() {
+		
+		String selectedCurrency = getResources().getStringArray(R.array.nbu_currencys)[((Spinner) rootView.findViewById(R.id.nbu_currency_history_spinner)).getSelectedItemPosition()];
+		currency = selectedCurrency.substring(0, 3);
+		
+		String date1 = ((EditText)rootView.findViewById(R.id.date1)).getText().toString();
+		String date2 = ((EditText)rootView.findViewById(R.id.date2)).getText().toString();
+		
+		if ("".equalsIgnoreCase(date1) || "".equalsIgnoreCase(date2)) {
+			Toast.makeText(getActivity(), "Введите диапазон дат!", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		ratesHolder = new DataManager().selectRatesNbu(getActivity(), currency, date1, date2);
+		
+		GraphicalView lineChartView = null;
+		try {
+			lineChartView = ChartFactory.getTimeChartView(getActivity(), getDemoDataset(ratesHolder), getDemoRenderer(ratesHolder), "dd/MM/yyyy");
+			((TextView)rootView.findViewById(R.id.chart_title)).setText("Динамика изменения курса " + currency);
+		}
+		catch (Exception e) {
+			Log.v("CHART", e.toString());
+		}		
+		
+		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.chart);
+		layout.removeAllViews();
+		layout.addView(lineChartView);
+	}
+	
+	protected void reinitChart() {
 		
 		GraphicalView lineChartView = null;
 		try {
@@ -148,8 +184,6 @@ public class HistoryFragment extends Fragment {
 		
 		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.chart);
 		layout.addView(lineChartView);
-		
-		return rootView;
 	}
 	
 	private XYMultipleSeriesDataset getDemoDataset(ArrayList<NbuRatesHolderForChart> rates) throws Exception {
@@ -265,6 +299,16 @@ public class HistoryFragment extends Fragment {
 		renderer.setShowGrid(true);
 	}
 	
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		createChart();
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+				
+	}
+	
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +318,7 @@ public class HistoryFragment extends Fragment {
 	    newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
 	}
 	
-	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+	public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 		
 		EditText txt;
 		
@@ -285,10 +329,33 @@ public class HistoryFragment extends Fragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			
-			final Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DAY_OF_MONTH);
+			final Calendar c;
+			
+			int year;
+			int month;
+			int day;
+			
+			if ("".equalsIgnoreCase(txt.getText().toString())) {
+				
+				c = Calendar.getInstance();
+				year = c.get(Calendar.YEAR);
+				month = c.get(Calendar.MONTH);
+				day = c.get(Calendar.DAY_OF_MONTH);
+			}
+			else {
+				
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+				c = Calendar.getInstance();
+				try {
+					c.setTime(dateFormat.parse(txt.getText().toString()));
+				}
+				catch (ParseException e) {
+					Log.v("CHART", e.toString());
+				}
+				year = c.get(Calendar.YEAR);
+				month = c.get(Calendar.MONTH);
+				day = c.get(Calendar.DAY_OF_MONTH);				
+			}			
 
 			return new DatePickerDialog(getActivity(), this, year, month, day);
 		}
@@ -297,6 +364,7 @@ public class HistoryFragment extends Fragment {
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 			txt.setText(dateFormat.format(new GregorianCalendar(year, month, day).getTime()));
+			createChart();
 		}
 	}
 }

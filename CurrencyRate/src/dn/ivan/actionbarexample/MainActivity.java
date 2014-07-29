@@ -285,10 +285,11 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 
 	public void onDestroy() {
 
+		super.onDestroy();
+		
 		unregisterReceiver(br1);
 		unregisterReceiver(br2);
 		stopService();
-		super.onDestroy();
 	}
 
 	// //////////////////////////////////////////////////
