@@ -32,21 +32,19 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 	
 	// //////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public void onDeleted(Context context, int[] appWidgetIds) {		
-		stopService(context);
+	public void onDeleted(Context context, int[] appWidgetIds) {
+		
 	}
 	
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public void onEnabled(Context context) {
-		
+	public void onEnabled(Context context) {		
 		
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public void onDisabled(Context context) {
-		
+	public void onDisabled(Context context) {		
 		
 	}
 	
@@ -206,6 +204,8 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			for (int i=0; i < appWidgetIds.length; i++) {
 	        	updateWidget(rates, context, appWidgetManager, appWidgetIds[i]);
 			}
+			
+			stopService(context);
 		}
 		else if (MainActivity.FINISH_LOAD.equalsIgnoreCase(intent.getAction()) && intent.getExtras().getString("error") != null && MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))) {
 			
@@ -234,7 +234,9 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 				// /////////////////////////////////////////////////////////////////////////////////////////
 			    
 			    appWidgetManager.updateAppWidget(appWidgetIds[i], views);
-			}			
+			}
+			
+			stopService(context);
 		}
     }
 	
