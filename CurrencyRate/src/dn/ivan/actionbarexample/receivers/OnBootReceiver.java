@@ -1,10 +1,9 @@
 package dn.ivan.actionbarexample.receivers;
 
-import dn.ivan.actionbarexample.service.NbuHistoryService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import dn.ivan.actionbarexample.service.HistoryService;
 
 public class OnBootReceiver extends BroadcastReceiver {
 
@@ -13,10 +12,8 @@ public class OnBootReceiver extends BroadcastReceiver {
 		
 		if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
 			
-			Intent serviceLauncher = new Intent(context, NbuHistoryService.class);
+			Intent serviceLauncher = new Intent(context, HistoryService.class);
 			context.startService(serviceLauncher);
-			
-			Log.v(this.getClass().getName(), "Service loaded while device boot.");
 		}
 	}
 }

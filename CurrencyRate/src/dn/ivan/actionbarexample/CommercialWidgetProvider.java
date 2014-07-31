@@ -38,7 +38,7 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 	
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public void onEnabled(Context context) {		
+	public void onEnabled(Context context) {
 		
 	}
 	
@@ -68,8 +68,8 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			}
 			
 			count ++;
-			totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();		    
-		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();		    
+			totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 		views.setTextViewText(R.id.usd_lbl, "USD");
 		views.setTextViewText(R.id.usd_txt, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());

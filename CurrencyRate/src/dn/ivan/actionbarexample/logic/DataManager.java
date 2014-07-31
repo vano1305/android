@@ -96,7 +96,7 @@ public class DataManager {
 			
 			Date date = new Date();
 
-			for (int i = 0; i < rates.size(); i++) {
+			for (int i = 0; rates != null && i < rates.size(); i++) {
 
 				NbuRates rate = (NbuRates) rates.get(i);
 

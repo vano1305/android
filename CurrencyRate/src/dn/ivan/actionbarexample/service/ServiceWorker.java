@@ -13,6 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.content.Context;
 import android.content.Intent;
 import dn.ivan.actionbarexample.MainActivity;
 import dn.ivan.actionbarexample.logic.CommercialRates;
@@ -26,13 +27,15 @@ public class ServiceWorker implements Runnable {
 	
 	// //////////////////////////////////////////////////
 
-	private BackgroundService service;
+	private Context context;
 	private String source = "";
+	private String from = "";
 	
-	public ServiceWorker(BackgroundService service, String source) {
+	public ServiceWorker(Context context, String source, String from) {
 
-		this.service = service;
+		this.context = context;
 		this.source = source;
+		this.from = from;
 	}
 
 	@Override
@@ -41,8 +44,10 @@ public class ServiceWorker implements Runnable {
 		BufferedReader in = null;
 
 		try {
-
-			service.sendBroadcast(new Intent(MainActivity.START_LOAD).putExtra(MainActivity.SOURCE, source));
+			
+			if (from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)) {
+				context.sendBroadcast(new Intent(MainActivity.START_LOAD).putExtra(MainActivity.SOURCE, source));				
+			}			
 
 			// ////////////////////////////////////////////////////////////////////////////////////
 
@@ -201,10 +206,10 @@ public class ServiceWorker implements Runnable {
 
 			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
 
-				Intent intent = new Intent(MainActivity.FINISH_LOAD);
+				Intent intent = new Intent(from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 				intent.putExtra(MainActivity.RATES, ratesList);
 				intent.putExtra(MainActivity.SOURCE, source);
-				service.sendBroadcast(intent);
+				context.sendBroadcast(intent);
 			}
 			else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source)) {
 				
@@ -219,17 +224,17 @@ public class ServiceWorker implements Runnable {
 					}
 				}
 				
-				Intent intent = new Intent(MainActivity.FINISH_LOAD);
+				Intent intent = new Intent(from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 				intent.putExtra(MainActivity.RATES, nbuRatesList);
 				intent.putExtra(MainActivity.SOURCE, source);
-				service.sendBroadcast(intent);
+				context.sendBroadcast(intent);
 			}
 			else {
 				
-				Intent intent = new Intent(MainActivity.FINISH_LOAD);
+				Intent intent = new Intent(from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 				intent.putExtra(MainActivity.RATES, ratesList);
 				intent.putExtra(MainActivity.SOURCE, source);
-				service.sendBroadcast(intent);
+				context.sendBroadcast(intent);
 			}
 		}
 		catch (Exception e) {
@@ -249,10 +254,10 @@ public class ServiceWorker implements Runnable {
 		
 		if (ratesList == null || ratesList.size() == 0) {
 			
-			Intent intent = new Intent(MainActivity.FINISH_LOAD);
+			Intent intent = new Intent(from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 			intent.putExtra("error", "errorLoad");
 			intent.putExtra(MainActivity.SOURCE, source);
-			service.sendBroadcast(intent);
+			context.sendBroadcast(intent);
 		}
 	}
 }

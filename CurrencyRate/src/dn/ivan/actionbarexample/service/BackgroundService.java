@@ -23,7 +23,7 @@ public class BackgroundService extends Service {
 			
 			String source = intent.getExtras().getString(MainActivity.SOURCE);
 			
-			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source), "BackgroundService").start();
+			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source, MainActivity.FROM_APPLICATION), "BackgroundService").start();
 		}		
 		
 		return START_STICKY;

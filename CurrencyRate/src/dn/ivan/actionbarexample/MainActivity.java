@@ -27,15 +27,13 @@ import dn.ivan.actionbarexample.fragments.CommercialFragment;
 import dn.ivan.actionbarexample.fragments.HistoryFragment;
 import dn.ivan.actionbarexample.fragments.MetalsFragment;
 import dn.ivan.actionbarexample.fragments.NbuFragment;
-import dn.ivan.actionbarexample.logic.DataManager;
 import dn.ivan.actionbarexample.logic.NetworkManager;
 import dn.ivan.actionbarexample.logic.SpinnerNavItem;
 import dn.ivan.actionbarexample.logic.TitleNavigationAdapter;
 import dn.ivan.actionbarexample.service.BackgroundService;
+import dn.ivan.actionbarexample.service.HistoryService;
 
 public class MainActivity extends SherlockFragmentActivity implements ActionBar.OnNavigationListener {
-	
-	public static final int ANIMATION_DURATION = 200;
 	
 	private ArrayList<SpinnerNavItem> navSpinner;
 	private TitleNavigationAdapter adapter;
@@ -53,6 +51,10 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	public static final String COMMERCIAL_SOURCE = "commercial";
 	public static final String NBU_SOURCE = "nbu";
 	public static final String METALS_SOURCE = "metals";
+	
+	public static final String FROM_SERVICE_HISTORY = "service_history";
+	public static final String FROM_APPLICATION = "application";
+	public static final String UPDATE_HISTORY = "update_history";
 	
 	public static final String NBU_FRAGMENT = "nbuFragment";
 	public static final String COMMERCIAL_FRAGMENT = "currencyFragment";
@@ -85,6 +87,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		historyFragment = (HistoryFragment) Fragment.instantiate(this, HistoryFragment.class.getName());
 				
 		registerReceiver();
+		startService(new Intent(MainActivity.this, HistoryService.class));
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowTitleEnabled(false);
@@ -243,12 +246,6 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		
 		if (0 == index && NBU_SOURCE.equalsIgnoreCase(source)) {
 			((NbuFragment)getSupportFragmentManager().findFragmentByTag(NBU_FRAGMENT)).setData(rates);
-			
-			/*
-			 * Сохраняем в БД
-			 * 
-			 * */
-			new DataManager().saveNBURates2DB(this, rates);
 		}
 		else if (1 == index && COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
 			((CommercialFragment)getSupportFragmentManager().findFragmentByTag(COMMERCIAL_FRAGMENT)).setData(rates);
