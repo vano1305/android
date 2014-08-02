@@ -2,6 +2,8 @@ package dn.ivan.actionbarexample;
 
 import java.util.ArrayList;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +12,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -87,7 +90,9 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		historyFragment = (HistoryFragment) Fragment.instantiate(this, HistoryFragment.class.getName());
 				
 		registerReceiver();
-		startService(new Intent(MainActivity.this, HistoryService.class));
+		if (!isServiceRunning(HistoryService.class)) {
+			startService(new Intent(MainActivity.this, HistoryService.class));
+		}
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowTitleEnabled(false);
@@ -336,4 +341,24 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	    
 	    EasyTracker.getInstance(this).activityStop(this);
 	  }
+	
+	private boolean isServiceRunning(Class<?> serviceClass) {
+		
+		boolean result = false;
+
+		try {
+
+			ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+			for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {				
+				if (serviceClass.getName().trim().equalsIgnoreCase(service.service.getClassName().trim())) {					
+					result = true;
+				}
+			}
+		}
+		catch (Exception e) {
+			Log.v("MainActivity", e.toString());
+		}
+
+		return result;
+	}
 }
