@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <string-array name="Items">
+        <item>НБУ</item>
+        <item>Межбанк</item>
+        <item>Металлы</item>
+        <item>История НБУ</item>
+    </string-array>
 
     <string name="app_name">Курсы валют</string>
     <string name="title_section1">НБУ</string>
