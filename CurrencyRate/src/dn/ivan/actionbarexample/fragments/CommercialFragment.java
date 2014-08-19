@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -161,7 +162,7 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		ScrollView scrollView = ((ScrollView) mainLayout.findViewById(R.id.commercial_scroll));
 		scrollView.setScrollbarFadingEnabled(true);
 		
-		LinearLayout list = (LinearLayout) mainLayout.findViewById(R.id.commercial_list);
+		/*LinearLayout list = (LinearLayout) mainLayout.findViewById(R.id.commercial_list);
 		list.removeAllViews();
 		
 		LayoutInflater lInflater = getActivity().getLayoutInflater();
@@ -170,9 +171,9 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		list.addView(stub);
 		
 		View direction = lInflater.inflate(R.layout.commercial_direction_layout, null, false);
-		list.addView(direction);
+		list.addView(direction);*/
 		
-		double totalBuy = 0.0;
+		/*double totalBuy = 0.0;
 		double totalSell = 0.0;
 		
 		double totalBuyDelta = 0.0;
@@ -186,7 +187,7 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 			
 			// ////////////////////////////////////////////////////////////////////
 			
-			ViewHolder vh = new ViewHolder();			
+			ViewHolder vh = new ViewHolder();
 			
 			vh.lstItemCurrency = (TextView) item.findViewById(R.id.bank_name_txt);
 			vh.lstItemBuyResult = (TextView) item.findViewById(R.id.commercial_buy_txt);
@@ -284,7 +285,9 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		}
 		else {
 			buyDirection.setImageDrawable(null);
-		}
+		}*/
+		
+		new MyTask().execute(rates);
 	}
 	
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -405,5 +408,164 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		public ImageView sell_direction;
 		
 		public ImageView bank_icon;
+	}
+	
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	class MyTask extends AsyncTask<ArrayList<CommercialRates>, Void, Void> {
+		
+		ArrayList<CommercialRates> rates;
+		
+		double totalBuy = 0.0;
+		double totalSell = 0.0;
+		
+		double totalBuyDelta = 0.0;
+		double totalSellDelta = 0.0;
+		
+		LayoutInflater lInflater;
+		ArrayList<View> verLayout = new ArrayList<View>();
+		
+		@Override
+		protected void onPreExecute() {			
+			super.onPreExecute();
+			
+			lInflater = getActivity().getLayoutInflater();
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			
+			LinearLayout list = (LinearLayout) mainLayout.findViewById(R.id.commercial_list);
+			list.removeAllViews();
+			
+			View stub = lInflater.inflate(R.layout.commercial_triangle_stub, null, false);
+			list.addView(stub);
+			
+			View direction = lInflater.inflate(R.layout.commercial_direction_layout, null, false);
+			list.addView(direction);
+			
+			for (int i = 0; i < verLayout.size(); i++) {
+				
+				registerForContextMenu(verLayout.get(i));
+				list.addView(verLayout.get(i));
+			}
+			
+			// //////////////////////////////////////////////////////////////////////////////////
+			
+			TextView lblAverage = (TextView) averageRatesItem.findViewById(R.id.average_txt);
+			lblAverage.setText(R.string.commercial_average);
+			
+			TextView averageBuy = (TextView) averageRatesItem.findViewById(R.id.average_buy_result);
+		    averageBuy.setText(Html.fromHtml("<b>" + new BigDecimal(totalBuy / rates.size()).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+		    			    
+		    TextView averageSell = (TextView) averageRatesItem.findViewById(R.id.average_sell_result);
+		    averageSell.setText(Html.fromHtml("<b>" + new BigDecimal(totalSell / rates.size()).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+		    
+		    // //////////////////////////////////////////////////////////////////////////////////
+		    
+		    ImageView sellDirection = (ImageView) averageRatesItem.findViewById(R.id.commercial_average_sell_direction_img);
+		    if (Double.valueOf(totalSellDelta / rates.size()) > 0) {
+		    	
+		    	sellDirection.setImageDrawable(getResources().getDrawable(R.drawable.up));
+				sellDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+			else if (Double.valueOf(totalSellDelta / rates.size()) < 0) {
+				
+				sellDirection.setImageDrawable(getResources().getDrawable(R.drawable.down));
+				sellDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+			else {
+				sellDirection.setImageDrawable(null);
+			}
+			
+			ImageView buyDirection = (ImageView) averageRatesItem.findViewById(R.id.commercial_average_buy_direction_img);
+			if (Double.valueOf(totalBuyDelta / rates.size()) > 0) {
+				
+				buyDirection.setImageDrawable(getResources().getDrawable(R.drawable.up));
+				buyDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+			else if (Double.valueOf(totalBuyDelta / rates.size()) < 0) {
+				
+				buyDirection.setImageDrawable(getResources().getDrawable(R.drawable.down));
+				buyDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+			else {
+				buyDirection.setImageDrawable(null);
+			}
+		}
+
+		@Override
+		protected Void doInBackground(ArrayList<CommercialRates>... arg0) {
+			
+			rates = arg0[0];
+			
+			for (int i = 0; i < rates.size(); i++) {
+				
+				CommercialRates ratesItem = (CommercialRates) rates.get(i);
+				
+				View item = lInflater.inflate(R.layout.commercial_item_layout, null, false);
+				
+				// ////////////////////////////////////////////////////////////////////
+				
+				ViewHolder vh = new ViewHolder();
+				
+				vh.lstItemCurrency = (TextView) item.findViewById(R.id.bank_name_txt);
+				vh.lstItemBuyResult = (TextView) item.findViewById(R.id.commercial_buy_txt);
+				vh.buy_direction = (ImageView) item.findViewById(R.id.commercial_buy_direction_img);
+				vh.lstItemSellResult = (TextView) item.findViewById(R.id.commercial_sell_txt);
+				vh.sell_direction = (ImageView) item.findViewById(R.id.commercial_sell_direction_img);
+				vh.bank_icon = (ImageView) item.findViewById(R.id.bank_icon);
+				
+				vh.lstItemCurrency.setText(Html.fromHtml("<b>" + getResources().getString(getResources().getIdentifier(ratesItem.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim(), "string", getActivity().getPackageName())) + "</b>"));
+
+				vh.lstItemBuyResult.setText(Html.fromHtml("<b>" + ratesItem.rateBuy + "</b>"));
+				vh.lstItemSellResult.setText(Html.fromHtml("<b>" + ratesItem.rateSale + "</b>"));
+				
+				if (Double.valueOf(ratesItem.rateSaleDelta) > 0) {
+					
+					vh.sell_direction.setImageDrawable(getResources().getDrawable(R.drawable.up));
+					vh.sell_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				}
+				else if (Double.valueOf(ratesItem.rateSaleDelta) < 0) {
+					
+					vh.sell_direction.setImageDrawable(getResources().getDrawable(R.drawable.down));
+					vh.sell_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				}
+				
+				if (Double.valueOf(ratesItem.rateBuyDelta) > 0) {
+					
+					vh.buy_direction.setImageDrawable(getResources().getDrawable(R.drawable.up));
+					vh.buy_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				}
+				else if (Double.valueOf(ratesItem.rateBuyDelta) < 0) {
+					
+					vh.buy_direction.setImageDrawable(getResources().getDrawable(R.drawable.down));
+					vh.buy_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				}
+				
+				try {
+					vh.bank_icon.setImageDrawable(getResources().getDrawable(getResources().getIdentifier(ratesItem.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim(), "drawable", getActivity().getPackageName())));
+					vh.bank_icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				}
+				catch (Exception e) {
+					
+				}
+				
+				verLayout.add(item);
+				
+				// //////////////////////////////////////////////////////////////////////////////////////
+				
+				totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			    totalBuyDelta = new BigDecimal(totalBuyDelta).add(new BigDecimal(ratesItem.rateBuyDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			    
+			    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			    totalSellDelta = new BigDecimal(totalSellDelta).add(new BigDecimal(ratesItem.rateSaleDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			}			
+			
+			return null;
+		}
 	}
 }

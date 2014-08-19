@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -39,6 +39,8 @@ import dn.ivan.actionbarexample.fragments.CommercialFragment;
 import dn.ivan.actionbarexample.fragments.HistoryFragment;
 import dn.ivan.actionbarexample.fragments.MetalsFragment;
 import dn.ivan.actionbarexample.fragments.NbuFragment;
+import dn.ivan.actionbarexample.logic.NavDrawerItem;
+import dn.ivan.actionbarexample.logic.NavDrawerListAdapter;
 import dn.ivan.actionbarexample.logic.NetworkManager;
 import dn.ivan.actionbarexample.service.BackgroundService;
 import dn.ivan.actionbarexample.service.HistoryService;
@@ -49,7 +51,8 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 	private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;    
-    private String[] items;
+    private String[] navMenuTitles;
+    private TypedArray navMenuIcons;
 	
 	/*private ArrayList<SpinnerNavItem> navSpinner;
 	private TitleNavigationAdapter adapter;*/
@@ -104,8 +107,21 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         
-        items = getResources().getStringArray(R.array.Items);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, items));
+        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_titles);        
+        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+ 
+        ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
+ 
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));       
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));        
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));        
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));         
+ 
+        navMenuIcons.recycle();
+ 
+        NavDrawerListAdapter adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
+        mDrawerList.setAdapter(adapter);
+        
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
@@ -204,7 +220,7 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 				menu.findItem(R.id.refresh).setVisible(true);
 			}
 		}
-		else {
+		else if (3 == position){
 			
 			ft.replace(R.id.container, historyFragment, HISTORY_FRAGMENT).commit();
 			getSupportActionBar().setIcon(R.drawable.history);
@@ -213,7 +229,7 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 			}
 		}
 		
-		getSupportActionBar().setTitle(items[position]);
+		getSupportActionBar().setTitle(navMenuTitles[position]);
         
         mDrawerList.setItemChecked(position, true);
         mDrawerList.setSelection(position);

@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string-array name="Items">
+    <string-array name="nav_drawer_titles">
         <item>НБУ</item>
         <item>Межбанк</item>
         <item>Металлы</item>
         <item>История НБУ</item>
     </string-array>
+    
+    <array name="nav_drawer_icons">
+        <item>@drawable/nbu</item>
+        <item>@drawable/commercial</item>
+        <item>@drawable/metals</item>
+        <item>@drawable/history</item>
+    </array>
 
     <string name="app_name">Курсы валют</string>
     <string name="title_section1">НБУ</string>

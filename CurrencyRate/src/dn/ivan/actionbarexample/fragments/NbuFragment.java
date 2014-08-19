@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -88,7 +89,7 @@ public class NbuFragment extends Fragment {
 		ScrollView scrollView = ((ScrollView) rootView.findViewById(R.id.nbu_scroll));
 		scrollView.setScrollbarFadingEnabled(true);
 		
-		LinearLayout list = (LinearLayout) rootView.findViewById(R.id.nbu_list);
+		/*LinearLayout list = (LinearLayout) rootView.findViewById(R.id.nbu_list);
 		list.removeAllViews();
 		
 		TextView nbu_date = (TextView) rootView.findViewById(R.id.nbu_date);
@@ -96,9 +97,9 @@ public class NbuFragment extends Fragment {
 		LayoutInflater lInflater = getActivity().getLayoutInflater();
 		
 		View date_stub = lInflater.inflate(R.layout.date_stub, null, false);
-		list.addView(date_stub);
+		list.addView(date_stub);*/
 		
-		for (int i = 0; i < rates.size(); i++) {
+		/*for (int i = 0; i < rates.size(); i++) {
 			
 			Rates ratesItem = (Rates) rates.get(i);			
 			
@@ -137,7 +138,9 @@ public class NbuFragment extends Fragment {
 			registerForContextMenu(item) ;			
 			
 			list.addView(item);
-		}		
+		}*/	
+		
+		new MyTask().execute(rates);
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -232,5 +235,89 @@ public class NbuFragment extends Fragment {
 		public TextView lstItemNbuLbl;
 		public TextView lstItemNbuRate;
 		public ImageView change;
+	}
+	
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	class MyTask extends AsyncTask<ArrayList<Object>, Void, Void> {
+
+		ArrayList<Object> rates;
+
+		LayoutInflater lInflater;
+		ArrayList<View> verLayout = new ArrayList<View>();
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+			lInflater = getActivity().getLayoutInflater();
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			
+			LinearLayout list = (LinearLayout) rootView.findViewById(R.id.nbu_list);
+			list.removeAllViews();
+			
+			TextView nbu_date = (TextView) rootView.findViewById(R.id.nbu_date);
+			nbu_date.setText(" ”–—€ Õ¿ " + ((Rates) rates.get(0)).date);
+			
+			View date_stub = lInflater.inflate(R.layout.date_stub, null, false);
+			list.addView(date_stub);
+			
+			for (int i = 0; i < verLayout.size(); i++) {
+				
+				registerForContextMenu(verLayout.get(i));
+				list.addView(verLayout.get(i));
+			}
+		}
+
+		@Override
+		protected Void doInBackground(ArrayList<Object>... arg0) {
+
+			rates = arg0[0];
+			
+			for (int i = 0; i < rates.size(); i++) {
+				
+				Rates ratesItem = (Rates) rates.get(i);			
+				
+				View item = lInflater.inflate(R.layout.nbu_item_layout, null, false);
+				
+				// ////////////////////////////////////////////////////////////////////////
+				
+				ViewHolder vh = new ViewHolder();
+				
+				vh.lstItemNbuLbl = (TextView) item.findViewById(R.id.lstItemNbuLbl);
+				vh.lstItemNbuRate = (TextView) item.findViewById(R.id.lstItemNbuRate);
+				vh.country_icon = (ImageView) item.findViewById(R.id.country_icon);
+				vh.change = (ImageView) item.findViewById(R.id.nbu_direction);
+				
+				// ////////////////////////////////////////////////////////////////////////
+				
+				vh.lstItemNbuLbl.setText(Html.fromHtml("<b>" + ratesItem.char3 + "</b>" + " (" + getResources().getString(getResources().getIdentifier(ratesItem.char3, "string", getActivity().getPackageName())) + ")"));
+				vh.lstItemNbuRate.setText(Html.fromHtml("<b>" + ratesItem.rate + "</b>" + " " + getString(R.string.for_items) + " " + "<b>" + ratesItem.size + "</b>" + " " + getString(R.string.items)));
+
+				vh.country_icon.setImageDrawable(getResources().getDrawable(getResources().getIdentifier(ratesItem.char3.trim().toLowerCase(), "drawable", getActivity().getPackageName())));
+				vh.country_icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+				if (Double.valueOf(ratesItem.change) > 0) {
+
+					vh.change.setImageDrawable(getResources().getDrawable(R.drawable.up));
+					vh.change.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				}
+				else if (Double.valueOf(ratesItem.change) < 0) {
+
+					vh.change.setImageDrawable(getResources().getDrawable(R.drawable.down));
+					vh.change.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				}
+				
+				verLayout.add(item);
+			}
+
+			return null;
+		}
 	}
 }

@@ -18,7 +18,7 @@
         android:divider="@color/list_divider"
         android:listSelector="@drawable/list_selector"
         android:dividerHeight="1dp"
-        android:background="@color/list_background" />
+        android:background="@drawable/commercial_average_background_pattern" />
     
 </android.support.v4.widget.DrawerLayout>
 
