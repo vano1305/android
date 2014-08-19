@@ -2,7 +2,6 @@ package dn.ivan.actionbarexample;
 
 import java.util.ArrayList;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.ProgressDialog;
@@ -10,22 +9,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -39,23 +30,16 @@ import dn.ivan.actionbarexample.fragments.CommercialFragment;
 import dn.ivan.actionbarexample.fragments.HistoryFragment;
 import dn.ivan.actionbarexample.fragments.MetalsFragment;
 import dn.ivan.actionbarexample.fragments.NbuFragment;
-import dn.ivan.actionbarexample.logic.NavDrawerItem;
-import dn.ivan.actionbarexample.logic.NavDrawerListAdapter;
 import dn.ivan.actionbarexample.logic.NetworkManager;
+import dn.ivan.actionbarexample.logic.SpinnerNavItem;
+import dn.ivan.actionbarexample.logic.TitleNavigationAdapter;
 import dn.ivan.actionbarexample.service.BackgroundService;
 import dn.ivan.actionbarexample.service.HistoryService;
 
-@SuppressLint("NewApi")
-public class MainActivity extends SherlockFragmentActivity /*implements ActionBar.OnNavigationListener*/ {
+public class MainActivity extends SherlockFragmentActivity implements ActionBar.OnNavigationListener {
 	
-	private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;    
-    private String[] navMenuTitles;
-    private TypedArray navMenuIcons;
-	
-	/*private ArrayList<SpinnerNavItem> navSpinner;
-	private TitleNavigationAdapter adapter;*/
+	private ArrayList<SpinnerNavItem> navSpinner;
+	private TitleNavigationAdapter adapter;
 	
 	private static long back_pressed;
 	
@@ -100,44 +84,6 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 		BugSenseHandler.initAndStartSession(MainActivity.this, "8bb39df7");
 		setContentView(R.layout.activity_main);
 		
-		// ////////////////////////////////////////////////////////////////////
-		
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        
-        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_titles);        
-        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
- 
-        ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
- 
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));       
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));        
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));        
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));         
- 
-        navMenuIcons.recycle();
- 
-        NavDrawerListAdapter adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
-        mDrawerList.setAdapter(adapter);
-        
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
-        	
-            public void onDrawerClosed(View view) {
-            	//invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {                
-                //invalidateOptionsMenu();
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
-		// ////////////////////////////////////////////////////////////////////
-		
 		nbuFragment = (NbuFragment) Fragment.instantiate(this, NbuFragment.class.getName());
 		currencyFragment = CommercialFragment.newInstance("USD");
 		metalsFragment = (MetalsFragment) Fragment.instantiate(this, MetalsFragment.class.getName());
@@ -149,20 +95,17 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 		}
 
 		ActionBar actionBar = getSupportActionBar();
-		//actionBar.setDisplayShowTitleEnabled(false);
-		//actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setHomeButtonEnabled(true);
-		
-		/*navSpinner = new ArrayList<SpinnerNavItem>();
+		navSpinner = new ArrayList<SpinnerNavItem>();
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section1), R.drawable.nbu));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section2), R.drawable.commercial));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section3), R.drawable.metals));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section4), R.drawable.history));
          
         adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);          
-        actionBar.setListNavigationCallbacks(adapter, this);*/
+        actionBar.setListNavigationCallbacks(adapter, this);
 	}
 	
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,87 +113,16 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-    	
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-    	
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-    
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-    	
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
-
-    private void selectItem(int position) {
-    	
-    	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-		
-		if (0 == position) {
-			
-			ft.replace(R.id.container, nbuFragment, NBU_FRAGMENT).commit();
-			getSupportActionBar().setIcon(R.drawable.nbu);
-			if (menu != null) {
-				menu.findItem(R.id.refresh).setVisible(true);
-			}			
-		}
-		else if (1 == position) {
-			
-			ft.replace(R.id.container, currencyFragment, COMMERCIAL_FRAGMENT).commit();
-			getSupportActionBar().setIcon(R.drawable.commercial);
-			if (menu != null) {
-				menu.findItem(R.id.refresh).setVisible(true);
-			}
-		}
-		else if (2 == position) {	
-			
-			ft.replace(R.id.container, metalsFragment, METALS_FRAGMENT).commit();
-			getSupportActionBar().setIcon(R.drawable.metals);
-			if (menu != null) {
-				menu.findItem(R.id.refresh).setVisible(true);
-			}
-		}
-		else if (3 == position){
-			
-			ft.replace(R.id.container, historyFragment, HISTORY_FRAGMENT).commit();
-			getSupportActionBar().setIcon(R.drawable.history);
-			if (menu != null) {
-				menu.findItem(R.id.refresh).setVisible(false);
-			}
-		}
-		
-		getSupportActionBar().setTitle(navMenuTitles[position]);
-        
-        mDrawerList.setItemChecked(position, true);
-        mDrawerList.setSelection(position);
-        mDrawerLayout.closeDrawer(mDrawerList);
-    }
-	
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		
 		if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-			selectItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+			getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
 		}
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, mDrawerList.getCheckedItemPosition());
+		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getSupportActionBar().getSelectedNavigationIndex());
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -264,23 +136,11 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 		rotation = AnimationUtils.loadAnimation(this, R.anim.rotate_refresh);
         rotation.setRepeatCount(Animation.INFINITE);
         
-        selectItem(0);
-		
-		return true;
+        return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
-		if (item.getItemId() == android.R.id.home) {
-
-	        if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-	        	mDrawerLayout.closeDrawer(mDrawerList);
-	        } 
-	        else {
-	        	mDrawerLayout.openDrawer(mDrawerList);
-	        }
-	    }
 		
 		switch (item.getItemId()) {
 		
@@ -288,9 +148,9 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 	    		loadRates();
 	    		break;
 	    		
-	    	case R.id.settings:
+	    	/*case R.id.settings:
 	    		startActivity(new Intent(this, Preferences.class));
-	    		break;
+	    		break;*/
 	    		
 	    	default:
 	    		break;
@@ -300,7 +160,7 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 	
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	/*@Override
+	@Override
 	public boolean onNavigationItemSelected(int position, long id) {		
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -342,7 +202,7 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 			}
 			return true;
 		}
-	}*/
+	}
 
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -389,9 +249,8 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 	
 	public void setData(ArrayList<Object> rates, String source) {
 		
-		//int index = getSupportActionBar().getSelectedNavigationIndex();
-		int index = mDrawerList.getCheckedItemPosition();
-		
+		int index = getSupportActionBar().getSelectedNavigationIndex();
+				
 		if (0 == index && NBU_SOURCE.equalsIgnoreCase(source)) {
 			((NbuFragment)getSupportFragmentManager().findFragmentByTag(NBU_FRAGMENT)).setData(rates);
 		}
@@ -413,9 +272,8 @@ public class MainActivity extends SherlockFragmentActivity /*implements ActionBa
 
 		Intent intent = new Intent(MainActivity.this, BackgroundService.class);
 		
-		//int index = getSupportActionBar().getSelectedNavigationIndex();
-		int index = mDrawerList.getCheckedItemPosition();
-		
+		int index = getSupportActionBar().getSelectedNavigationIndex();
+				
 		if (0 == index) {
 			intent.putExtra(SOURCE, NBU_SOURCE);
 		}

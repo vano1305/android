@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -89,7 +88,7 @@ public class NbuFragment extends Fragment {
 		ScrollView scrollView = ((ScrollView) rootView.findViewById(R.id.nbu_scroll));
 		scrollView.setScrollbarFadingEnabled(true);
 		
-		/*LinearLayout list = (LinearLayout) rootView.findViewById(R.id.nbu_list);
+		LinearLayout list = (LinearLayout) rootView.findViewById(R.id.nbu_list);
 		list.removeAllViews();
 		
 		TextView nbu_date = (TextView) rootView.findViewById(R.id.nbu_date);
@@ -97,9 +96,9 @@ public class NbuFragment extends Fragment {
 		LayoutInflater lInflater = getActivity().getLayoutInflater();
 		
 		View date_stub = lInflater.inflate(R.layout.date_stub, null, false);
-		list.addView(date_stub);*/
+		list.addView(date_stub);
 		
-		/*for (int i = 0; i < rates.size(); i++) {
+		for (int i = 0; i < rates.size(); i++) {
 			
 			Rates ratesItem = (Rates) rates.get(i);			
 			
@@ -138,9 +137,9 @@ public class NbuFragment extends Fragment {
 			registerForContextMenu(item) ;			
 			
 			list.addView(item);
-		}*/	
+		}
 		
-		new MyTask().execute(rates);
+		//new MyTask().execute(rates);
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,7 +240,7 @@ public class NbuFragment extends Fragment {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	class MyTask extends AsyncTask<ArrayList<Object>, Void, Void> {
+	/*class MyTask extends AsyncTask<ArrayList<Object>, Void, Void> {
 
 		ArrayList<Object> rates;
 
@@ -319,5 +318,5 @@ public class NbuFragment extends Fragment {
 
 			return null;
 		}
-	}
+	}*/
 }

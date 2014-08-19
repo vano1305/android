@@ -3,7 +3,7 @@
     
     <string-array name="nav_drawer_titles">
         <item>НБУ</item>
-        <item>Межбанк</item>
+        <item>Наличные</item>
         <item>Металлы</item>
         <item>История НБУ</item>
     </string-array>
@@ -17,7 +17,7 @@
 
     <string name="app_name">Курсы валют</string>
     <string name="title_section1">НБУ</string>
-    <string name="title_section2">Межбанк</string>
+    <string name="title_section2">Наличные</string>
     <string name="title_section3">Металлы</string>
     <string name="title_section4">История НБУ</string>
     <string name="refresh">Обновить</string>

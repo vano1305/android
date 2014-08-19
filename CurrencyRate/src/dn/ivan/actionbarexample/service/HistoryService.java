@@ -40,16 +40,6 @@ public class HistoryService extends Service {
 		}
 	}
 	
-	/*@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		
-		super.onStartCommand(intent, flags, startId);
-		
-		startService();		
-		
-		return START_STICKY;
-	}*/
-
 	private void startService() {
 
 		Intent intent = new Intent(this, LoadHistoryReceiver.class);

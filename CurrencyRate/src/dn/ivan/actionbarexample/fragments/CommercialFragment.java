@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -162,7 +161,7 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		ScrollView scrollView = ((ScrollView) mainLayout.findViewById(R.id.commercial_scroll));
 		scrollView.setScrollbarFadingEnabled(true);
 		
-		/*LinearLayout list = (LinearLayout) mainLayout.findViewById(R.id.commercial_list);
+		LinearLayout list = (LinearLayout) mainLayout.findViewById(R.id.commercial_list);
 		list.removeAllViews();
 		
 		LayoutInflater lInflater = getActivity().getLayoutInflater();
@@ -171,9 +170,9 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		list.addView(stub);
 		
 		View direction = lInflater.inflate(R.layout.commercial_direction_layout, null, false);
-		list.addView(direction);*/
+		list.addView(direction);
 		
-		/*double totalBuy = 0.0;
+		double totalBuy = 0.0;
 		double totalSell = 0.0;
 		
 		double totalBuyDelta = 0.0;
@@ -285,9 +284,9 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		}
 		else {
 			buyDirection.setImageDrawable(null);
-		}*/
+		}
 		
-		new MyTask().execute(rates);
+		//new MyTask().execute(rates);
 	}
 	
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -414,7 +413,7 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	class MyTask extends AsyncTask<ArrayList<CommercialRates>, Void, Void> {
+	/*class MyTask extends AsyncTask<ArrayList<CommercialRates>, Void, Void> {
 		
 		ArrayList<CommercialRates> rates;
 		
@@ -567,5 +566,5 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 			
 			return null;
 		}
-	}
+	}*/
 }

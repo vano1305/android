@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:padding="9dp"
-    android:background="@drawable/action_bar_pattern" >
+    android:background="@drawable/nav_spinner_item_selector" >
      
     <ImageView android:id="@+id/imgIcon"
         android:layout_width="25dp"

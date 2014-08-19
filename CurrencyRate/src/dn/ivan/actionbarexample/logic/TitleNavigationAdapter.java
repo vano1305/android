@@ -19,8 +19,7 @@ public class TitleNavigationAdapter extends BaseAdapter {
     private ArrayList<SpinnerNavItem> spinnerNavItem;
     private Context context;
  
-    public TitleNavigationAdapter(Context context,
-            ArrayList<SpinnerNavItem> spinnerNavItem) {
+    public TitleNavigationAdapter(Context context, ArrayList<SpinnerNavItem> spinnerNavItem) {
         this.spinnerNavItem = spinnerNavItem;
         this.context = context;
     }
@@ -42,9 +41,9 @@ public class TitleNavigationAdapter extends BaseAdapter {
  
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+    	
         if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater)
-                    context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater mInflater = (LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.list_item_title_navigation, null);
         }
          
@@ -62,8 +61,7 @@ public class TitleNavigationAdapter extends BaseAdapter {
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater)
-                    context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater mInflater = (LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.list_item_title_navigation, null);
         }
          
@@ -74,6 +72,5 @@ public class TitleNavigationAdapter extends BaseAdapter {
         txtTitle.setTextSize(16);
         txtTitle.setText(spinnerNavItem.get(position).getTitle());
         return convertView;
-    }
- 
+    } 
 }
