@@ -18,13 +18,6 @@ public class Preferences extends SherlockPreferenceActivity {
 		
 		ActionBar actionBar = getSupportActionBar();
 		
-		/*if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
-			
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setDisplayShowHomeEnabled(false);
-						
-		}*/
-		
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		

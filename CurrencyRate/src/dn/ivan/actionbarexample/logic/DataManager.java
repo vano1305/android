@@ -7,10 +7,13 @@ import java.util.Locale;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
+import dn.ivan.actionbarexample.MainActivity;
 
 public class DataManager {
 	
@@ -132,5 +135,25 @@ public class DataManager {
 			return "NbuRatesHolderForChart [date=" + date + ", rate=" + rate
 					+ "]";
 		}		
+	}
+	
+	// ////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public static void saveValue2Pref(Context context, String code, String value) {
+		
+		SharedPreferences shared = context.getSharedPreferences(code, MainActivity.MODE_PRIVATE);
+		Editor ed = shared.edit();
+		ed.remove(code);
+		ed.putString(code, value);
+		ed.commit();
+	}
+
+	public static String loadValueFromPref(Context context, String code) {
+		
+		SharedPreferences shared = context.getSharedPreferences(code, MainActivity.MODE_PRIVATE);
+		String value = shared.getString(code, "");
+		return value;
 	}
 }

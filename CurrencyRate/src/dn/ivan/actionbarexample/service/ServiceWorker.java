@@ -45,8 +45,8 @@ public class ServiceWorker implements Runnable {
 
 		try {
 			
-			if (from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)) {
-				context.sendBroadcast(new Intent(MainActivity.START_LOAD).putExtra(MainActivity.SOURCE, source));				
+			if (from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET)) {
+				context.sendBroadcast(new Intent(MainActivity.START_LOAD).putExtra(MainActivity.SOURCE, source).putExtra(MainActivity.FROM, from));
 			}			
 
 			// ////////////////////////////////////////////////////////////////////////////////////
@@ -57,8 +57,8 @@ public class ServiceWorker implements Runnable {
 			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
 				request = new HttpGet("http://bank-ua.com/export/exchange_rate_cash.xml");
 			}
-			else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source)) {
-				request = new HttpGet("http://bank-ua.com/export/currrate.xml");
+			else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source)) {				
+				request = new HttpGet("http://bank-ua.com/export/currrate.xml");				
 			}
 			else {
 				request = new HttpGet("http://bank-ua.com/export/metalrate.xml");
@@ -206,9 +206,10 @@ public class ServiceWorker implements Runnable {
 
 			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
 
-				Intent intent = new Intent(from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
+				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 				intent.putExtra(MainActivity.RATES, ratesList);
 				intent.putExtra(MainActivity.SOURCE, source);
+				intent.putExtra(MainActivity.FROM, from);
 				context.sendBroadcast(intent);
 			}
 			else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source)) {
@@ -224,16 +225,18 @@ public class ServiceWorker implements Runnable {
 					}
 				}
 				
-				Intent intent = new Intent(from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
+				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 				intent.putExtra(MainActivity.RATES, nbuRatesList);
 				intent.putExtra(MainActivity.SOURCE, source);
+				intent.putExtra(MainActivity.FROM, from);
 				context.sendBroadcast(intent);
 			}
 			else {
 				
-				Intent intent = new Intent(from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
+				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 				intent.putExtra(MainActivity.RATES, ratesList);
 				intent.putExtra(MainActivity.SOURCE, source);
+				intent.putExtra(MainActivity.FROM, from);
 				context.sendBroadcast(intent);
 			}
 		}
@@ -254,9 +257,10 @@ public class ServiceWorker implements Runnable {
 		
 		if (ratesList == null || ratesList.size() == 0) {
 			
-			Intent intent = new Intent(from.equalsIgnoreCase(MainActivity.FROM_APPLICATION)? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
+			Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 			intent.putExtra("error", "errorLoad");
 			intent.putExtra(MainActivity.SOURCE, source);
+			intent.putExtra(MainActivity.FROM, from);
 			context.sendBroadcast(intent);
 		}
 	}

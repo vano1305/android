@@ -20,8 +20,24 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 		
 		Intent intent = new Intent(context, BackgroundService.class);
 		intent.putExtra(MainActivity.SOURCE, MainActivity.COMMERCIAL_SOURCE);
+		intent.putExtra(MainActivity.FROM, MainActivity.FROM_WIDGET);
 		
 		context.startService(intent);
+		
+		// //////////////////////////////////////////////
+		
+		for (int i = 0; i < appWidgetIds.length; i++) {
+			
+            int appWidgetId = appWidgetIds[i];
+
+            Intent intent2 = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 501, intent2, 0);
+
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.commercial_widget);
+            views.setOnClickPendingIntent(R.id.remote_view_currencys_commercial, pendingIntent);
+
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+        }		
 	}
 	
 	// //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,8 +48,8 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 	
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public void onEnabled(Context context) {
-		
+	public void onEnabled(Context context) {	    
+	    		
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +60,7 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 	
 	public void updateWidget(ArrayList<Object> rates, Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 		
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.currency_widget);
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.commercial_widget);
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -65,8 +81,8 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
-		views.setTextViewText(R.id.usd_lbl, "USD");
-		views.setTextViewText(R.id.usd_txt, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+		views.setTextViewText(R.id.usd_lbl_commercial, "USD");
+		views.setTextViewText(R.id.usd_txt_commercial, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -87,8 +103,8 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();		    
 		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
-		views.setTextViewText(R.id.eur_lbl, "EUR");
-		views.setTextViewText(R.id.eur_txt, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+		views.setTextViewText(R.id.eur_lbl_commercial, "EUR");
+		views.setTextViewText(R.id.eur_txt_commercial, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -109,21 +125,23 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}	
-		views.setTextViewText(R.id.rub_lbl, "RUB");
-		views.setTextViewText(R.id.rub_txt, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+		views.setTextViewText(R.id.rub_lbl_commercial, "RUB");
+		views.setTextViewText(R.id.rub_txt_commercial, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
-		views.setTextViewText(R.id.date_lbl, ((CommercialRates) rates.get(0)).date);
+		//views.setTextViewText(R.id.date_lbl_commercial, ((CommercialRates) rates.get(0)).date);
+		views.setTextViewText(R.id.date_lbl_commercial, context.getResources().getString(R.string.title_section2));
 		
-		views.setViewVisibility(R.id.progressBar_widget, ProgressBar.INVISIBLE);
-		views.setViewVisibility(R.id.refresh_widget, ProgressBar.VISIBLE);
+		views.setViewVisibility(R.id.progressBar_widget_commercial, ProgressBar.INVISIBLE);
+		views.setViewVisibility(R.id.refresh_widget_commercial, ProgressBar.VISIBLE);
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
 		Intent intent = new Intent(context, BackgroundService.class);
 		intent.putExtra(MainActivity.SOURCE, MainActivity.COMMERCIAL_SOURCE);
-		views.setOnClickPendingIntent(R.id.refresh_widget, PendingIntent.getService(context, 0, intent, 0));
+		intent.putExtra(MainActivity.FROM, MainActivity.FROM_WIDGET);
+		views.setOnClickPendingIntent(R.id.refresh_widget_commercial, PendingIntent.getService(context, 501, intent, 0));
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 	    
@@ -143,19 +161,24 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 		ComponentName thisWidget = new ComponentName(context.getApplicationContext(), CommercialWidgetProvider.class);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
         
-        if (MainActivity.START_LOAD.equalsIgnoreCase(intent.getAction()) && MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))) {
+        if (MainActivity.START_LOAD.equalsIgnoreCase(intent.getAction())
+        		&& MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))
+        		&& MainActivity.FROM_WIDGET.equalsIgnoreCase(intent.getExtras().getString(MainActivity.FROM))) {
 			
 			for (int i=0; i < appWidgetIds.length; i++) {
 	        	
-	        	RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.currency_widget);
-				views.setViewVisibility(R.id.progressBar_widget, ProgressBar.VISIBLE);
-				views.setViewVisibility(R.id.refresh_widget, ProgressBar.INVISIBLE);
+	        	RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.commercial_widget);
+				views.setViewVisibility(R.id.progressBar_widget_commercial, ProgressBar.VISIBLE);
+				views.setViewVisibility(R.id.refresh_widget_commercial, ProgressBar.INVISIBLE);
 				
 				appWidgetManager.updateAppWidget(appWidgetIds[i], views);
 			}
 		}
 		
-		if (MainActivity.FINISH_LOAD.equalsIgnoreCase(intent.getAction()) && intent.getExtras().getString("error") == null && MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))) {
+		if (MainActivity.FINISH_LOAD.equalsIgnoreCase(intent.getAction())
+				&& intent.getExtras().getString("error") == null
+				&& MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))
+				&& MainActivity.FROM_WIDGET.equalsIgnoreCase(intent.getExtras().getString(MainActivity.FROM))) {
 			
 			ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(MainActivity.RATES);
 			
@@ -165,29 +188,34 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			
 			stopService(context);
 		}
-		else if (MainActivity.FINISH_LOAD.equalsIgnoreCase(intent.getAction()) && intent.getExtras().getString("error") != null && MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))) {
+		else if (MainActivity.FINISH_LOAD.equalsIgnoreCase(intent.getAction())
+				&& intent.getExtras().getString("error") != null
+				&& MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(intent.getExtras().getString(MainActivity.SOURCE))
+				&& MainActivity.FROM_WIDGET.equalsIgnoreCase(intent.getExtras().getString(MainActivity.FROM))) {
 			
 			for (int i=0; i < appWidgetIds.length; i++) {
 	        	
-				RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.currency_widget);
+				RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.commercial_widget);
 				
-				views.setTextViewText(R.id.date_lbl, "");
+				//views.setTextViewText(R.id.date_lbl_commercial, "");
+				views.setTextViewText(R.id.date_lbl_commercial, context.getResources().getString(R.string.title_section2));
 				
-				views.setViewVisibility(R.id.progressBar_widget, ProgressBar.INVISIBLE);
-				views.setViewVisibility(R.id.refresh_widget, ProgressBar.VISIBLE);
+				views.setViewVisibility(R.id.progressBar_widget_commercial, ProgressBar.INVISIBLE);
+				views.setViewVisibility(R.id.refresh_widget_commercial, ProgressBar.VISIBLE);
 				
-				views.setTextViewText(R.id.usd_lbl, "Нет соединения");
-				views.setTextViewText(R.id.usd_txt, "");
-				views.setTextViewText(R.id.eur_lbl, "");
-				views.setTextViewText(R.id.eur_txt, "");
-				views.setTextViewText(R.id.rub_lbl, "");
-				views.setTextViewText(R.id.rub_txt, "");
+				views.setTextViewText(R.id.usd_lbl_commercial, "Error");
+				views.setTextViewText(R.id.usd_txt_commercial, "");
+				views.setTextViewText(R.id.eur_lbl_commercial, "");
+				views.setTextViewText(R.id.eur_txt_commercial, "");
+				views.setTextViewText(R.id.rub_lbl_commercial, "");
+				views.setTextViewText(R.id.rub_txt_commercial, "");
 				
 				// /////////////////////////////////////////////////////////////////////////////////////////
 				
 				Intent intent2 = new Intent(context, BackgroundService.class);
 				intent2.putExtra(MainActivity.SOURCE, MainActivity.COMMERCIAL_SOURCE);
-				views.setOnClickPendingIntent(R.id.refresh_widget, PendingIntent.getService(context, 0, intent2, 0));
+				intent2.putExtra(MainActivity.FROM, MainActivity.FROM_WIDGET);
+				views.setOnClickPendingIntent(R.id.refresh_widget_commercial, PendingIntent.getService(context, 501, intent2, 0));
 				
 				// /////////////////////////////////////////////////////////////////////////////////////////
 			    

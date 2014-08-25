@@ -20,7 +20,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -97,13 +96,6 @@ public class HistoryFragment extends Fragment implements OnItemSelectedListener 
 				showDatePickerDialog((EditText)rootView.findViewById(R.id.date2));
 			}
 		});
-		
-		if (Build.VERSION.RELEASE.startsWith("2.")) {
-			
-			((EditText)rootView.findViewById(R.id.date1)).setTextColor(Color.BLACK);
-			((EditText)rootView.findViewById(R.id.date2)).setTextColor(Color.BLACK);
-			((Button)rootView.findViewById(R.id.reload_chart)).setTextColor(Color.BLACK);
-		}
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 		
@@ -314,6 +306,7 @@ public class HistoryFragment extends Fragment implements OnItemSelectedListener 
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public void showDatePickerDialog(EditText txt) {
+		
 	    DialogFragment newFragment = new DatePickerFragment(txt);
 	    newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
 	}

@@ -125,8 +125,16 @@
         <item>JPY</item>
     </string-array>
     
+    <string-array name="metals_dialog">
+        <item>XAU</item>
+        <item>XAG</item>
+        <item>XPT</item>
+        <item>XPD</item>
+    </string-array>
+    
     <string name="ok">Ок</string>
     <string name="cancel">Отмена</string>
+    <string name="all">Всё</string>
     
     <string-array name="banks_dialog_key">
         <item>citycommercebank</item>

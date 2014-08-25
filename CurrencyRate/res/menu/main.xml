@@ -10,7 +10,14 @@
         android:title=""
         android:id="@+id/refresh"
         android:showAsAction="ifRoom"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:icon="@drawable/refresh" />
+    
+   	<item
+   	    android:title=""
+        android:id="@+id/edit_pen"
+        android:showAsAction="ifRoom"
+        android:orderInCategory="100"
+        android:icon="@drawable/edit_pen" />
 
 </menu>

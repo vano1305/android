@@ -5,13 +5,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -25,6 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -129,14 +127,9 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		// ///////////////////////////////////////////////////////////////////////////
 		
 		ArrayList<CommercialRates> checkedBanks = null;
-		Set<String> banksSet = null;
 		
-		if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
-			banksSet = getSetFromPref("selected_banks");
-		}
-		else {
-			banksSet = null;
-		}
+		Set<String> banksSet = null;		
+		banksSet = getSetFromPref("selected_banks");
 		
 		if (banksSet != null) {
 			
@@ -195,7 +188,12 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 			vh.sell_direction = (ImageView) item.findViewById(R.id.commercial_sell_direction_img);
 			vh.bank_icon = (ImageView) item.findViewById(R.id.bank_icon);
 			
-			vh.lstItemCurrency.setText(Html.fromHtml("<b>" + getResources().getString(getResources().getIdentifier(ratesItem.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim(), "string", getActivity().getPackageName())) + "</b>"));
+			if (getResources().getIdentifier(ratesItem.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim(), "string", getActivity().getPackageName()) != 0) {
+				vh.lstItemCurrency.setText(Html.fromHtml("<b>" + getResources().getString(getResources().getIdentifier(ratesItem.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim(), "string", getActivity().getPackageName())) + "</b>"));
+			}
+			else {
+				vh.lstItemCurrency.setText(Html.fromHtml("<b>" + ratesItem.bankName + "</b>"));
+			}
 
 			vh.lstItemBuyResult.setText(Html.fromHtml("<b>" + ratesItem.rateBuy + "</b>"));
 			vh.lstItemSellResult.setText(Html.fromHtml("<b>" + ratesItem.rateSale + "</b>"));
@@ -285,8 +283,6 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		else {
 			buyDirection.setImageDrawable(null);
 		}
-		
-		//new MyTask().execute(rates);
 	}
 	
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,32 +291,38 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		
 		super.onCreateContextMenu(menu, v, menuInfo);
-		if (Build.VERSION.RELEASE.startsWith("4.") || Build.VERSION.RELEASE.startsWith("3.")) {
-			createDialog();
-		}	    
+		createBanksSelectionDialog();    
 	}
 	
-	public void createDialog() {
+	public void createBanksSelectionDialog() {
 		
-		//startActivityForResult(new Intent(getActivity(), NbuCheckActivity.class), 1);
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		
-	    final ArrayList<String> mSelectedItems = new ArrayList<String>();
-	    
-	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		boolean[] checkedItems = new boolean[getResources().getStringArray(R.array.banks_dialog_key).length];
+		
+		Set<String> selectedItems = getSetFromPref("selected_banks");
+		
+		if (selectedItems == null) {
+			
+			for (int i = 0; i < getResources().getStringArray(R.array.banks_dialog_key).length; i++)
+		        checkedItems[i] = true;
+		}
+		else {
+			
+			for (int i = 0; i < getResources().getStringArray(R.array.banks_dialog_key).length; i++)
+		        checkedItems[i] = selectedItems.contains(getResources().getStringArray(R.array.banks_dialog_key)[i]);
+		}	    
 	    
 	    builder.setTitle("Выбор банков");
-		builder.setMultiChoiceItems(R.array.banks_dialog_value, null,
+	    builder.setMultiChoiceItems(R.array.banks_dialog_value, null,
 				new DialogInterface.OnMultiChoiceClickListener() {
 			
 					@Override
 					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
-						if (isChecked) {
-							mSelectedItems.add(getResources().getStringArray(R.array.banks_dialog_key)[which]);
-						}
-						else if (mSelectedItems.contains(getResources().getStringArray(R.array.banks_dialog_key)[which])) {
-							mSelectedItems.remove(getResources().getStringArray(R.array.banks_dialog_key)[which]);
-						}
+						//
+						//
+						//
 					}
 				});
 		builder.setPositiveButton(R.string.ok,
@@ -329,7 +331,18 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						
-						addSet2Pref("selected_banks", new HashSet<String>(mSelectedItems));						
+						final ArrayList<String> mSelectedItems = new ArrayList<String>();
+						
+						ListView list = ((AlertDialog) dialog).getListView();
+						
+						for (int i = 0; i < list.getCount(); i++) {
+							
+							if (list.isItemChecked(i)) {
+								mSelectedItems.add(getResources().getStringArray(R.array.banks_dialog_key)[i]);
+							}
+						}
+						
+						addSet2Pref("selected_banks", new HashSet<String>(mSelectedItems));
 						((MainActivity)getActivity()).loadRates();
 					}
 				});
@@ -344,16 +357,55 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 						//
 					}
 				});
+		builder.setNeutralButton(R.string.all,
+				new DialogInterface.OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						//
+						//
+						//
+					}
+				});
 
-	    builder.create().show();
+	    final AlertDialog dialog = builder.create();	    
+	    dialog.show();
+	    
+	    ListView list = dialog.getListView();	    
+	    for (int i = 0; i < checkedItems.length; i++) {
+	    	list.setItemChecked(i, checkedItems[i]);	   
+	    }
+	    
+	    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				ListView list = ((AlertDialog) dialog).getListView();
+				
+				int selected = 0;
+				for (int i = 0; i < list.getCount(); i++) {
+					
+					if (list.isItemChecked(i)) {
+						selected ++;
+					}
+				}
+				
+				if (selected == list.getCount()) {
+					
+					for (int i = 0; i < list.getCount(); ++i)
+                        list.setItemChecked(i, false);
+				}
+				else {
+					
+					for (int i = 0; i < list.getCount(); ++i)
+                        list.setItemChecked(i, true);
+				}				
+			}
+		});
 	}
 	
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
-		
-	}
-	
-	@SuppressLint("NewApi")
 	protected void addSet2Pref(String prefName, HashSet<String> set) {
 		
 		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
@@ -363,7 +415,6 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		ed.commit();
 	}
 	
-	@SuppressLint("NewApi")
 	protected Set<String> getSetFromPref(String prefName) {
 		
 		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
@@ -408,163 +459,4 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		
 		public ImageView bank_icon;
 	}
-	
-	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	/*class MyTask extends AsyncTask<ArrayList<CommercialRates>, Void, Void> {
-		
-		ArrayList<CommercialRates> rates;
-		
-		double totalBuy = 0.0;
-		double totalSell = 0.0;
-		
-		double totalBuyDelta = 0.0;
-		double totalSellDelta = 0.0;
-		
-		LayoutInflater lInflater;
-		ArrayList<View> verLayout = new ArrayList<View>();
-		
-		@Override
-		protected void onPreExecute() {			
-			super.onPreExecute();
-			
-			lInflater = getActivity().getLayoutInflater();
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-			
-			LinearLayout list = (LinearLayout) mainLayout.findViewById(R.id.commercial_list);
-			list.removeAllViews();
-			
-			View stub = lInflater.inflate(R.layout.commercial_triangle_stub, null, false);
-			list.addView(stub);
-			
-			View direction = lInflater.inflate(R.layout.commercial_direction_layout, null, false);
-			list.addView(direction);
-			
-			for (int i = 0; i < verLayout.size(); i++) {
-				
-				registerForContextMenu(verLayout.get(i));
-				list.addView(verLayout.get(i));
-			}
-			
-			// //////////////////////////////////////////////////////////////////////////////////
-			
-			TextView lblAverage = (TextView) averageRatesItem.findViewById(R.id.average_txt);
-			lblAverage.setText(R.string.commercial_average);
-			
-			TextView averageBuy = (TextView) averageRatesItem.findViewById(R.id.average_buy_result);
-		    averageBuy.setText(Html.fromHtml("<b>" + new BigDecimal(totalBuy / rates.size()).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
-		    			    
-		    TextView averageSell = (TextView) averageRatesItem.findViewById(R.id.average_sell_result);
-		    averageSell.setText(Html.fromHtml("<b>" + new BigDecimal(totalSell / rates.size()).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
-		    
-		    // //////////////////////////////////////////////////////////////////////////////////
-		    
-		    ImageView sellDirection = (ImageView) averageRatesItem.findViewById(R.id.commercial_average_sell_direction_img);
-		    if (Double.valueOf(totalSellDelta / rates.size()) > 0) {
-		    	
-		    	sellDirection.setImageDrawable(getResources().getDrawable(R.drawable.up));
-				sellDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
-			}
-			else if (Double.valueOf(totalSellDelta / rates.size()) < 0) {
-				
-				sellDirection.setImageDrawable(getResources().getDrawable(R.drawable.down));
-				sellDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
-			}
-			else {
-				sellDirection.setImageDrawable(null);
-			}
-			
-			ImageView buyDirection = (ImageView) averageRatesItem.findViewById(R.id.commercial_average_buy_direction_img);
-			if (Double.valueOf(totalBuyDelta / rates.size()) > 0) {
-				
-				buyDirection.setImageDrawable(getResources().getDrawable(R.drawable.up));
-				buyDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
-			}
-			else if (Double.valueOf(totalBuyDelta / rates.size()) < 0) {
-				
-				buyDirection.setImageDrawable(getResources().getDrawable(R.drawable.down));
-				buyDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
-			}
-			else {
-				buyDirection.setImageDrawable(null);
-			}
-		}
-
-		@Override
-		protected Void doInBackground(ArrayList<CommercialRates>... arg0) {
-			
-			rates = arg0[0];
-			
-			for (int i = 0; i < rates.size(); i++) {
-				
-				CommercialRates ratesItem = (CommercialRates) rates.get(i);
-				
-				View item = lInflater.inflate(R.layout.commercial_item_layout, null, false);
-				
-				// ////////////////////////////////////////////////////////////////////
-				
-				ViewHolder vh = new ViewHolder();
-				
-				vh.lstItemCurrency = (TextView) item.findViewById(R.id.bank_name_txt);
-				vh.lstItemBuyResult = (TextView) item.findViewById(R.id.commercial_buy_txt);
-				vh.buy_direction = (ImageView) item.findViewById(R.id.commercial_buy_direction_img);
-				vh.lstItemSellResult = (TextView) item.findViewById(R.id.commercial_sell_txt);
-				vh.sell_direction = (ImageView) item.findViewById(R.id.commercial_sell_direction_img);
-				vh.bank_icon = (ImageView) item.findViewById(R.id.bank_icon);
-				
-				vh.lstItemCurrency.setText(Html.fromHtml("<b>" + getResources().getString(getResources().getIdentifier(ratesItem.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim(), "string", getActivity().getPackageName())) + "</b>"));
-
-				vh.lstItemBuyResult.setText(Html.fromHtml("<b>" + ratesItem.rateBuy + "</b>"));
-				vh.lstItemSellResult.setText(Html.fromHtml("<b>" + ratesItem.rateSale + "</b>"));
-				
-				if (Double.valueOf(ratesItem.rateSaleDelta) > 0) {
-					
-					vh.sell_direction.setImageDrawable(getResources().getDrawable(R.drawable.up));
-					vh.sell_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
-				}
-				else if (Double.valueOf(ratesItem.rateSaleDelta) < 0) {
-					
-					vh.sell_direction.setImageDrawable(getResources().getDrawable(R.drawable.down));
-					vh.sell_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
-				}
-				
-				if (Double.valueOf(ratesItem.rateBuyDelta) > 0) {
-					
-					vh.buy_direction.setImageDrawable(getResources().getDrawable(R.drawable.up));
-					vh.buy_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
-				}
-				else if (Double.valueOf(ratesItem.rateBuyDelta) < 0) {
-					
-					vh.buy_direction.setImageDrawable(getResources().getDrawable(R.drawable.down));
-					vh.buy_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
-				}
-				
-				try {
-					vh.bank_icon.setImageDrawable(getResources().getDrawable(getResources().getIdentifier(ratesItem.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim(), "drawable", getActivity().getPackageName())));
-					vh.bank_icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-				}
-				catch (Exception e) {
-					
-				}
-				
-				verLayout.add(item);
-				
-				// //////////////////////////////////////////////////////////////////////////////////////
-				
-				totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			    totalBuyDelta = new BigDecimal(totalBuyDelta).add(new BigDecimal(ratesItem.rateBuyDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			    
-			    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			    totalSellDelta = new BigDecimal(totalSellDelta).add(new BigDecimal(ratesItem.rateSaleDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-			}			
-			
-			return null;
-		}
-	}*/
 }

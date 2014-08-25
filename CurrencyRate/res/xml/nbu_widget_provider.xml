@@ -2,5 +2,5 @@
 	android:minWidth="150dp"
 	android:minHeight="150dp"
 	android:updatePeriodMillis="3600000"
-	android:initialLayout="@layout/currency_widget">    
+	android:initialLayout="@layout/nbu_widget">
 </appwidget-provider>

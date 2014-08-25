@@ -1,0 +1,188 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="3dp" >
+        
+        <FrameLayout 
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="horizontal"
+        	android:background="@drawable/widget_background_header_pattern" >
+        	
+            <ProgressBar
+                android:id="@+id/progressBar_widget_metals"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="right|center_vertical" />
+            
+            <TextView
+                android:id="@+id/date_lbl_metals"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                android:fontFamily="sans-serif-light" />
+            
+            <ImageView
+                android:id="@+id/refresh_widget_metals"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/refresh" />
+        	
+        </FrameLayout>        
+        
+        <LinearLayout
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="vertical"
+        	android:id="@+id/remote_view_currencys_metals" >
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+    		    android:orientation="vertical"
+    		    android:background="@drawable/widget_background_item_pattern" >
+
+    			<LinearLayout
+    			    android:layout_width="match_parent"
+    			    android:layout_height="wrap_content" >
+
+    				<ImageView
+    				    android:layout_width="32dp"
+    				    android:layout_height="24dp"
+    				    android:layout_gravity="center"
+    				    android:src="@drawable/xau" />
+
+    				<TextView
+    				    android:id="@+id/xau_lbl_metals"
+    				    android:layout_width="0dp"
+            			android:layout_height="match_parent"
+            			android:layout_weight="1"
+            			android:gravity="center"
+    				    android:textColor="#FFFFFF" />
+
+    				<ImageView
+    				    android:layout_width="32dp"
+    				    android:layout_height="24dp"
+    				    android:layout_gravity="center" />
+
+    			</LinearLayout>
+
+    			<TextView
+    			    android:id="@+id/xau_txt_metals"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="24dp"
+    			    android:gravity="center"
+    			    android:textColor="#FFFFFF"
+    			    android:fontFamily="sans-serif-thin" />
+
+    		</LinearLayout>
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="3dp"
+    		    android:orientation="vertical" >
+    		</LinearLayout>
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+    		    android:orientation="vertical"
+    		    android:background="@drawable/widget_background_item_pattern" >
+
+    			<LinearLayout
+    			    android:layout_width="match_parent"
+    			    android:layout_height="wrap_content" >
+
+    				<ImageView
+    				    android:layout_width="32dp"
+    				    android:layout_height="24dp"
+    				    android:layout_gravity="center"
+    				    android:src="@drawable/xag" />
+
+    				<TextView
+    				    android:id="@+id/xag_lbl_metals"
+    				    android:layout_width="0dp"
+            			android:layout_height="match_parent"
+            			android:layout_weight="1"
+            			android:gravity="center"
+    				    android:textColor="#FFFFFF" />
+    				
+    				<ImageView
+    				    android:layout_width="32dp"
+    				    android:layout_height="24dp"
+    				    android:layout_gravity="center" />
+
+    			</LinearLayout>
+
+    			<TextView
+    			    android:id="@+id/xag_txt_metals"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="24dp"
+    			    android:gravity="center"
+    			    android:textColor="#FFFFFF"
+    			    android:fontFamily="sans-serif-thin" />
+
+    		</LinearLayout>
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="3dp"
+    		    android:orientation="vertical" >
+    		</LinearLayout>
+
+    		<LinearLayout
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+    		    android:orientation="vertical"
+    		    android:background="@drawable/widget_background_item_pattern" >
+
+    			<LinearLayout
+    			    android:layout_width="match_parent"
+    			    android:layout_height="wrap_content" >
+
+    				<ImageView
+    				    android:layout_width="32dp"
+    				    android:layout_height="24dp"
+    				    android:layout_gravity="center"
+    				    android:src="@drawable/xpt" />
+
+    				<TextView
+    				    android:id="@+id/xpt_lbl_metals"
+    				    android:layout_width="0dp"
+            			android:layout_height="match_parent"
+            			android:layout_weight="1"
+            			android:gravity="center"
+    				    android:textColor="#FFFFFF" />
+    				
+    				<ImageView
+    				    android:layout_width="32dp"
+    				    android:layout_height="24dp"
+    				    android:layout_gravity="center" />
+
+    			</LinearLayout>
+
+    			<TextView
+    			    android:id="@+id/xpt_txt_metals"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="24dp"
+    			    android:gravity="center"
+    			    android:textColor="#FFFFFF"
+    			    android:fontFamily="sans-serif-thin" />
+
+    		</LinearLayout>
+        
+        </LinearLayout>       
+        
+    </LinearLayout>
+    
+</LinearLayout>

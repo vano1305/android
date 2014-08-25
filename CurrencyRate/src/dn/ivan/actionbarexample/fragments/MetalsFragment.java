@@ -1,15 +1,24 @@
 package dn.ivan.actionbarexample.fragments;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import dn.ivan.actionbarexample.MainActivity;
@@ -46,9 +55,30 @@ public class MetalsFragment extends Fragment {
 		return rootView;
 	}
 	
-	public void setData(ArrayList<Object> rates) {
+	public void setData(ArrayList<Object> rates_) {
 		
-		this.rates = rates;
+		ArrayList<Object> checkedMetals = null;
+		
+		Set<String> metalsSet = null;
+		metalsSet = getSetFromPref("selected_metals");
+		
+		if (metalsSet != null) {
+			
+			checkedMetals = new ArrayList<Object>();
+			
+			for (int i = 0; i < rates_.size(); i++) {
+				
+				Rates item = (Rates) rates_.get(i);
+				if (metalsSet.contains(item.char3)) {
+					checkedMetals.add(item);
+				}
+			}
+		}
+		else {			
+			checkedMetals = new ArrayList<Object>(rates_);
+		}		
+
+		rates = checkedMetals;
 		
 		ScrollView scrollView = ((ScrollView) rootView.findViewById(R.id.metals_scroll));
 		scrollView.setScrollbarFadingEnabled(true);
@@ -105,5 +135,141 @@ public class MetalsFragment extends Fragment {
 		    
 		    list.addView(item);
 		}
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		
+		super.onCreateContextMenu(menu, v, menuInfo);
+		createMetalsSelectionDialog();	    
+	}
+	
+	public void createMetalsSelectionDialog() {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		
+		boolean[] checkedItems = new boolean[getResources().getStringArray(R.array.metals_dialog).length];
+		
+		Set<String> selectedItems = getSetFromPref("selected_metals");
+		
+		if (selectedItems == null) {
+			
+			for (int i = 0; i < getResources().getStringArray(R.array.metals_dialog).length; i++)
+		        checkedItems[i] = true;
+		}
+		else {
+			
+			for (int i = 0; i < getResources().getStringArray(R.array.metals_dialog).length; i++)
+		        checkedItems[i] = selectedItems.contains(getResources().getStringArray(R.array.metals_dialog)[i]);
+		}	    
+	    
+	    builder.setTitle("Выбор металлов");
+	    builder.setMultiChoiceItems(R.array.metals_dialog, null,
+				new DialogInterface.OnMultiChoiceClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+						//
+						//
+						//
+					}
+				});
+		builder.setPositiveButton(R.string.ok,
+				new DialogInterface.OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						
+						final ArrayList<String> mSelectedItems = new ArrayList<String>();
+						
+						ListView list = ((AlertDialog) dialog).getListView();
+						
+						for (int i = 0; i < list.getCount(); i++) {
+							
+							if (list.isItemChecked(i)) {
+								mSelectedItems.add(getResources().getStringArray(R.array.metals_dialog)[i]);
+							}
+						}
+						
+						addSet2Pref("selected_metals", new HashSet<String>(mSelectedItems));
+						((MainActivity)getActivity()).loadRates();
+					}
+				});
+		builder.setNegativeButton(R.string.cancel,
+				new DialogInterface.OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+
+						//
+						//
+						//
+					}
+				});
+		builder.setNeutralButton(R.string.all,
+				new DialogInterface.OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						//
+						//
+						//
+					}
+				});
+
+	    final AlertDialog dialog = builder.create();	    
+	    dialog.show();
+	    
+	    ListView list = dialog.getListView();	    
+	    for (int i = 0; i < checkedItems.length; i++) {
+	    	list.setItemChecked(i, checkedItems[i]);	   
+	    }
+	    
+	    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				ListView list = ((AlertDialog) dialog).getListView();
+				
+				int selected = 0;
+				for (int i = 0; i < list.getCount(); i++) {
+					
+					if (list.isItemChecked(i)) {
+						selected ++;
+					}
+				}
+				
+				if (selected == list.getCount()) {
+					
+					for (int i = 0; i < list.getCount(); ++i)
+                        list.setItemChecked(i, false);
+				}
+				else {
+					
+					for (int i = 0; i < list.getCount(); ++i)
+                        list.setItemChecked(i, true);
+				}				
+			}
+		});
+	}
+	
+	protected void addSet2Pref(String prefName, HashSet<String> set) {
+		
+		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
+		Editor ed = shared.edit();
+		ed.remove(prefName);
+		ed.putStringSet(prefName, set);
+		ed.commit();
+	}
+	
+	protected Set<String> getSetFromPref(String prefName) {
+		
+		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
+		Set<String> stringSet = shared.getStringSet(prefName, null);
+		
+		return stringSet;
 	}
 }

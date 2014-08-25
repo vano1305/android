@@ -11,5 +11,5 @@ public class Rates implements Serializable{
 	public String size = "";
 	public String name = "";
 	public String rate = "";
-	public String change = "";
+	public String change = "0";
 }

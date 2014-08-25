@@ -2,11 +2,11 @@ package dn.ivan.actionbarexample.receivers;
 
 import java.util.ArrayList;
 
-import dn.ivan.actionbarexample.MainActivity;
-import dn.ivan.actionbarexample.logic.DataManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import dn.ivan.actionbarexample.MainActivity;
+import dn.ivan.actionbarexample.logic.DataManager;
 
 public class UpdateHistoryReceiver extends BroadcastReceiver {
 
@@ -18,6 +18,6 @@ public class UpdateHistoryReceiver extends BroadcastReceiver {
 			
 			ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(MainActivity.RATES);
 			new DataManager().saveNBURates2DB(context, rates);			
-		}		
+		}
 	}
 }

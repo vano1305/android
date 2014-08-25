@@ -10,7 +10,7 @@ public class BackgroundService extends Service {
 	private ThreadGroup myThreads = new ThreadGroup("ServiceWorker");
 	
 	@Override
-	public void onCreate() {		
+	public void onCreate() {
 		super.onCreate();		
 	}
 	
@@ -19,11 +19,12 @@ public class BackgroundService extends Service {
 		
 		super.onStartCommand(intent, flags, startId);
 		
-		if (intent.getExtras() != null && intent.getExtras().getString(MainActivity.SOURCE) != null) {
+		if (intent.getExtras() != null && intent.getExtras().getString(MainActivity.SOURCE) != null && intent.getExtras().getString(MainActivity.FROM) != null) {
 			
 			String source = intent.getExtras().getString(MainActivity.SOURCE);
-			
-			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source, MainActivity.FROM_APPLICATION), "BackgroundService").start();
+			String from = intent.getExtras().getString(MainActivity.FROM);
+						
+			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source, from), "BackgroundService").start();
 		}		
 		
 		return START_STICKY;

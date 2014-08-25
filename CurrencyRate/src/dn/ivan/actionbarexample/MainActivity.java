@@ -55,6 +55,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	public static final String NBU_SOURCE = "nbu";
 	public static final String METALS_SOURCE = "metals";
 	
+	public static final String FROM_WIDGET = "service_widget";
 	public static final String FROM_SERVICE_HISTORY = "service_history";
 	public static final String FROM_APPLICATION = "application";
 	public static final String UPDATE_HISTORY = "update_history";
@@ -64,6 +65,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	public static final String METALS_FRAGMENT = "metalsFragment";
 	public static final String HISTORY_FRAGMENT = "historyFragment";
 	
+	public static final String FROM = "from";
 	public static final String SOURCE = "source";
 	public static final String RATES = "rates";
 
@@ -99,12 +101,13 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
 		navSpinner = new ArrayList<SpinnerNavItem>();
-        navSpinner.add(new SpinnerNavItem(getString(R.string.title_section1), R.drawable.nbu));
+		navSpinner.add(new SpinnerNavItem(getString(R.string.title_section1), R.drawable.nbu));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section2), R.drawable.commercial));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section3), R.drawable.metals));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section4), R.drawable.history));
-         
-        adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);          
+		
+		adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
+		
         actionBar.setListNavigationCallbacks(adapter, this);
 	}
 	
@@ -148,14 +151,31 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	    		loadRates();
 	    		break;
 	    		
-	    	/*case R.id.settings:
-	    		startActivity(new Intent(this, Preferences.class));
-	    		break;*/
+	    	case R.id.edit_pen:
+	    		openEditDialog();
+	    		break;
 	    		
 	    	default:
 	    		break;
 	    }
 	    return true;
+	}
+	
+	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	protected void openEditDialog() {
+		
+		int index = getSupportActionBar().getSelectedNavigationIndex();
+		
+		if (0 == index) {
+			((NbuFragment)getSupportFragmentManager().findFragmentByTag(NBU_FRAGMENT)).createCurrencySelectionDialog();
+		}
+		else if (1 == index) {
+			((CommercialFragment)getSupportFragmentManager().findFragmentByTag(COMMERCIAL_FRAGMENT)).createBanksSelectionDialog();
+		}
+		else if (2 == index){
+			((MetalsFragment)getSupportFragmentManager().findFragmentByTag(METALS_FRAGMENT)).createMetalsSelectionDialog();
+		}
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,6 +192,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			getSupportActionBar().setIcon(R.drawable.nbu);
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(true);
+				menu.findItem(R.id.edit_pen).setVisible(true);
 			}			
 			return true;
 		}
@@ -181,6 +202,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			getSupportActionBar().setIcon(R.drawable.commercial);
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(true);
+				menu.findItem(R.id.edit_pen).setVisible(true);
 			}
 			return true;
 		}
@@ -190,6 +212,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			getSupportActionBar().setIcon(R.drawable.metals);
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(true);
+				menu.findItem(R.id.edit_pen).setVisible(true);
 			}
 			return true;
 		}
@@ -199,9 +222,10 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			getSupportActionBar().setIcon(R.drawable.history);
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(false);
+				menu.findItem(R.id.edit_pen).setVisible(false);
 			}
 			return true;
-		}
+		}		
 	}
 
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,17 +239,21 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			@SuppressWarnings("unchecked")
 			public void onReceive(Context context, Intent intent) {
 				
-				if (intent.getExtras().getString("error") == null) {
+				if (intent.getExtras().getString(MainActivity.FROM) != null && MainActivity.FROM_APPLICATION.equalsIgnoreCase(intent.getExtras().getString(MainActivity.FROM))) {
 					
-					ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(RATES);
-					setData(rates, intent.getExtras().getString(SOURCE));
-				}				
-				
-				// //////////////////////////////////////////////////////////////////////////////////
-				
-				MenuItem menuItem = menu.findItem(R.id.refresh);
-				menuItem.getActionView().clearAnimation();
-				menuItem.setActionView(null);
+					if (intent.getExtras().getString("error") == null) {
+						
+						ArrayList<Object> rates = (ArrayList<Object>)intent.getExtras().getSerializable(RATES);
+						setData(rates, intent.getExtras().getString(SOURCE));
+					}
+					
+					if (menu.findItem(R.id.refresh).getActionView() != null) {
+						
+						MenuItem menuItem = menu.findItem(R.id.refresh);
+						menuItem.getActionView().clearAnimation();
+						menuItem.setActionView(null);
+					}					
+				}
 			}
 		};
 		registerReceiver(br1, new IntentFilter(FINISH_LOAD));
@@ -236,12 +264,18 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 
 			public void onReceive(Context context, Intent intent) {
 				
-				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			    ImageView iv = (ImageView) inflater.inflate(R.layout.iv_refresh, null);
-				
-			    MenuItem menuItem = menu.findItem(R.id.refresh);
-				menuItem.setActionView(iv);
-				menuItem.getActionView().startAnimation(rotation);
+				if (intent.getExtras().getString(MainActivity.FROM) != null && MainActivity.FROM_APPLICATION.equalsIgnoreCase(intent.getExtras().getString(MainActivity.FROM))) {
+					
+					if (menu.findItem(R.id.refresh).getActionView() == null) {
+						
+						LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+					    ImageView iv = (ImageView) inflater.inflate(R.layout.iv_refresh, null);
+						
+					    MenuItem menuItem = menu.findItem(R.id.refresh);
+						menuItem.setActionView(iv);
+						menuItem.getActionView().startAnimation(rotation);
+					}					
+				}
 			}
 		};
 		registerReceiver(br2, new IntentFilter(START_LOAD));
@@ -250,7 +284,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	public void setData(ArrayList<Object> rates, String source) {
 		
 		int index = getSupportActionBar().getSelectedNavigationIndex();
-				
+		
 		if (0 == index && NBU_SOURCE.equalsIgnoreCase(source)) {
 			((NbuFragment)getSupportFragmentManager().findFragmentByTag(NBU_FRAGMENT)).setData(rates);
 		}
@@ -259,7 +293,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		}
 		else if (2 == index && METALS_SOURCE.equalsIgnoreCase(source)){
 			((MetalsFragment)getSupportFragmentManager().findFragmentByTag(METALS_FRAGMENT)).setData(rates);
-		}
+		}		
 	}
 	
 	public void loadRates() {
@@ -273,7 +307,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		Intent intent = new Intent(MainActivity.this, BackgroundService.class);
 		
 		int index = getSupportActionBar().getSelectedNavigationIndex();
-				
+		
 		if (0 == index) {
 			intent.putExtra(SOURCE, NBU_SOURCE);
 		}
@@ -283,6 +317,8 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		else if (2 == index) {
 			intent.putExtra(SOURCE, METALS_SOURCE);
 		}
+		
+		intent.putExtra(MainActivity.FROM, MainActivity.FROM_APPLICATION);
 		
 		startService(intent);
 	}
