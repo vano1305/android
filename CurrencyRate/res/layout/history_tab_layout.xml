@@ -37,7 +37,8 @@
             android:inputType="date"
             android:textColor="#FFFFFF"
             android:textSize="17sp"
-            android:fontFamily="sans-serif-light" />
+            android:fontFamily="sans-serif-light"
+            android:imeOptions="actionDone" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -54,7 +55,8 @@
             android:inputType="date"
             android:textColor="#FFFFFF"
             android:textSize="17sp"
-            android:fontFamily="sans-serif-light" />
+            android:fontFamily="sans-serif-light"
+            android:imeOptions="actionDone" />
     </LinearLayout>
 
     <LinearLayout

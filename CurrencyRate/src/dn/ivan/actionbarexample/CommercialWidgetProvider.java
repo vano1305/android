@@ -1,7 +1,10 @@
 package dn.ivan.actionbarexample;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -130,8 +133,8 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
-		//views.setTextViewText(R.id.date_lbl_commercial, ((CommercialRates) rates.get(0)).date);
-		views.setTextViewText(R.id.date_lbl_commercial, context.getResources().getString(R.string.title_section2));
+		views.setTextViewText(R.id.date_lbl_commercial, new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
+		//views.setTextViewText(R.id.date_lbl_commercial, context.getResources().getString(R.string.title_section2));
 		
 		views.setViewVisibility(R.id.progressBar_widget_commercial, ProgressBar.INVISIBLE);
 		views.setViewVisibility(R.id.refresh_widget_commercial, ProgressBar.VISIBLE);
@@ -198,17 +201,17 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 				RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.commercial_widget);
 				
 				//views.setTextViewText(R.id.date_lbl_commercial, "");
-				views.setTextViewText(R.id.date_lbl_commercial, context.getResources().getString(R.string.title_section2));
+				//views.setTextViewText(R.id.date_lbl_commercial, context.getResources().getString(R.string.title_section2));
 				
 				views.setViewVisibility(R.id.progressBar_widget_commercial, ProgressBar.INVISIBLE);
 				views.setViewVisibility(R.id.refresh_widget_commercial, ProgressBar.VISIBLE);
 				
-				views.setTextViewText(R.id.usd_lbl_commercial, "Error");
+				/*views.setTextViewText(R.id.usd_lbl_commercial, "Error");
 				views.setTextViewText(R.id.usd_txt_commercial, "");
 				views.setTextViewText(R.id.eur_lbl_commercial, "");
 				views.setTextViewText(R.id.eur_txt_commercial, "");
 				views.setTextViewText(R.id.rub_lbl_commercial, "");
-				views.setTextViewText(R.id.rub_txt_commercial, "");
+				views.setTextViewText(R.id.rub_txt_commercial, "");*/
 				
 				// /////////////////////////////////////////////////////////////////////////////////////////
 				

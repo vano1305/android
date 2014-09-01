@@ -1,7 +1,10 @@
 package dn.ivan.actionbarexample;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -93,8 +96,8 @@ public class NbuWidgetProvider extends AppWidgetProvider {
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
-		//views.setTextViewText(R.id.date_lbl_nbu, ((NbuRates) rates.get(0)).date);
-		views.setTextViewText(R.id.date_lbl_nbu, context.getResources().getString(R.string.title_section1));
+		views.setTextViewText(R.id.date_lbl_nbu, new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
+		//views.setTextViewText(R.id.date_lbl_nbu, context.getResources().getString(R.string.title_section1));
 		
 		views.setViewVisibility(R.id.progressBar_widget_nbu, ProgressBar.INVISIBLE);
 		views.setViewVisibility(R.id.refresh_widget_nbu, ProgressBar.VISIBLE);
@@ -161,17 +164,17 @@ public class NbuWidgetProvider extends AppWidgetProvider {
 				RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.nbu_widget);
 				
 				//views.setTextViewText(R.id.date_lbl_nbu, "");
-				views.setTextViewText(R.id.date_lbl_nbu, context.getResources().getString(R.string.title_section1));
+				//views.setTextViewText(R.id.date_lbl_nbu, context.getResources().getString(R.string.title_section1));
 				
 				views.setViewVisibility(R.id.progressBar_widget_nbu, ProgressBar.INVISIBLE);
 				views.setViewVisibility(R.id.refresh_widget_nbu, ProgressBar.VISIBLE);
 				
-				views.setTextViewText(R.id.usd_lbl_nbu, "Error");
+				/*views.setTextViewText(R.id.usd_lbl_nbu, "Error");
 				views.setTextViewText(R.id.usd_txt_nbu, "");
 				views.setTextViewText(R.id.eur_lbl_nbu, "");
 				views.setTextViewText(R.id.eur_txt_nbu, "");
 				views.setTextViewText(R.id.rub_lbl_nbu, "");
-				views.setTextViewText(R.id.rub_txt_nbu, "");
+				views.setTextViewText(R.id.rub_txt_nbu, "");*/
 				
 				// /////////////////////////////////////////////////////////////////////////////////////////
 				

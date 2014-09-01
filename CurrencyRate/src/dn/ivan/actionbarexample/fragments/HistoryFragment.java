@@ -208,7 +208,7 @@ public class HistoryFragment extends Fragment implements OnItemSelectedListener 
 	    
 	    r = new XYSeriesRenderer();
 	    r.setColor(Color.WHITE);
-	    r.setPointStyle(PointStyle.CIRCLE);
+	    //r.setPointStyle(PointStyle.CIRCLE);
 	    r.setFillPoints(true);
 	    renderer.addSeriesRenderer(r);
 	    

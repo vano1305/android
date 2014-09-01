@@ -247,10 +247,10 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		lblAverage.setText(R.string.commercial_average);
 		
 		TextView averageBuy = (TextView) averageRatesItem.findViewById(R.id.average_buy_result);
-	    averageBuy.setText(Html.fromHtml("<b>" + new BigDecimal(totalBuy / rates.size()).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+	    averageBuy.setText(Html.fromHtml("<b>" + new BigDecimal(rates.size() == 0? 0: (totalBuy / rates.size())).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
 	    			    
 	    TextView averageSell = (TextView) averageRatesItem.findViewById(R.id.average_sell_result);
-	    averageSell.setText(Html.fromHtml("<b>" + new BigDecimal(totalSell / rates.size()).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+	    averageSell.setText(Html.fromHtml("<b>" + new BigDecimal(rates.size() == 0? 0: (totalSell / rates.size())).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
 	    
 	    // //////////////////////////////////////////////////////////////////////////////////
 	    

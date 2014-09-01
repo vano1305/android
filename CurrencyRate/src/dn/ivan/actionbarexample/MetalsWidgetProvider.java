@@ -1,7 +1,10 @@
 package dn.ivan.actionbarexample;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -93,8 +96,8 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
-		//views.setTextViewText(R.id.date_lbl_nbu, ((MetalsRates) rates.get(0)).date);
-		views.setTextViewText(R.id.date_lbl_metals, context.getResources().getString(R.string.title_section3));
+		views.setTextViewText(R.id.date_lbl_metals, new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
+		//views.setTextViewText(R.id.date_lbl_metals, context.getResources().getString(R.string.title_section3));
 		
 		views.setViewVisibility(R.id.progressBar_widget_metals, ProgressBar.INVISIBLE);
 		views.setViewVisibility(R.id.refresh_widget_metals, ProgressBar.VISIBLE);
@@ -161,17 +164,17 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 				RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.metals_widget);
 				
 				//views.setTextViewText(R.id.date_lbl_nbu, "");
-				views.setTextViewText(R.id.date_lbl_metals, context.getResources().getString(R.string.title_section3));
+				//views.setTextViewText(R.id.date_lbl_metals, context.getResources().getString(R.string.title_section3));
 				
 				views.setViewVisibility(R.id.progressBar_widget_metals, ProgressBar.INVISIBLE);
 				views.setViewVisibility(R.id.refresh_widget_metals, ProgressBar.VISIBLE);
 				
-				views.setTextViewText(R.id.xau_lbl_metals, "Error");
+				/*views.setTextViewText(R.id.xau_lbl_metals, "Error");
 				views.setTextViewText(R.id.xau_txt_metals, "");
 				views.setTextViewText(R.id.xag_lbl_metals, "");
 				views.setTextViewText(R.id.xag_txt_metals, "");
 				views.setTextViewText(R.id.xpt_lbl_metals, "");
-				views.setTextViewText(R.id.xpt_txt_metals, "");
+				views.setTextViewText(R.id.xpt_txt_metals, "");*/
 				
 				// /////////////////////////////////////////////////////////////////////////////////////////
 				

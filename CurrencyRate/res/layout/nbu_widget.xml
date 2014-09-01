@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="3dp" >
+        android:padding="2dp" >
         
         <FrameLayout 
         	android:layout_width="match_parent"
@@ -15,26 +15,38 @@
         	android:orientation="horizontal"
         	android:background="@drawable/widget_background_header_pattern" >
         	
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="left|center_vertical"
+                android:paddingBottom="1dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:paddingTop="1dp"
+                android:src="@drawable/nbu" />
+        	
             <ProgressBar
                 android:id="@+id/progressBar_widget_nbu"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:padding="2dp"
                 android:layout_gravity="right|center_vertical" />
             
             <TextView
                 android:id="@+id/date_lbl_nbu"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="28dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="#FFFFFF"
-                android:textSize="17sp"
+                android:textSize="16sp"
                 android:fontFamily="sans-serif-light" />
             
             <ImageView
                 android:id="@+id/refresh_widget_nbu"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:padding="2dp"
                 android:layout_gravity="right|center_vertical"
                 android:src="@drawable/refresh" />
         	
@@ -89,7 +101,7 @@
 
     		<LinearLayout
     		    android:layout_width="match_parent"
-    		    android:layout_height="3dp"
+    		    android:layout_height="2dp"
     		    android:orientation="vertical" >
     		</LinearLayout>
 
@@ -136,7 +148,7 @@
 
     		<LinearLayout
     		    android:layout_width="match_parent"
-    		    android:layout_height="3dp"
+    		    android:layout_height="2dp"
     		    android:orientation="vertical" >
     		</LinearLayout>
 
