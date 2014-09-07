@@ -1,7 +1,10 @@
 package dn.ivan.actionbarexample.fragments;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import android.app.AlertDialog;
@@ -26,6 +29,18 @@ import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.Rates;
 
 public class MetalsFragment extends Fragment {
+	
+	static DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.getDefault());		
+	static {
+		
+		dfs.setDecimalSeparator('.');
+		dfs.setGroupingSeparator(' ');
+	}
+	
+	static DecimalFormat df = new DecimalFormat("###,###,##0.0000", dfs);
+	static {
+		df.setGroupingSize(3);
+	}
 	
 	View rootView;
 	
@@ -107,7 +122,7 @@ public class MetalsFragment extends Fragment {
 		    lstItemMetalsLbl.setText(Html.fromHtml("<b>" + ratesItem.char3 + "</b>" + " (" + getResources().getString(getResources().getIdentifier(ratesItem.char3, "string", getActivity().getPackageName())) + ")"));
 		    
 		    TextView lstItemMetalsRate = (TextView) item.findViewById(R.id.lstItemMetalsRate);
-		    lstItemMetalsRate.setText(Html.fromHtml("<b>" + ratesItem.rate + "</b>" + " " + getString(R.string.for_items) + " " + "<b>" + ratesItem.size + "</b>" + " " + getString(R.string.ounce)));
+		    lstItemMetalsRate.setText(Html.fromHtml("<b>" + df.format(Double.valueOf(ratesItem.rate)) + "</b>" + " " + getString(R.string.for_items) + " " + "<b>" + ratesItem.size + "</b>" + " " + getString(R.string.ounce)));
 		    
 		    ImageView metals_icon = (ImageView) item.findViewById(R.id.metals_icon);
 		    metals_icon.setImageDrawable(getResources().getDrawable(getResources().getIdentifier(ratesItem.char3.trim().toLowerCase(), "drawable", getActivity().getPackageName())));

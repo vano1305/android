@@ -10,7 +10,6 @@ import java.util.Locale;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
-import org.achartengine.chart.PointStyle;
 import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -104,7 +103,7 @@ public class HistoryFragment extends Fragment implements OnItemSelectedListener 
         
         long milisecond = ca1.getTimeInMillis();
         
-        milisecond = milisecond - (3 * 24 * 60 * 60 * 1000);
+        milisecond = milisecond - (7 * 24 * 60 * 60 * 1000);
         
         Calendar ca2 = Calendar.getInstance();
         ca2.setTimeInMillis(milisecond);

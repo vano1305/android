@@ -1,7 +1,10 @@
 package dn.ivan.actionbarexample.fragments;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import android.app.AlertDialog;
@@ -26,6 +29,18 @@ import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.Rates;
 
 public class NbuFragment extends Fragment {
+	
+	static DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.getDefault());		
+	static {
+		
+		dfs.setDecimalSeparator('.');
+		dfs.setGroupingSeparator(' ');
+	}
+	
+	static DecimalFormat df = new DecimalFormat("###,###,##0.0000", dfs);
+	static {
+		df.setGroupingSize(3);
+	}
 
 	private ArrayList<Object> rates;
 
@@ -113,7 +128,7 @@ public class NbuFragment extends Fragment {
 			else {
 				vh.lstItemNbuLbl.setText(Html.fromHtml("<b>" + ratesItem.char3 + "</b>"));
 			}						
-			vh.lstItemNbuRate.setText(Html.fromHtml("<b>" + ratesItem.rate + "</b>" + " " + getString(R.string.for_items) + " " + "<b>" + ratesItem.size + "</b>" + " " + getString(R.string.items)));
+			vh.lstItemNbuRate.setText(Html.fromHtml("<b>" + df.format(Double.valueOf(ratesItem.rate)) + "</b>" + " " + getString(R.string.for_items) + " " + "<b>" + ratesItem.size + "</b>" + " " + getString(R.string.items)));
 			
 			if (getResources().getIdentifier(ratesItem.char3.trim().toLowerCase(), "drawable", getActivity().getPackageName()) != 0) {
 				

@@ -65,6 +65,13 @@ public class NbuWidgetProvider extends AppWidgetProvider {
 				
 				views.setTextViewText(R.id.usd_lbl_nbu, "USD");
 				views.setTextViewText(R.id.usd_txt_nbu, new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+				
+				/*if (Double.valueOf(ratesItem.change) > 0) {					
+					views.setImageViewResource(R.id.usd_direction_nbu, R.drawable.up);
+				}
+				else if (Double.valueOf(ratesItem.change) < 0) {
+					views.setImageViewResource(R.id.usd_direction_nbu, R.drawable.down);
+				}*/
 			}			
 		}
 		
@@ -78,6 +85,13 @@ public class NbuWidgetProvider extends AppWidgetProvider {
 				
 				views.setTextViewText(R.id.eur_lbl_nbu, "EUR");
 				views.setTextViewText(R.id.eur_txt_nbu, new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+				
+				/*if (Double.valueOf(ratesItem.change) > 0) {					
+					views.setImageViewResource(R.id.eur_direction_nbu, R.drawable.up);
+				}
+				else if (Double.valueOf(ratesItem.change) < 0) {
+					views.setImageViewResource(R.id.eur_direction_nbu, R.drawable.down);
+				}*/
 			}			
 		}
 		
@@ -91,6 +105,13 @@ public class NbuWidgetProvider extends AppWidgetProvider {
 				
 				views.setTextViewText(R.id.rub_lbl_nbu, "RUB");
 				views.setTextViewText(R.id.rub_txt_nbu, new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+				
+				/*if (Double.valueOf(ratesItem.change) > 0) {					
+					views.setImageViewResource(R.id.rub_direction_nbu, R.drawable.up);
+				}
+				else if (Double.valueOf(ratesItem.change) < 0) {
+					views.setImageViewResource(R.id.rub_direction_nbu, R.drawable.down);
+				}*/
 			}
 		}		
 		

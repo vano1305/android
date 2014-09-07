@@ -3,6 +3,9 @@ package dn.ivan.actionbarexample.fragments;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +29,18 @@ import dn.ivan.actionbarexample.logic.DataHolder;
 import dn.ivan.actionbarexample.logic.NbuRates;
 
 public class ConverterFragment extends Fragment implements OnItemSelectedListener {
+	
+	static DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.getDefault());		
+	static {
+		
+		dfs.setDecimalSeparator('.');
+		dfs.setGroupingSeparator(' ');
+	}
+	
+	static DecimalFormat df = new DecimalFormat("###,###,###,##0.00", dfs);
+	static {
+		df.setGroupingSize(3);
+	}
 	
 	private String rate1 = "";
 	private String rate2 = "";
@@ -137,7 +152,7 @@ public class ConverterFragment extends Fragment implements OnItemSelectedListene
 			MathContext mc = new MathContext(8, RoundingMode.HALF_UP);
 			double crossRate = new BigDecimal(rate1).divide(new BigDecimal(rate2), mc).doubleValue();
 			
-			((EditText)rootView.findViewById(R.id.converter_result)).setText(new BigDecimal(String.valueOf(((EditText)rootView.findViewById(R.id.converter_amount)).getText())).multiply(new BigDecimal(String.valueOf(crossRate))).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+			((EditText)rootView.findViewById(R.id.converter_result)).setText(df.format(new BigDecimal(String.valueOf(((EditText)rootView.findViewById(R.id.converter_amount)).getText())).multiply(new BigDecimal(String.valueOf(crossRate))).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
 		}
 		catch (Exception e) {
 			

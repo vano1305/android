@@ -83,6 +83,7 @@
     				    android:textColor="#FFFFFF" />
 
     				<ImageView
+    				    android:id="@+id/usd_direction_nbu"
     				    android:layout_width="32dp"
     				    android:layout_height="24dp"
     				    android:layout_gravity="center" />
@@ -130,6 +131,7 @@
     				    android:textColor="#FFFFFF" />
     				
     				<ImageView
+    				    android:id="@+id/eur_direction_nbu"
     				    android:layout_width="32dp"
     				    android:layout_height="24dp"
     				    android:layout_gravity="center" />
@@ -177,6 +179,7 @@
     				    android:textColor="#FFFFFF" />
     				
     				<ImageView
+    				    android:id="@+id/rub_direction_nbu"
     				    android:layout_width="32dp"
     				    android:layout_height="24dp"
     				    android:layout_gravity="center" />

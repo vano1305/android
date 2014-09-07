@@ -1,6 +1,8 @@
 package dn.ivan.actionbarexample;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +20,18 @@ import dn.ivan.actionbarexample.logic.MetalsRates;
 import dn.ivan.actionbarexample.service.BackgroundService;
 
 public class MetalsWidgetProvider extends AppWidgetProvider {
+	
+	static DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.getDefault());		
+	static {
+		
+		dfs.setDecimalSeparator('.');
+		dfs.setGroupingSeparator(' ');
+	}
+	
+	static DecimalFormat df = new DecimalFormat("###,###,##0.0000", dfs);
+	static {
+		df.setGroupingSize(3);
+	}
 	
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		
@@ -64,7 +78,7 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 			if ("XAU".equalsIgnoreCase(ratesItem.char3)) {
 				
 				views.setTextViewText(R.id.xau_lbl_metals, "XAU");
-				views.setTextViewText(R.id.xau_txt_metals, new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+				views.setTextViewText(R.id.xau_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
 			}			
 		}
 		
@@ -77,7 +91,7 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 			if ("XAG".equalsIgnoreCase(ratesItem.char3)) {
 				
 				views.setTextViewText(R.id.xag_lbl_metals, "XAG");
-				views.setTextViewText(R.id.xag_txt_metals, new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+				views.setTextViewText(R.id.xag_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
 			}			
 		}
 		
@@ -90,7 +104,7 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 			if ("XPT".equalsIgnoreCase(ratesItem.char3)) {
 				
 				views.setTextViewText(R.id.xpt_lbl_metals, "XPT");
-				views.setTextViewText(R.id.xpt_txt_metals, new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+				views.setTextViewText(R.id.xpt_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
 			}
 		}		
 		
