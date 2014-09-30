@@ -1,135 +1,164 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-    
+    android:orientation="vertical"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp" >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/commercial_average_background_pattern" >
-        
+
         <TextView
             android:id="@+id/average_txt"
             android:layout_width="match_parent"
             android:layout_height="34dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
+            android:singleLine="true"
             android:textColor="#FFFFFF"
-            android:textSize="17sp"
-            android:singleLine="true" />
-        
+            android:textSize="17sp" />
     </LinearLayout>
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/nbu_pattern1" >
-       
-        <ImageView
-            android:layout_width="11dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center" />
-       
-        <ImageView
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center"
-            android:src="@drawable/buy"
-            android:padding="6dp" />
 
-        <TextView
-            android:id="@+id/average_buy_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-thin"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
-        <TextView
-            android:id="@+id/average_buy_result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-thin"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp" />
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:padding="6dp"
+                android:src="@drawable/buy" />
+        </FrameLayout>
 
-        <ImageView
-            android:id="@+id/commercial_average_buy_direction_img"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center"
-            android:padding="2dp" />
-        
-        <ImageView
-            android:layout_width="11dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center" />
-        
-    </LinearLayout>
-    
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:padding="6dp"
+                android:src="@drawable/sell" />
+        </FrameLayout>
+    </LinearLayout> -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp" >
-        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:background="@drawable/nbu_pattern1" >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/average_buy_txt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-thin"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/average_sell_txt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-thin"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp" >
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/nbu_pattern1" >
-        
-        <ImageView
-            android:layout_width="11dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center" />
-        
-        <ImageView
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center"
-            android:src="@drawable/sell"
-            android:padding="6dp" />
 
-        <TextView
-            android:id="@+id/average_sell_txt"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-thin"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp" />
+            android:layout_weight="1" >
+            
+            <TextView
+                android:id="@+id/average_buy_result"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/commercial_average_buy_direction_img"
+                android:layout_alignTop="@+id/commercial_average_buy_direction_img"
+                android:layout_centerInParent="true"
+            	android:gravity="center"
+                android:fontFamily="sans-serif-thin"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp" />
+            
+            <ImageView
+                android:id="@+id/commercial_average_buy_direction_img"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/average_buy_result"
+                android:layout_toRightOf="@id/average_buy_result"
+                android:padding="4dp" />
 
-        <TextView
-            android:id="@+id/average_sell_result"
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-thin"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp" />
+            android:layout_weight="1" >
+            
+            <TextView
+                android:id="@+id/average_sell_result"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/commercial_average_sell_direction_img"
+                android:layout_alignTop="@+id/commercial_average_sell_direction_img"
+                android:layout_centerInParent="true"
+            	android:gravity="center"
+                android:fontFamily="sans-serif-thin"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp" />
 
-        <ImageView
-            android:id="@+id/commercial_average_sell_direction_img"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center"
-            android:padding="2dp" />
-        
-        <ImageView
-            android:layout_width="11dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center" />
-        
+            <ImageView
+                android:id="@+id/commercial_average_sell_direction_img"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/average_sell_result"
+                android:layout_toStartOf="@id/average_sell_result"
+                android:padding="4dp" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

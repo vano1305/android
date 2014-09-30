@@ -85,7 +85,7 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 		views.setTextViewText(R.id.usd_lbl_commercial, "USD");
-		views.setTextViewText(R.id.usd_txt_commercial, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+		views.setTextViewText(R.id.usd_txt_commercial, new BigDecimal(totalBuy/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -107,7 +107,7 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 		views.setTextViewText(R.id.eur_lbl_commercial, "EUR");
-		views.setTextViewText(R.id.eur_txt_commercial, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+		views.setTextViewText(R.id.eur_txt_commercial, new BigDecimal(totalBuy/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -129,7 +129,7 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}	
 		views.setTextViewText(R.id.rub_lbl_commercial, "RUB");
-		views.setTextViewText(R.id.rub_txt_commercial, new BigDecimal(totalBuy/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString());
+		views.setTextViewText(R.id.rub_txt_commercial, new BigDecimal(totalBuy/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		

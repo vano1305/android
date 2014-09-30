@@ -1,8 +1,11 @@
 package dn.ivan.actionbarexample.fragments;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import android.app.AlertDialog;
@@ -162,8 +165,8 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		View stub = lInflater.inflate(R.layout.commercial_triangle_stub, null, false);
 		list.addView(stub);
 		
-		View direction = lInflater.inflate(R.layout.commercial_direction_layout, null, false);
-		list.addView(direction);
+		TextView current_date = (TextView) averageRatesItem.findViewById(R.id.average_txt);
+		current_date.setText(" ”–—€ Õ¿ " + new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
 		
 		double totalBuy = 0.0;
 		double totalSell = 0.0;
@@ -243,8 +246,8 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		
 		// /////////////////////////////////////////////////////////////////////////////////
 		
-		TextView lblAverage = (TextView) averageRatesItem.findViewById(R.id.average_txt);
-		lblAverage.setText(R.string.commercial_average);
+		//TextView lblAverage = (TextView) averageRatesItem.findViewById(R.id.average_txt);
+		//lblAverage.setText(R.string.commercial_average);
 		
 		TextView averageBuy = (TextView) averageRatesItem.findViewById(R.id.average_buy_result);
 	    averageBuy.setText(Html.fromHtml("<b>" + new BigDecimal(rates.size() == 0? 0: (totalBuy / rates.size())).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));

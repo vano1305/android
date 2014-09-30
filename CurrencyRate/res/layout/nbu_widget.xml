@@ -83,20 +83,38 @@
     				    android:textColor="#FFFFFF" />
 
     				<ImageView
-    				    android:id="@+id/usd_direction_nbu"
-    				    android:layout_width="32dp"
-    				    android:layout_height="24dp"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:padding="2dp"
     				    android:layout_gravity="center" />
 
     			</LinearLayout>
 
-    			<TextView
-    			    android:id="@+id/usd_txt_nbu"
+    			<RelativeLayout
     			    android:layout_width="match_parent"
-    			    android:layout_height="24dp"
-    			    android:gravity="center"
-    			    android:textColor="#FFFFFF"
-    			    android:fontFamily="sans-serif-thin" />
+    			    android:layout_height="wrap_content" >
+    				
+    			    <TextView
+    				    android:id="@+id/usd_txt_nbu"
+    				    android:layout_width="wrap_content"
+                		android:layout_height="match_parent"
+                		android:layout_alignBottom="@+id/usd_direction_nbu"
+                		android:layout_alignTop="@+id/usd_direction_nbu"
+                		android:layout_centerInParent="true"
+            			android:gravity="center"
+    				    android:fontFamily="sans-serif-thin"
+    				    android:textColor="#FFFFFF" />
+    				
+    				<ImageView
+    				    android:id="@+id/usd_direction_nbu"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:layout_centerVertical="true"
+                		android:layout_toRightOf="@id/usd_txt_nbu"
+                		android:layout_toEndOf="@id/usd_txt_nbu"
+                		android:padding="3dp" />
+
+    			</RelativeLayout>
 
     		</LinearLayout>
 
@@ -131,20 +149,38 @@
     				    android:textColor="#FFFFFF" />
     				
     				<ImageView
-    				    android:id="@+id/eur_direction_nbu"
-    				    android:layout_width="32dp"
-    				    android:layout_height="24dp"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:padding="2dp"
     				    android:layout_gravity="center" />
 
     			</LinearLayout>
 
-    			<TextView
-    			    android:id="@+id/eur_txt_nbu"
+    			<RelativeLayout
     			    android:layout_width="match_parent"
-    			    android:layout_height="24dp"
-    			    android:gravity="center"
-    			    android:textColor="#FFFFFF"
-    			    android:fontFamily="sans-serif-thin" />
+    			    android:layout_height="wrap_content" >
+    				
+    			    <TextView
+    				    android:id="@+id/eur_txt_nbu"
+    				    android:layout_width="wrap_content"
+                		android:layout_height="match_parent"
+                		android:layout_alignBottom="@+id/eur_direction_nbu"
+                		android:layout_alignTop="@+id/eur_direction_nbu"
+                		android:layout_centerInParent="true"
+            			android:gravity="center"
+    				    android:fontFamily="sans-serif-thin"
+    				    android:textColor="#FFFFFF" />
+    				
+    				<ImageView
+    				    android:id="@+id/eur_direction_nbu"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:layout_centerVertical="true"
+                		android:layout_toRightOf="@id/eur_txt_nbu"
+                		android:layout_toEndOf="@id/eur_txt_nbu"
+                		android:padding="3dp" />
+
+    			</RelativeLayout>
 
     		</LinearLayout>
 
@@ -179,20 +215,38 @@
     				    android:textColor="#FFFFFF" />
     				
     				<ImageView
-    				    android:id="@+id/rub_direction_nbu"
-    				    android:layout_width="32dp"
-    				    android:layout_height="24dp"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:padding="2dp"
     				    android:layout_gravity="center" />
 
     			</LinearLayout>
 
-    			<TextView
-    			    android:id="@+id/rub_txt_nbu"
+    			<RelativeLayout
     			    android:layout_width="match_parent"
-    			    android:layout_height="24dp"
-    			    android:gravity="center"
-    			    android:textColor="#FFFFFF"
-    			    android:fontFamily="sans-serif-thin" />
+    			    android:layout_height="wrap_content" >
+    				
+    			    <TextView
+    				    android:id="@+id/rub_txt_nbu"
+    				    android:layout_width="wrap_content"
+                		android:layout_height="match_parent"
+                		android:layout_alignBottom="@+id/rub_direction_nbu"
+                		android:layout_alignTop="@+id/rub_direction_nbu"
+                		android:layout_centerInParent="true"
+            			android:gravity="center"
+    				    android:fontFamily="sans-serif-thin"
+    				    android:textColor="#FFFFFF" />
+    				
+    				<ImageView
+    				    android:id="@+id/rub_direction_nbu"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:layout_centerVertical="true"
+                		android:layout_toRightOf="@id/rub_txt_nbu"
+                		android:layout_toEndOf="@id/rub_txt_nbu"
+                		android:padding="3dp" />
+
+    			</RelativeLayout>
 
     		</LinearLayout>
         
