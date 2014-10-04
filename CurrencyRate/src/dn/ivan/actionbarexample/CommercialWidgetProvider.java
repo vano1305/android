@@ -34,6 +34,8 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             Intent intent2 = new Intent(context, MainActivity.class);
+            intent2.putExtra(MainActivity.SOURCE, MainActivity.COMMERCIAL_SOURCE);
+            intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 501, intent2, 0);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.commercial_widget);
@@ -69,6 +71,8 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 		
 		double totalBuy = 0.0;
 		double totalSell = 0.0;
+		double totalBuyChange = 0.0;
+		double totalSellChange = 0.0;
 		
 		int count = 0;
 		
@@ -83,14 +87,32 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			count ++;
 			totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    totalBuyChange = new BigDecimal(totalBuyChange).add(new BigDecimal(ratesItem.rateBuyDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    totalSellChange = new BigDecimal(totalSellChange).add(new BigDecimal(ratesItem.rateSaleDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 		views.setTextViewText(R.id.usd_lbl_commercial, "USD");
 		views.setTextViewText(R.id.usd_txt_commercial, new BigDecimal(totalBuy/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
+		
+		if (Double.valueOf(totalBuyChange / count) > 0) {					
+			views.setImageViewResource(R.id.usd_buy_direction_commercial, R.drawable.up);
+		}
+		else if (Double.valueOf(totalBuyChange / count) < 0) {
+			views.setImageViewResource(R.id.usd_buy_direction_commercial, R.drawable.down);
+		}
+		
+		if (Double.valueOf(totalSellChange / count) > 0) {					
+			views.setImageViewResource(R.id.usd_sell_direction_commercial, R.drawable.up);
+		}
+		else if (Double.valueOf(totalSellChange / count) < 0) {
+			views.setImageViewResource(R.id.usd_sell_direction_commercial, R.drawable.down);
+		}
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
 		totalBuy = 0.0;
 		totalSell = 0.0;
+		totalBuyChange = 0.0;
+		totalSellChange = 0.0;
 		
 		count = 0;
 		
@@ -105,14 +127,32 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			count ++;
 			totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();		    
 		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    totalBuyChange = new BigDecimal(totalBuyChange).add(new BigDecimal(ratesItem.rateBuyDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    totalSellChange = new BigDecimal(totalSellChange).add(new BigDecimal(ratesItem.rateSaleDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 		views.setTextViewText(R.id.eur_lbl_commercial, "EUR");
 		views.setTextViewText(R.id.eur_txt_commercial, new BigDecimal(totalBuy/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
+		
+		if (Double.valueOf(totalBuyChange / count) > 0) {					
+			views.setImageViewResource(R.id.eur_buy_direction_commercial, R.drawable.up);
+		}
+		else if (Double.valueOf(totalBuyChange / count) < 0) {
+			views.setImageViewResource(R.id.eur_buy_direction_commercial, R.drawable.down);
+		}
+		
+		if (Double.valueOf(totalSellChange / count) > 0) {					
+			views.setImageViewResource(R.id.eur_sell_direction_commercial, R.drawable.up);
+		}
+		else if (Double.valueOf(totalSellChange / count) < 0) {
+			views.setImageViewResource(R.id.eur_sell_direction_commercial, R.drawable.down);
+		}
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
 		totalBuy = 0.0;
 		totalSell = 0.0;
+		totalBuyChange = 0.0;
+		totalSellChange = 0.0;
 		
 		count = 0;
 		
@@ -127,9 +167,25 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 			count ++;
 			totalBuy = new BigDecimal(totalBuy).add(new BigDecimal(ratesItem.rateBuy)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		    totalSell = new BigDecimal(totalSell).add(new BigDecimal(ratesItem.rateSale)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    totalBuyChange = new BigDecimal(totalBuyChange).add(new BigDecimal(ratesItem.rateBuyDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    totalSellChange = new BigDecimal(totalSellChange).add(new BigDecimal(ratesItem.rateSaleDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}	
 		views.setTextViewText(R.id.rub_lbl_commercial, "RUB");
-		views.setTextViewText(R.id.rub_txt_commercial, new BigDecimal(totalBuy/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
+		views.setTextViewText(R.id.rub_txt_commercial, "  " + new BigDecimal(totalBuy/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "  ");
+		
+		if (Double.valueOf(totalBuyChange / count) > 0) {					
+			views.setImageViewResource(R.id.rub_buy_direction_commercial, R.drawable.up);
+		}
+		else if (Double.valueOf(totalBuyChange / count) < 0) {
+			views.setImageViewResource(R.id.rub_buy_direction_commercial, R.drawable.down);
+		}
+		
+		if (Double.valueOf(totalSellChange / count) > 0) {					
+			views.setImageViewResource(R.id.rub_sell_direction_commercial, R.drawable.up);
+		}
+		else if (Double.valueOf(totalSellChange / count) < 0) {
+			views.setImageViewResource(R.id.rub_sell_direction_commercial, R.drawable.down);
+		}
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		

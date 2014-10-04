@@ -48,6 +48,8 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             Intent intent2 = new Intent(context, MainActivity.class);
+            intent2.putExtra(MainActivity.SOURCE, MainActivity.METALS_SOURCE);
+            intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 401, intent2, 0);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.metals_widget);

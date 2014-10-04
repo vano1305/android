@@ -34,6 +34,8 @@ public class NbuWidgetProvider extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             Intent intent2 = new Intent(context, MainActivity.class);
+            intent2.putExtra(MainActivity.SOURCE, MainActivity.NBU_SOURCE);
+            intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 301, intent2, 0);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.nbu_widget);

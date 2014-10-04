@@ -20,6 +20,7 @@
                 android:layout_height="28dp"
                 android:layout_gravity="left|center_vertical"
                 android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:src="@drawable/commercial" />
         	
             <ProgressBar
@@ -85,14 +86,41 @@
     				    android:layout_gravity="center" />
 
     			</LinearLayout>
-
-    			<TextView
-    			    android:id="@+id/usd_txt_commercial"
+    			
+    			<RelativeLayout
     			    android:layout_width="match_parent"
-    			    android:layout_height="24dp"
-    			    android:fontFamily="sans-serif-thin"
-    			    android:gravity="center"
-    			    android:textColor="#FFFFFF" />
+    			    android:layout_height="wrap_content" >
+    				
+    			    <TextView
+    				    android:id="@+id/usd_txt_commercial"
+    				    android:layout_width="wrap_content"
+                		android:layout_height="match_parent"
+                		android:layout_alignBottom="@+id/usd_sell_direction_commercial"
+                		android:layout_alignTop="@+id/usd_sell_direction_commercial"
+                		android:layout_centerInParent="true"
+            			android:gravity="center"
+    				    android:fontFamily="sans-serif-thin"
+    				    android:textColor="#FFFFFF" />
+    			    
+    			    <ImageView
+    				    android:id="@+id/usd_buy_direction_commercial"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:layout_centerVertical="true"
+                		android:layout_toLeftOf="@id/usd_txt_commercial"
+                		android:layout_toStartOf="@id/usd_txt_commercial"
+                		android:padding="3dp" />
+    				
+    				<ImageView
+    				    android:id="@+id/usd_sell_direction_commercial"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:layout_centerVertical="true"
+                		android:layout_toRightOf="@id/usd_txt_commercial"
+                		android:layout_toEndOf="@id/usd_txt_commercial"
+                		android:padding="3dp" />
+
+    			</RelativeLayout>
 
     		</LinearLayout>
 
@@ -132,14 +160,41 @@
     				    android:layout_gravity="center" />
 
     			</LinearLayout>
-
-    			<TextView
-    			    android:id="@+id/eur_txt_commercial"
+    			
+    			<RelativeLayout
     			    android:layout_width="match_parent"
-    			    android:layout_height="24dp"
-    			    android:fontFamily="sans-serif-thin"
-    			    android:gravity="center"
-    			    android:textColor="#FFFFFF" />
+    			    android:layout_height="wrap_content" >
+    				
+    			    <TextView
+    				    android:id="@+id/eur_txt_commercial"
+    				    android:layout_width="wrap_content"
+                		android:layout_height="match_parent"
+                		android:layout_alignBottom="@+id/eur_sell_direction_commercial"
+                		android:layout_alignTop="@+id/eur_sell_direction_commercial"
+                		android:layout_centerInParent="true"
+            			android:gravity="center"
+    				    android:fontFamily="sans-serif-thin"
+    				    android:textColor="#FFFFFF" />
+    			    
+    			    <ImageView
+    				    android:id="@+id/eur_buy_direction_commercial"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:layout_centerVertical="true"
+                		android:layout_toLeftOf="@id/eur_txt_commercial"
+                		android:layout_toStartOf="@id/eur_txt_commercial"
+                		android:padding="3dp" />
+    				
+    				<ImageView
+    				    android:id="@+id/eur_sell_direction_commercial"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:layout_centerVertical="true"
+                		android:layout_toRightOf="@id/eur_txt_commercial"
+                		android:layout_toEndOf="@id/eur_txt_commercial"
+                		android:padding="3dp" />
+
+    			</RelativeLayout>
 
     		</LinearLayout>
 
@@ -179,14 +234,42 @@
     				    android:layout_gravity="center" />
 
     			</LinearLayout>
-
-    			<TextView
-    			    android:id="@+id/rub_txt_commercial"
+    			
+    			<RelativeLayout
     			    android:layout_width="match_parent"
-    			    android:layout_height="24dp"
-    			    android:fontFamily="sans-serif-thin"
-    			    android:gravity="center"
-    			    android:textColor="#FFFFFF" />
+    			    android:layout_height="wrap_content"
+    			    android:id="@+id/rub_rel_layout" >
+    				
+    			    <TextView
+    				    android:id="@+id/rub_txt_commercial"
+    				    android:layout_width="wrap_content"
+                		android:layout_height="match_parent"
+                		android:layout_alignBottom="@+id/rub_sell_direction_commercial"
+                		android:layout_alignTop="@+id/rub_sell_direction_commercial"
+                		android:layout_centerInParent="true"
+            			android:gravity="center"
+    				    android:fontFamily="sans-serif-thin"
+    				    android:textColor="#FFFFFF" />
+    			    
+    			    <ImageView
+    				    android:id="@+id/rub_buy_direction_commercial"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:layout_centerVertical="true"
+                		android:layout_toLeftOf="@id/rub_txt_commercial"
+                		android:layout_toStartOf="@id/rub_txt_commercial"
+                		android:padding="3dp" />
+    				
+    				<ImageView
+    				    android:id="@+id/rub_sell_direction_commercial"
+    				    android:layout_width="24dp"
+                		android:layout_height="24dp"
+                		android:layout_centerVertical="true"
+                		android:layout_toRightOf="@id/rub_txt_commercial"
+                		android:layout_toEndOf="@id/rub_txt_commercial"
+                		android:padding="3dp" />
+
+    			</RelativeLayout>
 
     		</LinearLayout>
         

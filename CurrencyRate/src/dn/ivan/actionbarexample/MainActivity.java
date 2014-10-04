@@ -118,6 +118,34 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
         actionBar.setListNavigationCallbacks(adapter, this);
 	}
 	
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		
+		super.onNewIntent(intent);
+		setIntent(intent);
+	}
+	
+	protected void onResume() {
+		
+		super.onResume();
+		
+		Bundle extras = getIntent().getExtras();
+        if(extras != null && extras.getString(SOURCE) != null){
+        	
+        	if (NBU_SOURCE.equalsIgnoreCase(extras.getString(SOURCE))) {        		
+        		getSupportActionBar().setSelectedNavigationItem(0);
+        	}
+        	else if (COMMERCIAL_SOURCE.equalsIgnoreCase(extras.getString(SOURCE))) {        		
+        		getSupportActionBar().setSelectedNavigationItem(1);
+        	}
+        	else if (METALS_SOURCE.equalsIgnoreCase(extras.getString(SOURCE))) {        		
+        		getSupportActionBar().setSelectedNavigationItem(2);
+        	}
+        }
+	}
+	
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
