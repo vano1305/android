@@ -217,5 +217,31 @@
 		<item>CNY - Китайские юани</item>
 		<item>JPY - Японские иены</item>
     </string-array>
+    
+    <string-array name="nbu_currency_converter">
+        <item>UAH - Украинские гривны</item>
+        <item>USD - Доллары США</item>
+        <item>EUR - Евро</item>
+        <item>RUB - Российские рубли</item>
+        <item>GBP - Английские фунты</item>
+        <item>CHF - Швейцарские франки</item>
+        <item>PLN - Польские злотые</item>
+        <item>CZK - Чешские кроны</item>
+		<item>UZS - Узбекские сумы</item>
+		<item>HUF - Венгерские форинты</item>
+		<item>SGD - Сингапурские доллары</item>
+		<item>NOK - Норвежские кроны</item>
+		<item>MDL - Молдавские леи</item>
+		<item>LTL - Литовские литы</item>
+		<item>CAD - Канадские доллары</item>
+		<item>KZT - Казахстанские тенге</item>
+		<item>ISK - Исландские кроны</item>				
+		<item>DKK - Датские кроны</item>
+		<item>BYR - Белорусские рубли</item>
+		<item>AUD - Австралийские доллары</item>
+		<item>SEK - Шведские кроны</item>
+		<item>CNY - Китайские юани</item>
+		<item>JPY - Японские иены</item>
+    </string-array>
 
 </resources>

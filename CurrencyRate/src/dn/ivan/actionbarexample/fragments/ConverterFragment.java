@@ -65,14 +65,14 @@ public class ConverterFragment extends Fragment implements OnItemSelectedListene
 		
 		Spinner spinner1 = (Spinner) rootView.findViewById(R.id.converter_currency_1);
 		
-		ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(), R.array.nbu_currencys, R.layout.currency_spinner_pattern);
+		ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(), R.array.nbu_currency_converter, R.layout.currency_spinner_pattern);
 		adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner1.setAdapter(adapter1);
 		spinner1.setOnItemSelectedListener(this);
 				
 		Spinner spinner2 = (Spinner) rootView.findViewById(R.id.converter_currency_2);
 		
-		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.nbu_currencys, R.layout.currency_spinner_pattern);
+		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.nbu_currency_converter, R.layout.currency_spinner_pattern);
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner2.setAdapter(adapter2);
 		spinner2.setOnItemSelectedListener(this);
@@ -123,10 +123,10 @@ public class ConverterFragment extends Fragment implements OnItemSelectedListene
 				return;
 			}
 			
-			currency1 = getResources().getStringArray(R.array.nbu_currencys)[((Spinner) rootView.findViewById(R.id.converter_currency_1)).getSelectedItemPosition()];
+			currency1 = getResources().getStringArray(R.array.nbu_currency_converter)[((Spinner) rootView.findViewById(R.id.converter_currency_1)).getSelectedItemPosition()];
 			currency1 = currency1.substring(0, 3);
 			
-			currency2 = getResources().getStringArray(R.array.nbu_currencys)[((Spinner) rootView.findViewById(R.id.converter_currency_2)).getSelectedItemPosition()];
+			currency2 = getResources().getStringArray(R.array.nbu_currency_converter)[((Spinner) rootView.findViewById(R.id.converter_currency_2)).getSelectedItemPosition()];
 			currency2 = currency2.substring(0, 3);
 			
 			for (int i = 0; i < DataHolder.nbuRatesItem.size(); i++) {

@@ -32,6 +32,7 @@ import dn.ivan.actionbarexample.fragments.HistoryFragment;
 import dn.ivan.actionbarexample.fragments.MetalsFragment;
 import dn.ivan.actionbarexample.fragments.NbuFragment;
 import dn.ivan.actionbarexample.logic.DataHolder;
+import dn.ivan.actionbarexample.logic.NbuRates;
 import dn.ivan.actionbarexample.logic.NetworkManager;
 import dn.ivan.actionbarexample.logic.SpinnerNavItem;
 import dn.ivan.actionbarexample.logic.TitleNavigationAdapter;
@@ -312,7 +313,16 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		}
 		
 		if (NBU_SOURCE.equalsIgnoreCase(source)) {
-			DataHolder.nbuRatesItem = rates;
+			
+			NbuRates uah = new NbuRates();
+			uah.char3 = "UAH";
+			uah.size = "1";
+			uah.rate = "1";
+			
+			ArrayList<Object> ratesForConverter = new ArrayList<Object>(rates);
+			ratesForConverter.add(uah);
+			
+			DataHolder.nbuRatesItem = ratesForConverter;
 		}
 	}
 	

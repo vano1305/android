@@ -7,6 +7,7 @@ int array currency_dialog 0x7f0d0004
 int array metals_dialog 0x7f0d0005
 int array nav_drawer_icons 0x7f0d0001
 int array nav_drawer_titles 0x7f0d0000
+int array nbu_currency_converter 0x7f0d0009
 int array nbu_currencys 0x7f0d0008
 int attr actionBarDivider 0x7f01000e
 int attr actionBarItemBackground 0x7f01000f

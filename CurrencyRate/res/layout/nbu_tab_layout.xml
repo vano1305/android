@@ -30,7 +30,9 @@
         		android:layout_width="match_parent"
         		android:layout_height="39dp"
         		android:layout_gravity="left"
-        		android:orientation="vertical" >
+        		android:orientation="vertical"
+        		android:paddingLeft="2dp"
+    			android:paddingRight="2dp" >
         
         		<TextView
     	    		android:id="@+id/nbu_date"
