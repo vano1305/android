@@ -3,7 +3,7 @@ package dn.ivan.actionbarexample.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import dn.ivan.actionbarexample.service.HistoryService;
+import dn.ivan.actionbarexample.services.HistoryService;
 
 public class OnBootReceiver extends BroadcastReceiver {
 

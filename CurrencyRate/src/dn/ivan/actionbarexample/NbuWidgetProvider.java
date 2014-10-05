@@ -14,8 +14,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.ProgressBar;
 import android.widget.RemoteViews;
+import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.NbuRates;
-import dn.ivan.actionbarexample.service.BackgroundService;
+import dn.ivan.actionbarexample.services.BackgroundService;
 
 public class NbuWidgetProvider extends AppWidgetProvider {
 	
@@ -35,7 +36,7 @@ public class NbuWidgetProvider extends AppWidgetProvider {
 
             Intent intent2 = new Intent(context, MainActivity.class);
             intent2.putExtra(MainActivity.SOURCE, MainActivity.NBU_SOURCE);
-            intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 301, intent2, 0);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.nbu_widget);

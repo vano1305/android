@@ -14,8 +14,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.ProgressBar;
 import android.widget.RemoteViews;
+import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.CommercialRates;
-import dn.ivan.actionbarexample.service.BackgroundService;
+import dn.ivan.actionbarexample.services.BackgroundService;
 
 public class CommercialWidgetProvider extends AppWidgetProvider {
 	
@@ -35,7 +36,7 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 
             Intent intent2 = new Intent(context, MainActivity.class);
             intent2.putExtra(MainActivity.SOURCE, MainActivity.COMMERCIAL_SOURCE);
-            intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 501, intent2, 0);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.commercial_widget);
@@ -171,7 +172,7 @@ public class CommercialWidgetProvider extends AppWidgetProvider {
 		    totalSellChange = new BigDecimal(totalSellChange).add(new BigDecimal(ratesItem.rateSaleDelta)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}	
 		views.setTextViewText(R.id.rub_lbl_commercial, "RUB");
-		views.setTextViewText(R.id.rub_txt_commercial, "  " + new BigDecimal(totalBuy/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "  ");
+		views.setTextViewText(R.id.rub_txt_commercial, new BigDecimal(totalBuy/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "/" + new BigDecimal(totalSell/count).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
 		
 		if (Double.valueOf(totalBuyChange / count) > 0) {					
 			views.setImageViewResource(R.id.rub_buy_direction_commercial, R.drawable.up);

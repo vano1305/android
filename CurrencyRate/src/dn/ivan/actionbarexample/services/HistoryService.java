@@ -1,4 +1,4 @@
-package dn.ivan.actionbarexample.service;
+package dn.ivan.actionbarexample.services;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

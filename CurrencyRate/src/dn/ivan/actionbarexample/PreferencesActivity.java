@@ -7,7 +7,9 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 
-public class Preferences extends SherlockPreferenceActivity {
+import dn.ivan.actionbarexample.R;
+
+public class PreferencesActivity extends SherlockPreferenceActivity {
 
 	@SuppressWarnings("deprecation")
 	@Override

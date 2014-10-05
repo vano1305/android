@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import dn.ivan.actionbarexample.MainActivity;
-import dn.ivan.actionbarexample.service.ServiceWorker;
+import dn.ivan.actionbarexample.logic.ServiceWorker;
 
 public class LoadHistoryReceiver extends BroadcastReceiver {
 	

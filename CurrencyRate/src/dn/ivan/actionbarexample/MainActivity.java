@@ -26,6 +26,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.google.analytics.tracking.android.EasyTracker;
 
+import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.fragments.CommercialFragment;
 import dn.ivan.actionbarexample.fragments.ConverterFragment;
 import dn.ivan.actionbarexample.fragments.HistoryFragment;
@@ -36,8 +37,8 @@ import dn.ivan.actionbarexample.logic.NbuRates;
 import dn.ivan.actionbarexample.logic.NetworkManager;
 import dn.ivan.actionbarexample.logic.SpinnerNavItem;
 import dn.ivan.actionbarexample.logic.TitleNavigationAdapter;
-import dn.ivan.actionbarexample.service.BackgroundService;
-import dn.ivan.actionbarexample.service.HistoryService;
+import dn.ivan.actionbarexample.services.BackgroundService;
+import dn.ivan.actionbarexample.services.HistoryService;
 
 public class MainActivity extends SherlockFragmentActivity implements ActionBar.OnNavigationListener {
 	
@@ -120,21 +121,22 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	@Override
+	/*@Override
 	protected void onNewIntent(Intent intent) {
 		
-		super.onNewIntent(intent);
-		setIntent(intent);
-	}
+		super.onNewIntent(intent);		
+		setIntent(intent);		
+	}*/
 	
-	protected void onResume() {
+	/*protected void onResume() {
 		
-		super.onResume();
+		super.onResume();		
 		
-		Bundle extras = getIntent().getExtras();
-        if(extras != null && extras.getString(SOURCE) != null){
+        if(getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getString(SOURCE) != null) {
         	
-        	if (NBU_SOURCE.equalsIgnoreCase(extras.getString(SOURCE))) {        		
+        	Bundle extras = getIntent().getExtras();
+        	
+        	if (NBU_SOURCE.equalsIgnoreCase(extras.getString(SOURCE))) {
         		getSupportActionBar().setSelectedNavigationItem(0);
         	}
         	else if (COMMERCIAL_SOURCE.equalsIgnoreCase(extras.getString(SOURCE))) {        		
@@ -144,7 +146,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
         		getSupportActionBar().setSelectedNavigationItem(2);
         	}
         }
-	}
+	}*/
 	
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,7 +218,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public boolean onNavigationItemSelected(int position, long id) {		
+	public boolean onNavigationItemSelected(int position, long id) {
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);

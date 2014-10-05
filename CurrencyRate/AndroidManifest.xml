@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dn.ivan.actionbarexample"
-    android:versionCode="27"
-    android:versionName="1.9.3" >
+    android:versionCode="28"
+    android:versionName="1.9.4" >
 
     <uses-sdk
         android:minSdkVersion="12"
@@ -76,7 +76,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="dn.ivan.actionbarexample.Preferences"
+            android:name="dn.ivan.actionbarexample.PreferencesActivity"
             android:parentActivityName="dn.ivan.actionbarexample.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
@@ -84,8 +84,8 @@
             	android:value="dn.ivan.actionbarexample.MainActivity" />
         </activity>        
                 
-        <service android:name="dn.ivan.actionbarexample.service.BackgroundService" />
-        <service android:enabled="true" android:name="dn.ivan.actionbarexample.service.HistoryService"/>
+        <service android:name="dn.ivan.actionbarexample.services.BackgroundService" />
+        <service android:enabled="true" android:name="dn.ivan.actionbarexample.services.HistoryService"/>
     </application>
 
 </manifest>

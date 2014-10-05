@@ -1,4 +1,4 @@
-package dn.ivan.actionbarexample.service;
+package dn.ivan.actionbarexample.logic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,10 +16,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import android.content.Context;
 import android.content.Intent;
 import dn.ivan.actionbarexample.MainActivity;
-import dn.ivan.actionbarexample.logic.CommercialRates;
-import dn.ivan.actionbarexample.logic.MetalsRates;
-import dn.ivan.actionbarexample.logic.NbuRates;
-import dn.ivan.actionbarexample.logic.Rates;
 
 public class ServiceWorker implements Runnable {
 
@@ -205,9 +201,20 @@ public class ServiceWorker implements Runnable {
 			}
 
 			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
+				
+				ArrayList<Object> commercialRatesList = new ArrayList<Object>();
+				
+				for (int count = 0; count < ratesList.size(); count ++) {
+					
+					CommercialRates currency = (CommercialRates) ratesList.get(count);
+					
+					if (currency.sourceUrl.indexOf("pivdennyi") == -1) {
+						commercialRatesList.add(currency);
+					}
+				}
 
 				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
-				intent.putExtra(MainActivity.RATES, ratesList);
+				intent.putExtra(MainActivity.RATES, commercialRatesList);
 				intent.putExtra(MainActivity.SOURCE, source);
 				intent.putExtra(MainActivity.FROM, from);
 				context.sendBroadcast(intent);

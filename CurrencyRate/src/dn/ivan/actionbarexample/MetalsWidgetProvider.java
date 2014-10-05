@@ -16,8 +16,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.ProgressBar;
 import android.widget.RemoteViews;
+import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.MetalsRates;
-import dn.ivan.actionbarexample.service.BackgroundService;
+import dn.ivan.actionbarexample.services.BackgroundService;
 
 public class MetalsWidgetProvider extends AppWidgetProvider {
 	
@@ -49,7 +50,7 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 
             Intent intent2 = new Intent(context, MainActivity.class);
             intent2.putExtra(MainActivity.SOURCE, MainActivity.METALS_SOURCE);
-            intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 401, intent2, 0);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.metals_widget);
@@ -81,6 +82,13 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 				
 				views.setTextViewText(R.id.xau_lbl_metals, "XAU");
 				views.setTextViewText(R.id.xau_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				
+				if (Double.valueOf(ratesItem.change) > 0) {					
+					views.setImageViewResource(R.id.xau_direction_metals, R.drawable.up);
+				}
+				else if (Double.valueOf(ratesItem.change) < 0) {
+					views.setImageViewResource(R.id.xau_direction_metals, R.drawable.down);
+				}
 			}			
 		}
 		
@@ -94,6 +102,13 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 				
 				views.setTextViewText(R.id.xag_lbl_metals, "XAG");
 				views.setTextViewText(R.id.xag_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				
+				if (Double.valueOf(ratesItem.change) > 0) {					
+					views.setImageViewResource(R.id.xag_direction_metals, R.drawable.up);
+				}
+				else if (Double.valueOf(ratesItem.change) < 0) {
+					views.setImageViewResource(R.id.xag_direction_metals, R.drawable.down);
+				}
 			}			
 		}
 		
@@ -107,6 +122,13 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 				
 				views.setTextViewText(R.id.xpt_lbl_metals, "XPT");
 				views.setTextViewText(R.id.xpt_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				
+				if (Double.valueOf(ratesItem.change) > 0) {					
+					views.setImageViewResource(R.id.xpt_direction_metals, R.drawable.up);
+				}
+				else if (Double.valueOf(ratesItem.change) < 0) {
+					views.setImageViewResource(R.id.xpt_direction_metals, R.drawable.down);
+				}
 			}
 		}		
 		
