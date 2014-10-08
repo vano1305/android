@@ -14,21 +14,28 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import dn.ivan.actionbarexample.MainActivity;
 import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.Rates;
 
 public class NbuFragment extends Fragment {
+	
+	Toast currentToast = null;
 	
 	static DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.getDefault());		
 	static {
@@ -56,6 +63,19 @@ public class NbuFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		rootView = inflater.inflate(R.layout.nbu_tab_layout, container, false);
+		LinearLayout list = (LinearLayout) rootView.findViewById(R.id.nbu_list);
+		list.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
+
+		    @Override
+		    public void onScrollChanged() {
+
+		        if (currentToast != null) {
+		        	
+		        	currentToast.cancel();
+		        	currentToast = null;
+		        }
+		    }
+		});
 
 		if (rates != null) {
 			setData(rates);
@@ -140,11 +160,13 @@ public class NbuFragment extends Fragment {
 
 				vh.change.setImageDrawable(getResources().getDrawable(R.drawable.up));
 				vh.change.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				vh.change.setOnClickListener(new DirectionListener("+" + ratesItem.change));
 			}
 			else if (Double.valueOf(ratesItem.change) < 0) {
 
 				vh.change.setImageDrawable(getResources().getDrawable(R.drawable.down));
 				vh.change.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				vh.change.setOnClickListener(new DirectionListener(ratesItem.change));
 			}
 			
 			nbu_date.setText("ÊÓÐÑÛ ÍÀ " + ratesItem.date);
@@ -302,5 +324,55 @@ public class NbuFragment extends Fragment {
 		public TextView lstItemNbuLbl;
 		public TextView lstItemNbuRate;
 		public ImageView change;
+	}
+	
+	public class DirectionListener implements OnClickListener {
+		
+		String change = "";
+		
+		public DirectionListener(String change_) {
+			change = change_;		
+		}
+		
+		@Override
+		public void onClick(View v) {
+			
+			int[] location = new int[2];			
+			v.getLocationOnScreen(location);
+			
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			
+	        View toastRoot = inflater.inflate(R.layout.toast, null);
+	        if (Double.valueOf(change) > 0) {
+	        	toastRoot.setBackgroundResource(R.drawable.shape_toast_up);
+	        }
+	        else {
+	        	toastRoot.setBackgroundResource(R.drawable.shape_toast_down);
+	        }
+	        
+	        ((TextView)toastRoot.findViewById(R.id.toast_text)).setText(change);
+	        
+	        if (currentToast != null) {
+	        	
+	        	currentToast.cancel();
+	        	currentToast = null;
+	        }
+	        
+	        currentToast = new Toast(getActivity());
+	        currentToast.setView(toastRoot);
+	        currentToast.setDuration(Toast.LENGTH_LONG);
+	        currentToast.setGravity(Gravity.TOP|Gravity.LEFT,
+					location[0] - dpToPx(26),
+					location[1] - dpToPx(57));
+			
+	        currentToast.show();
+		}		
+	}
+	
+	public int dpToPx(int dp) {
+		
+	    DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+	    int px = Math.round(dp * displayMetrics.density);
+	    return px;
 	}
 }

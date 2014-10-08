@@ -15,10 +15,14 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -29,11 +33,14 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import dn.ivan.actionbarexample.MainActivity;
 import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.CommercialRates;
 
 public class CommercialFragment extends Fragment implements OnItemSelectedListener {
+	
+	Toast currentToast = null;
 	
 	ArrayList<CommercialRates> notSortRates;
 	
@@ -68,6 +75,20 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 	public View onCreateView(LayoutInflater ltInflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		mainLayout = ltInflater.inflate(R.layout.commercial_tab_layout, container, false);
+		LinearLayout list = (LinearLayout) mainLayout.findViewById(R.id.commercial_list);
+		list.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
+
+		    @Override
+		    public void onScrollChanged() {
+
+		        if (currentToast != null) {
+		        	
+		        	currentToast.cancel();
+		        	currentToast = null;
+		        }
+		    }
+		});
+		
 		createAverageRatesItem();
 		
 		// //////////////////////////////////////////////////////////////////////////////////
@@ -197,30 +218,62 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 			else {
 				vh.lstItemCurrency.setText(Html.fromHtml("<b>" + ratesItem.bankName + "</b>"));
 			}
-
-			vh.lstItemBuyResult.setText(Html.fromHtml("<b>" + ratesItem.rateBuy + "</b>"));
-			vh.lstItemSellResult.setText(Html.fromHtml("<b>" + ratesItem.rateSale + "</b>"));
+			
+			if ("RUB".equalsIgnoreCase(currencyCode)) {
+				
+				vh.lstItemBuyResult.setText(Html.fromHtml("<b>" + new BigDecimal(ratesItem.rateBuy).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+				vh.lstItemSellResult.setText(Html.fromHtml("<b>" + new BigDecimal(ratesItem.rateSale).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+			}
+			else {
+				
+				vh.lstItemBuyResult.setText(Html.fromHtml("<b>" + new BigDecimal(ratesItem.rateBuy).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+				vh.lstItemSellResult.setText(Html.fromHtml("<b>" + new BigDecimal(ratesItem.rateSale).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+			}
 			
 			if (Double.valueOf(ratesItem.rateSaleDelta) > 0) {
 				
 				vh.sell_direction.setImageDrawable(getResources().getDrawable(R.drawable.up));
 				vh.sell_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				if ("RUB".equalsIgnoreCase(currencyCode)) {
+					vh.sell_direction.setOnClickListener(new DirectionListener("+" + new BigDecimal(ratesItem.rateSaleDelta).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString()));
+				}
+				else {
+					vh.sell_direction.setOnClickListener(new DirectionListener("+" + new BigDecimal(ratesItem.rateSaleDelta).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()));
+				}
 			}
 			else if (Double.valueOf(ratesItem.rateSaleDelta) < 0) {
 				
 				vh.sell_direction.setImageDrawable(getResources().getDrawable(R.drawable.down));
 				vh.sell_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				if ("RUB".equalsIgnoreCase(currencyCode)) {
+					vh.sell_direction.setOnClickListener(new DirectionListener(new BigDecimal(ratesItem.rateSaleDelta).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString()));
+				}
+				else {
+					vh.sell_direction.setOnClickListener(new DirectionListener(new BigDecimal(ratesItem.rateSaleDelta).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()));
+				}
 			}
 			
 			if (Double.valueOf(ratesItem.rateBuyDelta) > 0) {
 				
 				vh.buy_direction.setImageDrawable(getResources().getDrawable(R.drawable.up));
 				vh.buy_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				if ("RUB".equalsIgnoreCase(currencyCode)) {
+					vh.buy_direction.setOnClickListener(new DirectionListener("+" + new BigDecimal(ratesItem.rateBuyDelta).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString()));
+				}
+				else {
+					vh.buy_direction.setOnClickListener(new DirectionListener("+" + new BigDecimal(ratesItem.rateBuyDelta).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()));
+				}
 			}
 			else if (Double.valueOf(ratesItem.rateBuyDelta) < 0) {
 				
 				vh.buy_direction.setImageDrawable(getResources().getDrawable(R.drawable.down));
 				vh.buy_direction.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				if ("RUB".equalsIgnoreCase(currencyCode)) {
+					vh.buy_direction.setOnClickListener(new DirectionListener(new BigDecimal(ratesItem.rateBuyDelta).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString()));
+				}
+				else {
+					vh.buy_direction.setOnClickListener(new DirectionListener(new BigDecimal(ratesItem.rateBuyDelta).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()));
+				}
 			}
 			
 			try {
@@ -250,10 +303,20 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		//lblAverage.setText(R.string.commercial_average);
 		
 		TextView averageBuy = (TextView) averageRatesItem.findViewById(R.id.average_buy_result);
-	    averageBuy.setText(Html.fromHtml("<b>" + new BigDecimal(rates.size() == 0? 0: (totalBuy / rates.size())).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+		if ("RUB".equalsIgnoreCase(currencyCode)) {			
+			averageBuy.setText(Html.fromHtml("<b>" + new BigDecimal(rates.size() == 0? 0: (totalBuy / rates.size())).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+		}
+		else {			
+			averageBuy.setText(Html.fromHtml("<b>" + new BigDecimal(rates.size() == 0? 0: (totalBuy / rates.size())).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+		}	    
 	    			    
 	    TextView averageSell = (TextView) averageRatesItem.findViewById(R.id.average_sell_result);
-	    averageSell.setText(Html.fromHtml("<b>" + new BigDecimal(rates.size() == 0? 0: (totalSell / rates.size())).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+	    if ("RUB".equalsIgnoreCase(currencyCode)) {			
+	    	averageSell.setText(Html.fromHtml("<b>" + new BigDecimal(rates.size() == 0? 0: (totalSell / rates.size())).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+		}
+		else {			
+			averageSell.setText(Html.fromHtml("<b>" + new BigDecimal(rates.size() == 0? 0: (totalSell / rates.size())).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "</b>"));
+		}
 	    
 	    // //////////////////////////////////////////////////////////////////////////////////
 	    
@@ -262,11 +325,23 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 	    	
 	    	sellDirection.setImageDrawable(getResources().getDrawable(R.drawable.up));
 			sellDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			if ("RUB".equalsIgnoreCase(currencyCode)) {
+				sellDirection.setOnClickListener(new DirectionListener("+" + new BigDecimal(Double.valueOf(totalSellDelta / rates.size())).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString()));
+			}
+			else {
+				sellDirection.setOnClickListener(new DirectionListener("+" + new BigDecimal(Double.valueOf(totalSellDelta / rates.size())).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()));
+			}
 		}
 		else if (Double.valueOf(totalSellDelta / rates.size()) < 0) {
 			
 			sellDirection.setImageDrawable(getResources().getDrawable(R.drawable.down));
 			sellDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			if ("RUB".equalsIgnoreCase(currencyCode)) {
+				sellDirection.setOnClickListener(new DirectionListener(new BigDecimal(Double.valueOf(totalSellDelta / rates.size())).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString()));
+			}
+			else {
+				sellDirection.setOnClickListener(new DirectionListener(new BigDecimal(Double.valueOf(totalSellDelta / rates.size())).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()));
+			}
 		}
 		else {
 			sellDirection.setImageDrawable(null);
@@ -277,11 +352,23 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 			
 			buyDirection.setImageDrawable(getResources().getDrawable(R.drawable.up));
 			buyDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			if ("RUB".equalsIgnoreCase(currencyCode)) {
+				buyDirection.setOnClickListener(new DirectionListener("+" + new BigDecimal(Double.valueOf(totalBuyDelta / rates.size())).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString()));
+			}
+			else {
+				buyDirection.setOnClickListener(new DirectionListener("+" + new BigDecimal(Double.valueOf(totalBuyDelta / rates.size())).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()));
+			}
 		}
 		else if (Double.valueOf(totalBuyDelta / rates.size()) < 0) {
 			
 			buyDirection.setImageDrawable(getResources().getDrawable(R.drawable.down));
 			buyDirection.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			if ("RUB".equalsIgnoreCase(currencyCode)) {
+				buyDirection.setOnClickListener(new DirectionListener(new BigDecimal(Double.valueOf(totalBuyDelta / rates.size())).setScale(3, BigDecimal.ROUND_HALF_UP).toPlainString()));
+			}
+			else {
+				buyDirection.setOnClickListener(new DirectionListener(new BigDecimal(Double.valueOf(totalBuyDelta / rates.size())).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()));
+			}
 		}
 		else {
 			buyDirection.setImageDrawable(null);
@@ -461,5 +548,55 @@ public class CommercialFragment extends Fragment implements OnItemSelectedListen
 		public ImageView sell_direction;
 		
 		public ImageView bank_icon;
+	}
+	
+	public class DirectionListener implements OnClickListener {
+		
+		String change = "";
+		
+		public DirectionListener(String change_) {
+			change = change_;		
+		}
+		
+		@Override
+		public void onClick(View v) {
+			
+			int[] location = new int[2];			
+			v.getLocationOnScreen(location);
+			
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			
+	        View toastRoot = inflater.inflate(R.layout.toast, null);
+	        if (Double.valueOf(change) > 0) {
+	        	toastRoot.setBackgroundResource(R.drawable.shape_toast_up);
+	        }
+	        else {
+	        	toastRoot.setBackgroundResource(R.drawable.shape_toast_down);
+	        }
+	        
+	        ((TextView)toastRoot.findViewById(R.id.toast_text)).setText(change);
+	        
+	        if (currentToast != null) {
+	        	
+	        	currentToast.cancel();
+	        	currentToast = null;
+	        }
+	        
+	        currentToast = new Toast(getActivity());
+	        currentToast.setView(toastRoot);
+	        currentToast.setDuration(Toast.LENGTH_LONG);
+	        currentToast.setGravity(Gravity.TOP|Gravity.LEFT,
+					location[0] - dpToPx(20),
+					location[1] - dpToPx(57));
+			
+	        currentToast.show();
+		}		
+	}
+	
+	public int dpToPx(int dp) {
+		
+	    DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+	    int px = Math.round(dp * displayMetrics.density);
+	    return px;
 	}
 }
