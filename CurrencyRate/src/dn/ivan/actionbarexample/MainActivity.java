@@ -42,6 +42,9 @@ import dn.ivan.actionbarexample.services.HistoryService;
 
 public class MainActivity extends SherlockFragmentActivity implements ActionBar.OnNavigationListener {
 	
+	Toast cancelToast = null;
+	Toast connectionToast = null;
+	
 	private ArrayList<SpinnerNavItem> navSpinner;
 	private TitleNavigationAdapter adapter;
 	
@@ -360,7 +363,8 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		
 		if (!NetworkManager.checkInternetConnection(this)) {
 			
-			Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+			connectionToast = Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_LONG);
+			connectionToast.show();
 			return;
 		}
 
@@ -418,7 +422,8 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			super.onBackPressed();
 		}
 		else {
-			Toast.makeText(getBaseContext(), getString(R.string.exit), Toast.LENGTH_SHORT).show();
+			cancelToast = Toast.makeText(getBaseContext(), getString(R.string.exit), Toast.LENGTH_SHORT);
+			cancelToast.show();
 		}
 
 		back_pressed = System.currentTimeMillis();
@@ -433,12 +438,23 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	  }
 
 	@Override
-	  public void onStop() {
+	public void onStop() {
 		
 	    super.onStop();
 	    
+	    if (cancelToast != null) {
+	    	
+	    	cancelToast.cancel();
+	    	cancelToast = null;
+	    }
+	    if (connectionToast != null) {
+	    	
+	    	connectionToast.cancel();
+	    	connectionToast = null;
+	    }
+	    
 	    EasyTracker.getInstance(this).activityStop(this);
-	  }
+	}
 	
 	private boolean isServiceRunning(Class<?> serviceClass) {
 		

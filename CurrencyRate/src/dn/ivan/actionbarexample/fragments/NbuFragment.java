@@ -375,4 +375,16 @@ public class NbuFragment extends Fragment {
 	    int px = Math.round(dp * displayMetrics.density);
 	    return px;
 	}
+	
+	@Override
+	public void onStop() {
+		
+	    super.onStop();
+	    
+	    if (currentToast != null) {
+	    	
+	    	currentToast.cancel();
+	    	currentToast = null;
+	    }
+	}
 }
