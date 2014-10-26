@@ -21,7 +21,6 @@ import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +42,7 @@ import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.DataManager;
 import dn.ivan.actionbarexample.logic.DataManager.NbuRatesHolderForChart;
 
-public class HistoryFragment extends Fragment implements OnItemSelectedListener {
+public class HistoryFragment extends BaseFragment implements OnItemSelectedListener {
 	
 	private ArrayList<DataManager.NbuRatesHolderForChart> ratesHolder;
 	
@@ -60,12 +59,6 @@ public class HistoryFragment extends Fragment implements OnItemSelectedListener 
 	
 	private View rootView;
 	
-	public void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
-	}
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
@@ -78,6 +71,7 @@ public class HistoryFragment extends Fragment implements OnItemSelectedListener 
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.nbu_currencys, R.layout.currency_spinner_pattern);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
+		spinner.setSelection(Integer.valueOf(getValueFromPref("curr_hist", "0")));
 		spinner.setOnItemSelectedListener(this);
 		
 		((ImageView)rootView.findViewById(R.id.imageView1)).setOnClickListener(new OnClickListener() {
@@ -293,6 +287,8 @@ public class HistoryFragment extends Fragment implements OnItemSelectedListener 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		createChart();
+		
+		addValue2Pref("curr_hist", String.valueOf(((Spinner) rootView.findViewById(R.id.nbu_currency_history_spinner)).getSelectedItemPosition()));
 	}
 
 	@Override

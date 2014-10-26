@@ -1,26 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string-array name="nav_drawer_titles">
-        <item>НБУ</item>
-        <item>Наличные</item>
-        <item>Металлы</item>
-        <item>История НБУ</item>
-    </string-array>
-    
-    <array name="nav_drawer_icons">
-        <item>@drawable/nbu</item>
-        <item>@drawable/commercial</item>
-        <item>@drawable/metals</item>
-        <item>@drawable/history</item>
-    </array>
-
     <string name="app_name">Курсы валют</string>
     <string name="title_section1">НБУ</string>
     <string name="title_section2">Наличные</string>
     <string name="title_section3">Металлы</string>
-    <string name="title_section4">История НБУ</string>
-    <string name="title_section5">Конвертер</string>
+    <string name="title_section4">Топливо</string>
+    <string name="title_section5">История НБУ</string>
+    <string name="title_section6">Конвертер</string>
     <string name="refresh">Обновить</string>
     <string name="no_internet_connection">Нет интернет соединения!</string>
     <string name="exit">Нажмите еще раз чтобы выйти</string>
@@ -243,5 +230,139 @@
 		<item>CNY - Китайские юани</item>
 		<item>JPY - Японские иены</item>
     </string-array>
+    
+    <string-array name="region_spinner_value">
+        <item>АР Крым</item>
+        <item>Винницкая</item>
+        <item>Волынская</item>
+        <item>Днепропетровская</item>
+        <item>Донецкая</item>
+        <item>Житомирская</item>
+        <item>Закарпатская</item>
+        <item>Запорожская</item>
+        <item>Ивано-Франковская</item>
+        <item>Киев</item>
+        <item>Кировоградская</item>
+        <item>Луганская</item>
+        <item>Львовская</item>
+        <item>Николаевская</item>
+        <item>Одесская</item>
+        <item>Полтавская</item>
+        <item>Ровенская</item>
+        <item>Сумская</item>
+        <item>Тернопольская</item>
+        <item>Харьковская</item>
+        <item>Херсонская</item>
+        <item>Хмельницкая</item>
+        <item>Черкасская</item>
+        <item>Черниговская</item>
+        <item>Черновицкая</item>
+    </string-array>
+    
+    <string-array name="region_spinner_key">
+        <item>4</item>
+        <item>5</item>
+        <item>28</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+    </string-array>
+    
+    <string-array name="fuel_spinner_value">
+        <item>A-80</item>
+        <item>A-92</item>
+        <item>A-95</item>
+        <item>ДТ</item>
+    </string-array>
+    
+    <string-array name="fuel_spinner_key">
+        <item>a_80</item>
+        <item>a_92</item>
+        <item>a_95</item>
+        <item>dt</item>
+    </string-array>
+    
+    <string-array name="fuel_station_key">
+        <item>azs_10</item>
+		<item>azs_11</item>
+		<item>azs_12</item>
+		<item>azs_13</item>
+		<item>azs_15</item>
+		<item>azs_16</item>
+		<item>azs_17</item>
+		<item>azs_18</item>
+		<item>azs_19</item>
+		<item>azs_20</item>
+		<item>azs_21</item>
+		<item>azs_23</item>
+		<item>azs_24</item>
+		<item>azs_25</item>
+		<item>azs_26</item>
+		<item>azs_27</item>
+		<item>azs_32</item>
+		<item>azs_33</item>
+		<item>azs_34</item>
+		<item>azs_36</item>
+		<item>azs_37</item>
+		<item>azs_38</item>
+		<item>azs_39</item>
+		<item>azs_4</item>
+		<item>azs_5</item>
+		<item>azs_6</item>
+		<item>azs_7</item>
+		<item>azs_8</item>
+		<item>azs_9</item>
+	</string-array>
+	
+    <string-array name="fuel_station_value">
+        <item>Лукойл</item>
+		<item>WOG</item>
+		<item>ОККО</item>
+		<item>Джерело</item>
+		<item>Формула Ритейл</item>
+		<item>Нефтек</item>
+		<item>Азовнефтепродукт плюс</item>
+		<item>Параллель</item>
+		<item>Донбасснефтепродукт</item>
+		<item>Порто</item>
+		<item>ЗНП-Мукачево</item>
+		<item>КЛО</item>
+		<item>ТНК</item>
+		<item>БРСМ-Нафта</item>
+		<item>Рур груп</item>
+		<item>Восточные ресурсы</item>
+		<item>Укр-Петроль</item>
+		<item>Татнефть-АЗС-Украина</item>
+		<item>Нафтогаз-Надежда</item>
+		<item>Олас</item>
+		<item>Глуховнефтепродукт</item>
+		<item>Автотехсервис</item>
+		<item>Маршал</item>
+		<item>ТЭС</item>
+		<item>Атан</item>
+		<item>Современник</item>
+		<item>Укрнафта</item>
+		<item>Shell</item>
+		<item>Альфа-Нафта</item>
+	</string-array>
 
 </resources>

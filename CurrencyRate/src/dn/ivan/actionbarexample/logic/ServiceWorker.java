@@ -26,12 +26,14 @@ public class ServiceWorker implements Runnable {
 	private Context context;
 	private String source = "";
 	private String from = "";
+	private String regionCode = "";
 	
-	public ServiceWorker(Context context, String source, String from) {
+	public ServiceWorker(Context context, String source, String from, String regionCode) {
 
 		this.context = context;
 		this.source = source;
 		this.from = from;
+		this.regionCode = regionCode;
 	}
 
 	@Override
@@ -52,18 +54,23 @@ public class ServiceWorker implements Runnable {
 
 			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
 				request = new HttpGet("http://bank-ua.com/export/exchange_rate_cash.xml");
+				//request = new HttpGet("http://currencyrates.jelastic.neohost.net/rates/manage_rates/commercial");
 			}
 			else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source)) {				
-				request = new HttpGet("http://bank-ua.com/export/currrate.xml");				
+				request = new HttpGet("http://bank-ua.com/export/currrate.xml");	
+				//request = new HttpGet("http://currencyrates.jelastic.neohost.net/rates/manage_rates/nbu");
 			}
-			else {
+			else if (MainActivity.METALS_SOURCE.equalsIgnoreCase(source)) {
 				request = new HttpGet("http://bank-ua.com/export/metalrate.xml");
+			}
+			else if (MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)) {
+				request = new HttpGet("http://currencyrates.jelastic.neohost.net/rates/manage_rates/fuel" + ("".equalsIgnoreCase(regionCode)? "": ("?region=" + regionCode)));
 			}
 
 			HttpResponse response = httpClient.execute(request);
 			HttpEntity entity = response.getEntity();
 			
-			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
+			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source) || MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)) {
 				in = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
 			}
 			else {
@@ -90,9 +97,13 @@ public class ServiceWorker implements Runnable {
 						else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source)) {
 							item = new NbuRates();
 						}
-						else {
+						else if (MainActivity.METALS_SOURCE.equalsIgnoreCase(source)) {
 							item = new MetalsRates();
 						}
+						else if (MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)) {
+							item = new FuelItem();
+						}
+						
 						break;
 					}
 					
@@ -146,7 +157,7 @@ public class ServiceWorker implements Runnable {
 							}
 						}
 					}
-					else {
+					else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source) || MainActivity.METALS_SOURCE.equalsIgnoreCase(source)){
 						
 						if ("date".equalsIgnoreCase(xpp.getName())) {
 							if (xpp.next() == XmlPullParser.TEXT) {
@@ -184,6 +195,65 @@ public class ServiceWorker implements Runnable {
 							}
 						}											
 					}
+					else if (MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)){
+						
+						if ("date".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).date = xpp.getText();
+							}
+						}
+						if ("name".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).name = xpp.getText();
+							}
+						}
+						if ("code".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).code = xpp.getText();
+							}
+						}
+						if ("a_80".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).a_80 = xpp.getText();
+							}
+						}
+						if ("a_92".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).a_92 = xpp.getText();
+							}
+						}
+						if ("a_95".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).a_95 = xpp.getText();
+							}
+						}
+						if ("dt".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).dt = xpp.getText();
+							}
+						}
+						if ("a_80_delta".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).a_80_delta = xpp.getText();
+							}
+						}
+						if ("a_92_delta".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).a_92_delta = xpp.getText();
+							}
+						}
+						if ("a_95_delta".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).a_95_delta = xpp.getText();
+							}
+						}
+						if ("dt_delta".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((FuelItem)item).dt_delta = xpp.getText();
+							}
+						}
+					}
+					
 					break;
 
 				case XmlPullParser.END_TAG:
@@ -208,7 +278,7 @@ public class ServiceWorker implements Runnable {
 					
 					CommercialRates currency = (CommercialRates) ratesList.get(count);
 					
-					if (currency.sourceUrl.indexOf("pivdennyi") == -1) {
+					if (!"".equalsIgnoreCase(currency.sourceUrl) && currency.sourceUrl.indexOf("pivdennyi") == -1) {
 						commercialRatesList.add(currency);
 					}
 				}
@@ -227,7 +297,7 @@ public class ServiceWorker implements Runnable {
 					
 					NbuRates currency = (NbuRates) ratesList.get(count);
 					
-					if (!currency.char3.equalsIgnoreCase("tmt") && !currency.char3.equalsIgnoreCase("try") && !currency.char3.equalsIgnoreCase("azn") && !currency.char3.equalsIgnoreCase("xdr")) {
+					if (!"".equalsIgnoreCase(currency.char3) && !currency.char3.equalsIgnoreCase("tmt") && !currency.char3.equalsIgnoreCase("try") && !currency.char3.equalsIgnoreCase("azn") && !currency.char3.equalsIgnoreCase("xdr")) {
 						nbuRatesList.add(currency);
 					}
 				}
@@ -238,7 +308,15 @@ public class ServiceWorker implements Runnable {
 				intent.putExtra(MainActivity.FROM, from);
 				context.sendBroadcast(intent);
 			}
-			else {
+			else if (MainActivity.METALS_SOURCE.equalsIgnoreCase(source)) {
+				
+				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
+				intent.putExtra(MainActivity.RATES, ratesList);
+				intent.putExtra(MainActivity.SOURCE, source);
+				intent.putExtra(MainActivity.FROM, from);
+				context.sendBroadcast(intent);
+			}
+			else if (MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)) {
 				
 				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 				intent.putExtra(MainActivity.RATES, ratesList);

@@ -9,16 +9,13 @@ import java.util.Set;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,7 +25,7 @@ import dn.ivan.actionbarexample.MainActivity;
 import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.Rates;
 
-public class MetalsFragment extends Fragment {
+public class MetalsFragment extends BaseFragment {
 	
 	static DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.getDefault());		
 	static {
@@ -45,12 +42,6 @@ public class MetalsFragment extends Fragment {
 	View rootView;
 	
 	ArrayList<Object> rates;
-	
-	public void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
-	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -269,22 +260,5 @@ public class MetalsFragment extends Fragment {
 				}				
 			}
 		});
-	}
-	
-	protected void addSet2Pref(String prefName, HashSet<String> set) {
-		
-		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
-		Editor ed = shared.edit();
-		ed.remove(prefName);
-		ed.putStringSet(prefName, set);
-		ed.commit();
-	}
-	
-	protected Set<String> getSetFromPref(String prefName) {
-		
-		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
-		Set<String> stringSet = shared.getStringSet(prefName, null);
-		
-		return stringSet;
 	}
 }

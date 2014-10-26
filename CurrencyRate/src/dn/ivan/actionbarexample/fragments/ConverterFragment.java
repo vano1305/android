@@ -8,7 +8,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,7 @@ import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.logic.DataHolder;
 import dn.ivan.actionbarexample.logic.NbuRates;
 
-public class ConverterFragment extends Fragment implements OnItemSelectedListener {
+public class ConverterFragment extends BaseFragment implements OnItemSelectedListener {
 	
 	static DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.getDefault());		
 	static {
@@ -50,12 +49,6 @@ public class ConverterFragment extends Fragment implements OnItemSelectedListene
 	
 	private View rootView;
 	
-	public void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
-	}
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
@@ -68,6 +61,7 @@ public class ConverterFragment extends Fragment implements OnItemSelectedListene
 		ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(), R.array.nbu_currency_converter, R.layout.currency_spinner_pattern);
 		adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner1.setAdapter(adapter1);
+		spinner1.setSelection(Integer.valueOf(getValueFromPref("curr_conv_1", "0")));
 		spinner1.setOnItemSelectedListener(this);
 				
 		Spinner spinner2 = (Spinner) rootView.findViewById(R.id.converter_currency_2);
@@ -75,6 +69,7 @@ public class ConverterFragment extends Fragment implements OnItemSelectedListene
 		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.nbu_currency_converter, R.layout.currency_spinner_pattern);
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner2.setAdapter(adapter2);
+		spinner2.setSelection(Integer.valueOf(getValueFromPref("curr_conv_2", "0")));
 		spinner2.setOnItemSelectedListener(this);
 				
 		((Button)rootView.findViewById(R.id.converter_button)).setOnClickListener(new OnClickListener() {
@@ -166,6 +161,9 @@ public class ConverterFragment extends Fragment implements OnItemSelectedListene
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		convert();
+		
+		addValue2Pref("curr_conv_1", String.valueOf(((Spinner) rootView.findViewById(R.id.converter_currency_1)).getSelectedItemPosition()));
+		addValue2Pref("curr_conv_2", String.valueOf(((Spinner) rootView.findViewById(R.id.converter_currency_2)).getSelectedItemPosition()));
 	}
 
 	@Override

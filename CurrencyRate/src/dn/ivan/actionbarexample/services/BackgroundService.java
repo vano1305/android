@@ -24,8 +24,13 @@ public class BackgroundService extends Service {
 			
 			String source = intent.getExtras().getString(MainActivity.SOURCE);
 			String from = intent.getExtras().getString(MainActivity.FROM);
+			
+			String regionCode = "";
+			if (intent.getExtras().getString(MainActivity.REGION) != null) {
+				regionCode = intent.getExtras().getString(MainActivity.REGION);
+			}
 						
-			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source, from), "BackgroundService").start();
+			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source, from, regionCode), "BackgroundService").start();
 		}		
 		
 		return START_STICKY;

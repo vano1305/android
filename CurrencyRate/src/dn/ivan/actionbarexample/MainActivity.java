@@ -29,6 +29,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import dn.ivan.actionbarexample.R;
 import dn.ivan.actionbarexample.fragments.CommercialFragment;
 import dn.ivan.actionbarexample.fragments.ConverterFragment;
+import dn.ivan.actionbarexample.fragments.FuelFragment;
 import dn.ivan.actionbarexample.fragments.HistoryFragment;
 import dn.ivan.actionbarexample.fragments.MetalsFragment;
 import dn.ivan.actionbarexample.fragments.NbuFragment;
@@ -53,6 +54,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	private NbuFragment nbuFragment;
 	private CommercialFragment currencyFragment;
 	private MetalsFragment metalsFragment;
+	private FuelFragment fuelFragment;
 	private HistoryFragment historyFragment;
 	private ConverterFragment converterFragment;
 	
@@ -62,6 +64,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	public static final String COMMERCIAL_SOURCE = "commercial";
 	public static final String NBU_SOURCE = "nbu";
 	public static final String METALS_SOURCE = "metals";
+	public static final String FUEL_SOURCE = "fuel";
 	
 	public static final String FROM_WIDGET = "service_widget";
 	public static final String FROM_SERVICE_HISTORY = "service_history";
@@ -71,12 +74,15 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	public static final String NBU_FRAGMENT = "nbuFragment";
 	public static final String COMMERCIAL_FRAGMENT = "currencyFragment";
 	public static final String METALS_FRAGMENT = "metalsFragment";
+	public static final String FUEL_FRAGMENT = "fuelFragment";
 	public static final String HISTORY_FRAGMENT = "historyFragment";
 	public static final String CONVERTER_FRAGMENT = "converterFragment";
 	
 	public static final String FROM = "from";
 	public static final String SOURCE = "source";
 	public static final String RATES = "rates";
+	
+	public static final String REGION = "region";
 
 	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 	
@@ -98,6 +104,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		nbuFragment = (NbuFragment) Fragment.instantiate(this, NbuFragment.class.getName());
 		currencyFragment = CommercialFragment.newInstance("USD");
 		metalsFragment = (MetalsFragment) Fragment.instantiate(this, MetalsFragment.class.getName());
+		fuelFragment = FuelFragment.newInstance("6", "a_95");
 		historyFragment = (HistoryFragment) Fragment.instantiate(this, HistoryFragment.class.getName());
 		converterFragment = (ConverterFragment) Fragment.instantiate(this, ConverterFragment.class.getName());
 				
@@ -114,8 +121,9 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		navSpinner.add(new SpinnerNavItem(getString(R.string.title_section1), R.drawable.nbu));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section2), R.drawable.commercial));
         navSpinner.add(new SpinnerNavItem(getString(R.string.title_section3), R.drawable.metals));
-        navSpinner.add(new SpinnerNavItem(getString(R.string.title_section4), R.drawable.history));
-        navSpinner.add(new SpinnerNavItem(getString(R.string.title_section5), R.drawable.converter));
+        navSpinner.add(new SpinnerNavItem(getString(R.string.title_section4), R.drawable.fuel));
+        navSpinner.add(new SpinnerNavItem(getString(R.string.title_section5), R.drawable.history));
+        navSpinner.add(new SpinnerNavItem(getString(R.string.title_section6), R.drawable.converter));
 		
 		adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
 		
@@ -216,6 +224,9 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		else if (2 == index){
 			((MetalsFragment)getSupportFragmentManager().findFragmentByTag(METALS_FRAGMENT)).createMetalsSelectionDialog();
 		}
+		else if (3 == index){
+			((FuelFragment)getSupportFragmentManager().findFragmentByTag(FUEL_FRAGMENT)).createFuelStationsSelectionDialog();
+		}
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -256,7 +267,17 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			}
 			return true;
 		}
-		else if (3 == position) {
+		else if (3 == position) {	
+			
+			ft.replace(R.id.container, fuelFragment, FUEL_FRAGMENT).commit();
+			getSupportActionBar().setIcon(R.drawable.fuel);
+			if (menu != null) {
+				menu.findItem(R.id.refresh).setVisible(true);
+				menu.findItem(R.id.edit_pen).setVisible(true);
+			}
+			return true;
+		}
+		else if (4 == position) {
 			
 			ft.replace(R.id.container, historyFragment, HISTORY_FRAGMENT).commit();
 			getSupportActionBar().setIcon(R.drawable.history);
@@ -344,6 +365,10 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		else if (2 == index && METALS_SOURCE.equalsIgnoreCase(source)){
 			((MetalsFragment)getSupportFragmentManager().findFragmentByTag(METALS_FRAGMENT)).setData(rates);
 		}
+		else if (3 == index && FUEL_SOURCE.equalsIgnoreCase(source)){
+			((FuelFragment)getSupportFragmentManager().findFragmentByTag(FUEL_FRAGMENT)).setLoadStatusComplete();
+			((FuelFragment)getSupportFragmentManager().findFragmentByTag(FUEL_FRAGMENT)).setData(rates);
+		}
 		
 		if (NBU_SOURCE.equalsIgnoreCase(source)) {
 			
@@ -380,6 +405,10 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		}
 		else if (2 == index) {
 			intent.putExtra(SOURCE, METALS_SOURCE);
+		}
+		else if (3 == index) {
+			intent.putExtra(REGION, ((FuelFragment)getSupportFragmentManager().findFragmentByTag(FUEL_FRAGMENT)).getRegionCode());
+			intent.putExtra(SOURCE, FUEL_SOURCE);
 		}
 		
 		intent.putExtra(MainActivity.FROM, MainActivity.FROM_APPLICATION);
