@@ -14,6 +14,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.ProgressBar;
 import android.widget.RemoteViews;
 import dn.ivan.actionbarexample.R;
@@ -29,7 +30,7 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 		dfs.setGroupingSeparator(' ');
 	}
 	
-	static DecimalFormat df = new DecimalFormat("###,###,##0.0000", dfs);
+	static DecimalFormat df = new DecimalFormat("###,###,##0.00", dfs);
 	static {
 		df.setGroupingSize(3);
 	}
@@ -74,6 +75,8 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 		
 		// /////////////////////////////////////////////////////////////////////////////////////////
 		
+		int scale = Integer.valueOf(getValueFromPref(context, "selected_metals_scale", "0"));
+		
 		for (int i = 0; i < rates.size(); i++) {
 			
 			MetalsRates ratesItem = (MetalsRates) rates.get(i);
@@ -81,7 +84,12 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 			if ("XAU".equalsIgnoreCase(ratesItem.char3)) {
 				
 				views.setTextViewText(R.id.xau_lbl_metals, "XAU");
-				views.setTextViewText(R.id.xau_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				if (scale == 0) {
+					views.setTextViewText(R.id.xau_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				}
+				else {
+					views.setTextViewText(R.id.xau_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("31.1034768"), 2, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				}
 				
 				if (Double.valueOf(ratesItem.change) > 0) {					
 					views.setImageViewResource(R.id.xau_direction_metals, R.drawable.up);
@@ -101,7 +109,12 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 			if ("XAG".equalsIgnoreCase(ratesItem.char3)) {
 				
 				views.setTextViewText(R.id.xag_lbl_metals, "XAG");
-				views.setTextViewText(R.id.xag_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				if (scale == 0) {
+					views.setTextViewText(R.id.xag_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				}
+				else {
+					views.setTextViewText(R.id.xag_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("31.1034768"), 2, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				}
 				
 				if (Double.valueOf(ratesItem.change) > 0) {					
 					views.setImageViewResource(R.id.xag_direction_metals, R.drawable.up);
@@ -121,7 +134,12 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 			if ("XPT".equalsIgnoreCase(ratesItem.char3)) {
 				
 				views.setTextViewText(R.id.xpt_lbl_metals, "XPT");
-				views.setTextViewText(R.id.xpt_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				if (scale == 0) {
+					views.setTextViewText(R.id.xpt_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				}
+				else {
+					views.setTextViewText(R.id.xpt_txt_metals, df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal(ratesItem.size)).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("31.1034768"), 2, BigDecimal.ROUND_HALF_UP).doubleValue()));
+				}
 				
 				if (Double.valueOf(ratesItem.change) > 0) {					
 					views.setImageViewResource(R.id.xpt_direction_metals, R.drawable.up);
@@ -232,5 +250,13 @@ public class MetalsWidgetProvider extends AppWidgetProvider {
 	
 	public void stopService(Context context) {
 		context.stopService(new Intent(context, BackgroundService.class));
+	}
+	
+	protected String getValueFromPref(Context context, String prefName, String defValue) {
+		
+		SharedPreferences shared = context.getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
+		String value = shared.getString(prefName, defValue);
+		
+		return value;
 	}
 }

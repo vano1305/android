@@ -19,8 +19,14 @@
     <string name="buy">ПОКУПКА</string>
     <string name="sell">ПРОДАЖА</string>
     <string name="ounce">унций</string>
+    <string name="gram">грамм</string>
     <string name="settings">Настройки</string>
     <string name="dialog_title">Выбор валют</string>
+    
+    <string-array name="scale_value">
+        <item>Тройские унции</item>
+        <item>Граммы</item>
+    </string-array>
     
     <string-array name="Currency_value">
         <item>USD - Доллары США</item>

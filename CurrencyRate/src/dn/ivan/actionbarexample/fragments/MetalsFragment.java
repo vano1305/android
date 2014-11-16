@@ -1,5 +1,6 @@
 package dn.ivan.actionbarexample.fragments;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class MetalsFragment extends BaseFragment {
 		dfs.setGroupingSeparator(' ');
 	}
 	
-	static DecimalFormat df = new DecimalFormat("###,###,##0.0000", dfs);
+	static DecimalFormat df = new DecimalFormat("###,###,##0.00", dfs);
 	static {
 		df.setGroupingSize(3);
 	}
@@ -103,6 +104,8 @@ public class MetalsFragment extends BaseFragment {
 
 		// //////////////////////////////////////////////////////////////////////////////////
 		
+		int scale = Integer.valueOf(getValueFromPref("selected_metals_scale", "0"));
+		
 		for (int i = 0; i < rates.size(); i++) {
 			
 			Rates ratesItem = (Rates) rates.get(i);
@@ -113,7 +116,28 @@ public class MetalsFragment extends BaseFragment {
 		    lstItemMetalsLbl.setText(Html.fromHtml("<b>" + ratesItem.char3 + "</b>" + " (" + getResources().getString(getResources().getIdentifier(ratesItem.char3, "string", getActivity().getPackageName())) + ")"));
 		    
 		    TextView lstItemMetalsRate = (TextView) item.findViewById(R.id.lstItemMetalsRate);
-		    lstItemMetalsRate.setText(Html.fromHtml("<b>" + df.format(Double.valueOf(ratesItem.rate)) + "</b>" + " " + getString(R.string.for_items) + " " + "<b>" + ratesItem.size + "</b>" + " " + getString(R.string.ounce)));
+		    if (scale == 0) {
+		    	lstItemMetalsRate.setText(Html.fromHtml(
+		    			"<b>" + 
+		    			df.format(Double.valueOf(ratesItem.rate)) + 
+		    			"</b>" + " " + 
+		    			getString(R.string.for_items) + 
+		    			" " + "<b>" + 
+		    			ratesItem.size + 
+		    			"</b>" + " " + 
+		    			getString(R.string.ounce)));		    	
+		    }
+		    else {
+		    	lstItemMetalsRate.setText(Html.fromHtml(
+		    			"<b>" + 
+		    			df.format(new BigDecimal(ratesItem.rate).divide(new BigDecimal("31.1034768"), 2, BigDecimal.ROUND_HALF_UP).doubleValue()) + 
+		    			"</b>" + " " + 
+		    			getString(R.string.for_items) + 
+		    			" " + "<b>" + 
+		    			ratesItem.size + 
+		    			"</b>" + " " + 
+		    			getString(R.string.gram)));
+		    }
 		    
 		    ImageView metals_icon = (ImageView) item.findViewById(R.id.metals_icon);
 		    metals_icon.setImageDrawable(getResources().getDrawable(getResources().getIdentifier(ratesItem.char3.trim().toLowerCase(), "drawable", getActivity().getPackageName())));
@@ -260,5 +284,44 @@ public class MetalsFragment extends BaseFragment {
 				}				
 			}
 		});
+	}
+	
+	public void createScaleDialog() {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		
+		int currentSelection = Integer.valueOf(getValueFromPref("selected_metals_scale", "0"));
+		
+		builder.setTitle("Выбор единицы измерения");
+	    builder.setSingleChoiceItems(R.array.scale_value, currentSelection,
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+					}
+				});
+		builder.setPositiveButton(R.string.ok,
+				new DialogInterface.OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						
+						ListView list = ((AlertDialog) dialog).getListView();
+						addValue2Pref("selected_metals_scale", String.valueOf(list.getCheckedItemPosition()));
+						((MainActivity)getActivity()).loadRates();
+					}
+				});
+		builder.setNegativeButton(R.string.cancel,
+				new DialogInterface.OnClickListener() {
+			
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						
+					}
+				});
+		
+		final AlertDialog dialog = builder.create();	    
+	    dialog.show();
 	}
 }

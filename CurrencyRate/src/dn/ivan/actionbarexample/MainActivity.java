@@ -203,6 +203,10 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	    		openEditDialog();
 	    		break;
 	    		
+	    	case R.id.scale:
+	    		((MetalsFragment)getSupportFragmentManager().findFragmentByTag(METALS_FRAGMENT)).createScaleDialog();
+	    		break;
+	    		
 	    	default:
 	    		break;
 	    }
@@ -244,6 +248,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(true);
 				menu.findItem(R.id.edit_pen).setVisible(true);
+				menu.findItem(R.id.scale).setVisible(false);
 			}			
 			return true;
 		}
@@ -254,6 +259,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(true);
 				menu.findItem(R.id.edit_pen).setVisible(true);
+				menu.findItem(R.id.scale).setVisible(false);
 			}
 			return true;
 		}
@@ -264,6 +270,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(true);
 				menu.findItem(R.id.edit_pen).setVisible(true);
+				menu.findItem(R.id.scale).setVisible(true);
 			}
 			return true;
 		}
@@ -274,6 +281,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(true);
 				menu.findItem(R.id.edit_pen).setVisible(true);
+				menu.findItem(R.id.scale).setVisible(false);
 			}
 			return true;
 		}
@@ -284,6 +292,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(false);
 				menu.findItem(R.id.edit_pen).setVisible(false);
+				menu.findItem(R.id.scale).setVisible(false);
 			}
 			return true;
 		}
@@ -294,6 +303,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 			if (menu != null) {
 				menu.findItem(R.id.refresh).setVisible(false);
 				menu.findItem(R.id.edit_pen).setVisible(false);
+				menu.findItem(R.id.scale).setVisible(false);
 			}
 			return true;
 		}
