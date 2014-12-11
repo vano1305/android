@@ -187,6 +187,8 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 		rotation = AnimationUtils.loadAnimation(this, R.anim.rotate_refresh);
         rotation.setRepeatCount(Animation.INFINITE);
         
+        menu.findItem(R.id.scale).setVisible(false);
+        
         return true;
 	}
 
@@ -204,13 +206,23 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	    		break;
 	    		
 	    	case R.id.scale:
-	    		((MetalsFragment)getSupportFragmentManager().findFragmentByTag(METALS_FRAGMENT)).createScaleDialog();
+	    		openScaleDialog();
 	    		break;
 	    		
 	    	default:
 	    		break;
 	    }
 	    return true;
+	}
+	
+	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	protected void openScaleDialog() {
+		
+		int index = getSupportActionBar().getSelectedNavigationIndex();		
+		if (2 == index){
+			((MetalsFragment)getSupportFragmentManager().findFragmentByTag(METALS_FRAGMENT)).createScaleDialog();
+		}
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
