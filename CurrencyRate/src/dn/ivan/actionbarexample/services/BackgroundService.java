@@ -20,7 +20,7 @@ public class BackgroundService extends Service {
 		
 		super.onStartCommand(intent, flags, startId);
 		
-		if (intent.getExtras() != null && intent.getExtras().getString(MainActivity.SOURCE) != null && intent.getExtras().getString(MainActivity.FROM) != null) {
+		if (intent != null && intent.getExtras() != null && intent.getExtras().getString(MainActivity.SOURCE) != null && intent.getExtras().getString(MainActivity.FROM) != null) {
 			
 			String source = intent.getExtras().getString(MainActivity.SOURCE);
 			String from = intent.getExtras().getString(MainActivity.FROM);
@@ -29,8 +29,13 @@ public class BackgroundService extends Service {
 			if (intent.getExtras().getString(MainActivity.REGION) != null) {
 				regionCode = intent.getExtras().getString(MainActivity.REGION);
 			}
+			
+			String cityCode = "";
+			if (intent.getExtras().getString(MainActivity.CITY) != null) {
+				cityCode = intent.getExtras().getString(MainActivity.CITY);
+			}
 						
-			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source, from, regionCode), "BackgroundService").start();
+			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source, from, regionCode, cityCode), "BackgroundService").start();
 		}		
 		
 		return START_STICKY;

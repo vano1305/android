@@ -3,11 +3,12 @@
     
     <string name="app_name">Курсы валют</string>
     <string name="title_section1">НБУ</string>
-    <string name="title_section2">Наличные</string>
-    <string name="title_section3">Металлы</string>
-    <string name="title_section4">Топливо</string>
-    <string name="title_section5">История НБУ</string>
-    <string name="title_section6">Конвертер</string>
+    <string name="title_section2">Отделения</string>
+    <string name="title_section3">Чёрный</string>
+    <string name="title_section4">Металлы</string>
+    <string name="title_section5">Топливо</string>
+    <string name="title_section6">История НБУ</string>
+    <string name="title_section7">Конвертер</string>
     <string name="refresh">Обновить</string>
     <string name="no_internet_connection">Нет интернет соединения!</string>
     <string name="exit">Нажмите еще раз чтобы выйти</string>
@@ -370,5 +371,27 @@
 		<item>Shell</item>
 		<item>Альфа-Нафта</item>
 	</string-array>
+	
+    <string-array name="city_spinner_value">
+        <item>Днепропетровск</item>
+        <item>Киев</item>
+        <item>Львов</item>
+        <item>Одесса</item>
+        <item>Харьков</item>
+    </string-array>
+    
+    <string-array name="city_spinner_key">
+        <item>dnepropetrovsk</item>
+        <item>kiev</item>
+        <item>lvov</item>
+        <item>odessa</item>
+        <item>harkov</item>
+    </string-array>
+    
+    <string-array name="black_market_currencys_dialog">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>RUB</item>
+    </string-array>
 
 </resources>

@@ -27,13 +27,15 @@ public class ServiceWorker implements Runnable {
 	private String source = "";
 	private String from = "";
 	private String regionCode = "";
+	private String cityCode = "";
 	
-	public ServiceWorker(Context context, String source, String from, String regionCode) {
+	public ServiceWorker(Context context, String source, String from, String regionCode, String cityCode) {
 
 		this.context = context;
 		this.source = source;
 		this.from = from;
 		this.regionCode = regionCode;
+		this.cityCode = cityCode;
 	}
 
 	@Override
@@ -66,11 +68,14 @@ public class ServiceWorker implements Runnable {
 			else if (MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)) {
 				request = new HttpGet("http://currencyrates.jelastic.neohost.net/rates/manage_rates/fuel" + ("".equalsIgnoreCase(regionCode)? "": ("?region=" + regionCode)));
 			}
+			else if (MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)) {
+				request = new HttpGet("http://currencyrates.jelastic.neohost.net/rates/manage_rates/black_market" + ("".equalsIgnoreCase(cityCode)? "": ("?city=" + cityCode)));
+			}
 
 			HttpResponse response = httpClient.execute(request);
 			HttpEntity entity = response.getEntity();
 			
-			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source) || MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)) {
+			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source) || MainActivity.FUEL_SOURCE.equalsIgnoreCase(source) || MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)) {
 				in = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
 			}
 			else {
@@ -102,6 +107,9 @@ public class ServiceWorker implements Runnable {
 						}
 						else if (MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)) {
 							item = new FuelItem();
+						}
+						else if (MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)) {
+							item = new BlackMarketItem();
 						}
 						
 						break;
@@ -253,6 +261,39 @@ public class ServiceWorker implements Runnable {
 							}
 						}
 					}
+					else if (MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)){
+						
+						if ("opCode".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((BlackMarketItem)item).opCode = xpp.getText();
+							}
+						}
+						if ("date".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((BlackMarketItem)item).date = xpp.getText();
+							}
+						}
+						if ("cityCode".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((BlackMarketItem)item).cityCode = xpp.getText();
+							}
+						}
+						if ("currencyCode".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((BlackMarketItem)item).currencyCode = xpp.getText();
+							}
+						}
+						if ("rate".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((BlackMarketItem)item).rate = xpp.getText();
+							}
+						}
+						if ("rate_delta".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((BlackMarketItem)item).rate_delta = xpp.getText();
+							}
+						}
+					}
 					
 					break;
 
@@ -317,6 +358,14 @@ public class ServiceWorker implements Runnable {
 				context.sendBroadcast(intent);
 			}
 			else if (MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)) {
+				
+				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
+				intent.putExtra(MainActivity.RATES, ratesList);
+				intent.putExtra(MainActivity.SOURCE, source);
+				intent.putExtra(MainActivity.FROM, from);
+				context.sendBroadcast(intent);
+			}
+			else if (MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)) {
 				
 				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 				intent.putExtra(MainActivity.RATES, ratesList);

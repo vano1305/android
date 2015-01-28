@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dn.ivan.actionbarexample"
-    android:versionCode="36"
-    android:versionName="2.0.4" >
+    android:versionCode="38"
+    android:versionName="3.0.1" >
 
     <uses-sdk
         android:minSdkVersion="12"
@@ -82,7 +82,15 @@
             <meta-data
             	android:name="android.support.PARENT_ACTIVITY"
             	android:value="dn.ivan.actionbarexample.MainActivity" />
-        </activity>        
+        </activity>
+        <activity
+            android:name="dn.ivan.actionbarexample.NbuHistoryActivity"
+            android:parentActivityName="dn.ivan.actionbarexample.MainActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+            	android:value="dn.ivan.actionbarexample.MainActivity" />
+        </activity>
                 
         <service android:name="dn.ivan.actionbarexample.services.BackgroundService" />
         <service android:enabled="true" android:name="dn.ivan.actionbarexample.services.HistoryService"/>
