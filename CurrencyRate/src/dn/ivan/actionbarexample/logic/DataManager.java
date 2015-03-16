@@ -22,7 +22,7 @@ public class DataManager {
 	
 	public ArrayList<NbuRatesHolderForChart> selectRatesNbu(Context context, String currency, String begin, String end) {
 		
-		ArrayList<NbuRatesHolderForChart> rates = new ArrayList<DataManager.NbuRatesHolderForChart>();
+		ArrayList<NbuRatesHolderForChart> rates = new ArrayList<NbuRatesHolderForChart>();
 		
 		dbh = new DBHelper(context);
 		db = dbh.getWritableDatabase();
@@ -119,22 +119,6 @@ public class DataManager {
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 	        return dateFormat.format(date);
 		}
-	}
-	
-	// ////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// ////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// ////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	public class NbuRatesHolderForChart {
-		
-		public Date date;
-		public double rate;
-		
-		@Override
-		public String toString() {
-			return "NbuRatesHolderForChart [date=" + date + ", rate=" + rate
-					+ "]";
-		}		
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////

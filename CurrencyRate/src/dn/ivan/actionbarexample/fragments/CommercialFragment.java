@@ -3,10 +3,14 @@ package dn.ivan.actionbarexample.fragments;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,6 +20,7 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.AdapterView;
@@ -73,6 +78,14 @@ public class CommercialFragment extends BaseFragment implements OnItemSelectedLi
 		
 		createAverageRatesItem();
 		
+		// ///////////////////////////////////////////////////////////////////////////////////
+		
+		LinearLayout sort_buy = (LinearLayout) mainLayout.findViewById(R.id.sort_buy_ln);
+		sort_buy.setOnClickListener(new SortListener(true));
+				
+		LinearLayout sort_sale = (LinearLayout) mainLayout.findViewById(R.id.sort_sale_ln);
+		sort_sale.setOnClickListener(new SortListener(false));
+				
 		// //////////////////////////////////////////////////////////////////////////////////
 		
 		Spinner spinner = (Spinner) mainLayout.findViewById(R.id.currencys_spinner);
@@ -116,12 +129,19 @@ public class CommercialFragment extends BaseFragment implements OnItemSelectedLi
 	    ((LinearLayout) mainLayout.findViewById(R.id.average_rates)).addView(averageRatesItem);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setData(Object rates_) {
 		
 		notSortRates = (ArrayList<CommercialRates>) rates_;
-						
-		// //////////////////////////////////////////////////////////////////////////////////
+		
+		if (getBooleanValueFromPref("isUp", false) || getBooleanValueFromPref("isDown", false)) {			
+			sortAndSetData(false, getBooleanValueFromPref("isBuy", false));
+		}
+		else {
+			setDataNotSort();
+		}		
+	}
+	
+	public void setDataNotSort() {
 		
 		ArrayList<CommercialRates> rates = new ArrayList<CommercialRates>();
 		for (int i = 0; i < notSortRates.size(); i++) {
@@ -170,7 +190,7 @@ public class CommercialFragment extends BaseFragment implements OnItemSelectedLi
 		list.addView(stub);
 		
 		TextView current_date = (TextView) averageRatesItem.findViewById(R.id.average_txt);
-		current_date.setText("ÊÓÐÑÛ ÍÀ " + new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
+		current_date.setText("ÊÓÐÑÛ ÍÀ ...");
 		
 		double totalBuy = 0.0;
 		double totalSell = 0.0;
@@ -181,6 +201,8 @@ public class CommercialFragment extends BaseFragment implements OnItemSelectedLi
 		for (int i = 0; i < rates.size(); i++) {
 			
 			CommercialRates ratesItem = (CommercialRates) rates.get(i);
+			
+			current_date.setText("ÊÓÐÑÛ ÍÀ " + ratesItem.date);
 			
 			View item = lInflater.inflate(R.layout.commercial_item_layout, null, false);
 			
@@ -515,5 +537,211 @@ public class CommercialFragment extends BaseFragment implements OnItemSelectedLi
 		public ImageView sell_direction;
 		
 		public ImageView bank_icon;
+	}
+	
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	class SortUpComparator implements Comparator<Integer> {
+
+	    Map<Integer, Double> base;
+	    
+	    public SortUpComparator(Map<Integer, Double> base) {
+	        this.base = base;
+	    }
+
+	    public int compare(Integer a, Integer b) {
+	    	
+	        if (base.get(a) <= base.get(b)) {
+	            return -1;
+	        }
+	        else {
+	            return 1;
+	        }
+	    }
+	}
+	
+	class SortDownComparator implements Comparator<Integer> {
+
+	    Map<Integer, Double> base;
+	    
+	    public SortDownComparator(Map<Integer, Double> base) {
+	        this.base = base;
+	    }
+
+	    public int compare(Integer a, Integer b) {
+	    	
+	        if (base.get(a) >= base.get(b)) {
+	            return -1;
+	        }
+	        else {
+	            return 1;
+	        }
+	    }
+	}
+	
+	// ///////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public class SortListener implements OnClickListener {
+		
+		boolean isBuy = false;
+		
+		public SortListener(boolean isBuy) {
+			this.isBuy = isBuy;
+		}
+		
+		@Override
+		public void onClick(View v) {			
+			sortAndSetData(true, isBuy);
+		}		
+	}
+	
+	protected void sortAndSetData(boolean isClick, boolean isBuy) {
+		
+		addBooleanValue2Pref("isBuy", isBuy);
+		
+		boolean isUp = isClick? getBooleanValueFromPref("isUp", false): !getBooleanValueFromPref("isUp", false);
+		boolean isDown = isClick? getBooleanValueFromPref("isDown", false): !getBooleanValueFromPref("isDown", false);
+				
+		ArrayList<CommercialRates> original = notSortRates;
+		
+		ArrayList<CommercialRates> rates = new ArrayList<CommercialRates>();
+		for (int i = 0; notSortRates != null && i < notSortRates.size(); i++) {
+			
+			if (currencyCode.equalsIgnoreCase(notSortRates.get(i).codeAlpha)) {
+				rates.add(notSortRates.get(i));
+			}
+		}
+		
+		// ///////////////////////////////////////////////////////////////////////////
+		
+		ArrayList<CommercialRates> checkedBanks = null;
+		
+		Set<String> banksSet = null;		
+		banksSet = getSetFromPref("selected_banks");
+		
+		if (banksSet != null) {
+			
+			checkedBanks = new ArrayList<CommercialRates>();
+			
+			for (int i = 0; i < rates.size(); i++) {
+				
+				CommercialRates item = (CommercialRates) rates.get(i);
+				if (banksSet.contains(item.sourceUrl.replaceAll("http://bank-ua.com/banks/", "").replaceAll("/", "").trim())) {
+					checkedBanks.add(item);
+				}
+			}
+		}
+		else {			
+			checkedBanks = new ArrayList<CommercialRates>(rates);
+		}
+		
+		rates = checkedBanks;
+		
+		// //////////////////////////////////////////////////////////////////////////////////
+		
+		HashMap<Integer, Double> not_sorted_map = new HashMap<Integer, Double>();
+		
+		Comparator<Integer> bvc = null;
+		if (!isUp && !isDown ) {
+			bvc =  new SortUpComparator(not_sorted_map);
+			addBooleanValue2Pref("isUp", true);
+						
+			if (isBuy) {
+				ImageView sortBuyImg = (ImageView) mainLayout.findViewById(R.id.sort_buy);
+				sortBuyImg.setImageDrawable(getResources().getDrawable(R.drawable.sort_up));
+				sortBuyImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+			else {
+				ImageView sortSaleImg = (ImageView) mainLayout.findViewById(R.id.sort_sale);
+				sortSaleImg.setImageDrawable(getResources().getDrawable(R.drawable.sort_up));
+				sortSaleImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+		}
+		else if (isUp && !isDown) {
+			bvc =  new SortDownComparator(not_sorted_map);
+			addBooleanValue2Pref("isDown", true);
+			addBooleanValue2Pref("isUp", false);
+			
+			if (isBuy) {
+				ImageView sortBuyImg = (ImageView) mainLayout.findViewById(R.id.sort_buy);
+				sortBuyImg.setImageDrawable(getResources().getDrawable(R.drawable.sort_down));
+				sortBuyImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+			else {
+				ImageView sortSaleImg = (ImageView) mainLayout.findViewById(R.id.sort_sale);
+				sortSaleImg.setImageDrawable(getResources().getDrawable(R.drawable.sort_down));
+				sortSaleImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+		}
+		else if (!isUp && isDown) {
+			bvc =  new SortUpComparator(not_sorted_map);
+			addBooleanValue2Pref("isUp", true);
+			addBooleanValue2Pref("isDown", false);
+			
+			if (isBuy) {
+				ImageView sortBuyImg = (ImageView) mainLayout.findViewById(R.id.sort_buy);
+				sortBuyImg.setImageDrawable(getResources().getDrawable(R.drawable.sort_up));
+				sortBuyImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+			else {
+				ImageView sortSaleImg = (ImageView) mainLayout.findViewById(R.id.sort_sale);
+				sortSaleImg.setImageDrawable(getResources().getDrawable(R.drawable.sort_up));
+				sortSaleImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			}
+		}
+		
+		if (isBuy) {
+			ImageView sortSaleImg = (ImageView) mainLayout.findViewById(R.id.sort_sale);
+			sortSaleImg.setImageDrawable(getResources().getDrawable(R.drawable.sort_neutral));
+			sortSaleImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			
+		}
+		else {
+			ImageView sortBuyImg = (ImageView) mainLayout.findViewById(R.id.sort_buy);
+			sortBuyImg.setImageDrawable(getResources().getDrawable(R.drawable.sort_neutral));
+			sortBuyImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			
+		}
+		
+		TreeMap<Integer, Double> sorted_map = new TreeMap<Integer, Double>(bvc);
+		
+		// //////////////////////////////////////////////////////////////////////////////////
+		        
+		for (int i = 0; i < rates.size(); i++) {
+			
+			CommercialRates ratesItem = (CommercialRates) rates.get(i);
+			
+			if (isBuy) {
+				not_sorted_map.put(i, Double.valueOf(ratesItem.rateBuy));
+			}
+			else {
+				not_sorted_map.put(i, Double.valueOf(ratesItem.rateSale));
+			}
+		}
+
+		sorted_map.putAll(not_sorted_map);
+		
+		// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		Integer[] mapKeys = new Integer[sorted_map.size()];
+        int pos = 0;
+        for (Integer key : sorted_map.keySet()) {
+            mapKeys[pos++] = key;
+        }
+        
+        ArrayList<CommercialRates> forSetData = new ArrayList<CommercialRates>();
+        for (int i = 0; i < mapKeys.length; i++) {				
+			CommercialRates ratesItem = (CommercialRates) rates.get(mapKeys[i]);
+			forSetData.add(ratesItem);
+        }
+        
+        notSortRates = forSetData;
+        
+        setDataNotSort();
+        
+        notSortRates = original;
 	}
 }

@@ -30,7 +30,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,13 +37,16 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import dn.ivan.actionbarexample.NbuHistoryActivity;
 import dn.ivan.actionbarexample.R;
-import dn.ivan.actionbarexample.logic.DataManager;
-import dn.ivan.actionbarexample.logic.DataManager.NbuRatesHolderForChart;
+import dn.ivan.actionbarexample.logic.NbuRatesHolderForChart;
 
 public class HistoryFragment extends BaseFragment implements OnItemSelectedListener {
 	
-	private ArrayList<DataManager.NbuRatesHolderForChart> ratesHolder;
+	SimpleDateFormat sdf_from = new SimpleDateFormat("dd-MM-yyyy");
+	SimpleDateFormat sdf_to = new SimpleDateFormat("yyyy-MM-dd");
+	
+	private ArrayList<NbuRatesHolderForChart> ratesHolder;
 	
 	private String currency = "";
 	
@@ -92,33 +94,18 @@ public class HistoryFragment extends BaseFragment implements OnItemSelectedListe
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 		
-		Calendar ca1 = Calendar.getInstance();
-        ca1.setTime(new Date());
+		Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
         
-        long milisecond = ca1.getTimeInMillis();
-        
-        milisecond = milisecond - (7 * 24 * 60 * 60 * 1000);
-        
-        Calendar ca2 = Calendar.getInstance();
-        ca2.setTimeInMillis(milisecond);
+        calendar.add(Calendar.DAY_OF_YEAR, -365);
 		
 		((EditText)rootView.findViewById(R.id.date2)).setText(dateFormat.format(new Date()));
-		((EditText)rootView.findViewById(R.id.date1)).setText(dateFormat.format(ca2.getTime()));
-		
-		// /////////////////////////////////////////////////////////////////////////
-		
-		((Button)rootView.findViewById(R.id.reload_chart)).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				createChart();
-			}
-		});
+		((EditText)rootView.findViewById(R.id.date1)).setText(dateFormat.format(calendar.getTime()));
 		
 		// /////////////////////////////////////////////////////////////////////////
 		
 		if (ratesHolder == null) {
-			createChart();
+			((NbuHistoryActivity)getActivity()).loadNbuHistory();
 		}
 		else {
 			reinitChart();			
@@ -127,7 +114,7 @@ public class HistoryFragment extends BaseFragment implements OnItemSelectedListe
 		return rootView;
 	}
 	
-	protected void createChart() {
+	public void createChart(ArrayList<NbuRatesHolderForChart> ratesHolder_) {
 		
 		String selectedCurrency = getResources().getStringArray(R.array.nbu_currencys)[((Spinner) rootView.findViewById(R.id.nbu_currency_history_spinner)).getSelectedItemPosition()];
 		currency = selectedCurrency.substring(0, 3);
@@ -140,7 +127,8 @@ public class HistoryFragment extends BaseFragment implements OnItemSelectedListe
 			return;
 		}
 		
-		ratesHolder = new DataManager().selectRatesNbu(getActivity(), currency, date1, date2);
+		//ratesHolder = new DataManager().selectRatesNbu(getActivity(), currency, date1, date2);
+		ratesHolder = ratesHolder_;
 		
 		GraphicalView lineChartView = null;
 		try {
@@ -286,8 +274,8 @@ public class HistoryFragment extends BaseFragment implements OnItemSelectedListe
 	
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		createChart();
 		
+		((NbuHistoryActivity)getActivity()).loadNbuHistory();		
 		addValue2Pref("curr_hist", String.valueOf(((Spinner) rootView.findViewById(R.id.nbu_currency_history_spinner)).getSelectedItemPosition()));
 	}
 
@@ -352,7 +340,36 @@ public class HistoryFragment extends BaseFragment implements OnItemSelectedListe
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 			txt.setText(dateFormat.format(new GregorianCalendar(year, month, day).getTime()));
-			createChart();
+			((NbuHistoryActivity)getActivity()).loadNbuHistory();
 		}
+	}
+	
+	public String getCurrencyCode() {
+		String selectedCurrency = getResources().getStringArray(R.array.nbu_currencys)[((Spinner) rootView.findViewById(R.id.nbu_currency_history_spinner)).getSelectedItemPosition()];
+		return selectedCurrency.substring(0, 3);
+	}
+	
+	public String getDate1() {
+		
+		String result = "";
+		try {
+			result = sdf_to.format(sdf_from.parse(((EditText)rootView.findViewById(R.id.date1)).getText().toString()));
+		}
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public String getDate2() {	
+		
+		String result = "";
+		try {
+			result = sdf_to.format(sdf_from.parse(((EditText)rootView.findViewById(R.id.date2)).getText().toString()));
+		}
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

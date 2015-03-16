@@ -122,4 +122,21 @@ public class BaseFragment extends Fragment {
 		
 		return value;
 	}
+	
+	protected void addBooleanValue2Pref(String prefName, boolean value) {
+		
+		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
+		Editor ed = shared.edit();
+		ed.remove(prefName);
+		ed.putBoolean(prefName, value);
+		ed.commit();
+	}
+	
+	protected boolean getBooleanValueFromPref(String prefName, boolean defValue) {
+		
+		SharedPreferences shared = getActivity().getSharedPreferences(prefName, MainActivity.MODE_PRIVATE);
+		boolean value = shared.getBoolean(prefName, defValue);
+		
+		return value;
+	}
 }

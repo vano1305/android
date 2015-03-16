@@ -66,6 +66,7 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	public static final String METALS_SOURCE = "metals";
 	public static final String FUEL_SOURCE = "fuel";
 	public static final String BLACK_MARKET_SOURCE = "black_market";
+	public static final String NBU_HISTORY_SOURCE = "nbu_history";
 	
 	public static final String FROM_WIDGET = "service_widget";
 	public static final String FROM_SERVICE_HISTORY = "service_history";
@@ -86,6 +87,10 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 	
 	public static final String REGION = "region";
 	public static final String CITY = "city";
+	
+	public static final String CURRENCY = "currency_code";
+	public static final String DATE1 = "date1";
+	public static final String DATE2 = "date2";
 
 	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 	
@@ -388,7 +393,9 @@ public class MainActivity extends SherlockFragmentActivity implements ActionBar.
 				
 				if (intent.getExtras().getString(MainActivity.FROM) != null && MainActivity.FROM_APPLICATION.equalsIgnoreCase(intent.getExtras().getString(MainActivity.FROM))) {
 					
-					if (menu.findItem(R.id.refresh).getActionView() == null) {
+					if (menu.findItem(R.id.refresh).getActionView() == null
+							|| menu.findItem(R.id.refresh).getActionView().getAnimation() == null
+							|| menu.findItem(R.id.refresh).getActionView().getAnimation().hasEnded()) {
 						
 						LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 					    ImageView iv = (ImageView) inflater.inflate(R.layout.iv_refresh, null);

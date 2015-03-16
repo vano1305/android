@@ -12,6 +12,6 @@ public class LoadHistoryReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {		
-		new Thread(myThreads, new ServiceWorker(context, MainActivity.NBU_SOURCE, MainActivity.FROM_SERVICE_HISTORY, "", ""), "LoadHistory").start();		
+		new Thread(myThreads, new ServiceWorker(context, MainActivity.NBU_SOURCE, MainActivity.FROM_SERVICE_HISTORY, "", "", "", "", ""), "LoadHistory").start();		
 	}
 }

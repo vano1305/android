@@ -38,7 +38,9 @@
             android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:fontFamily="sans-serif-light"
-            android:imeOptions="actionDone" />
+            android:imeOptions="actionDone"
+            android:enabled="false"
+            android:focusable="false" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -56,30 +58,10 @@
             android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:fontFamily="sans-serif-light"
-            android:imeOptions="actionDone" />
+            android:imeOptions="actionDone"
+            android:enabled="false"
+            android:focusable="false" />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="10dp" >
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/RelativeLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" >
-
-        <Button
-            android:id="@+id/reload_chart"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Обновить"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp"
-            android:fontFamily="sans-serif-light" />
-    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

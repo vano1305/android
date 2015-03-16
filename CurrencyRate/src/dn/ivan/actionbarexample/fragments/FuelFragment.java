@@ -107,7 +107,7 @@ public class FuelFragment extends BaseFragment {
 		averageRatesItem = getActivity().getLayoutInflater().inflate(R.layout.fuel_average_item_layout, null, false);
 		
 		TextView fuel_average_txt_lbl = (TextView) averageRatesItem.findViewById(R.id.fuel_average_txt_lbl);
-		fuel_average_txt_lbl.setText("Ñòîèìîñòü íà ...");
+		fuel_average_txt_lbl.setText("ÑÒÎÈÌÎÑÒÜ ÍÀ ...");
 	    
 	    TextView fuel_average_txt = (TextView) averageRatesItem.findViewById(R.id.fuel_average_txt);
 	    fuel_average_txt.setText("0.0");
@@ -169,7 +169,7 @@ public class FuelFragment extends BaseFragment {
 		list.addView(stub);
 		
 		TextView current_date = (TextView) averageRatesItem.findViewById(R.id.fuel_average_txt_lbl);
-		current_date.setText("ÑÒÎÈÌÎÑÒÜ ÍÀ " + new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
+		current_date.setText("ÑÒÎÈÌÎÑÒÜ ÍÀ ...");
 		
 		double totalPrice = 0.0;
 		double totalDelta = 0.0;
@@ -212,6 +212,8 @@ public class FuelFragment extends BaseFragment {
        	for (int i = 0; i < mapKeys.length; i++) {
 			
 			FuelItem ratesItem = (FuelItem) rates.get(mapKeys[i]);
+			
+			current_date.setText("ÑÒÎÈÌÎÑÒÜ ÍÀ " + ratesItem.date);
 			
 			View item = lInflater.inflate(R.layout.fuel_item_layout, null, false);
 			

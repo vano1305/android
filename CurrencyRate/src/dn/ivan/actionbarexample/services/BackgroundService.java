@@ -34,8 +34,22 @@ public class BackgroundService extends Service {
 			if (intent.getExtras().getString(MainActivity.CITY) != null) {
 				cityCode = intent.getExtras().getString(MainActivity.CITY);
 			}
+			
+			
+			String currencyCode = "";
+			if (intent.getExtras().getString(MainActivity.CURRENCY) != null) {
+				currencyCode = intent.getExtras().getString(MainActivity.CURRENCY);
+			}
+			String date1 = "";
+			if (intent.getExtras().getString(MainActivity.DATE1) != null) {
+				date1 = intent.getExtras().getString(MainActivity.DATE1);
+			}
+			String date2 = "";
+			if (intent.getExtras().getString(MainActivity.DATE2) != null) {
+				date2 = intent.getExtras().getString(MainActivity.DATE2);
+			}
 						
-			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source, from, regionCode, cityCode), "BackgroundService").start();
+			new Thread(myThreads, new ServiceWorker(BackgroundService.this, source, from, regionCode, cityCode, currencyCode, date1, date2), "BackgroundService").start();
 		}		
 		
 		return START_STICKY;

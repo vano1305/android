@@ -26,16 +26,27 @@ public class ServiceWorker implements Runnable {
 	private Context context;
 	private String source = "";
 	private String from = "";
-	private String regionCode = "";
-	private String cityCode = "";
+	private String regionCode = "";//Для топлива
+	private String cityCode = "";//Для чёрного рынка
 	
-	public ServiceWorker(Context context, String source, String from, String regionCode, String cityCode) {
+	/*
+	 * Для загрузки истории
+	 * */
+	private String currencyCode = "";
+	private String date1 = "";
+	private String date2 = "";
+	
+	public ServiceWorker(Context context, String source, String from, String regionCode, String cityCode, String currencyCode, String date1, String date2) {
 
 		this.context = context;
 		this.source = source;
 		this.from = from;
 		this.regionCode = regionCode;
 		this.cityCode = cityCode;
+		
+		this.currencyCode = currencyCode;
+		this.date1 = date1;
+		this.date2 = date2;
 	}
 
 	@Override
@@ -55,8 +66,8 @@ public class ServiceWorker implements Runnable {
 			HttpGet request = null;
 
 			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
-				request = new HttpGet("http://bank-ua.com/export/exchange_rate_cash.xml");
-				//request = new HttpGet("http://currencyrates.jelastic.neohost.net/rates/manage_rates/commercial");
+				//request = new HttpGet("http://bank-ua.com/export/exchange_rate_cash.xml");
+				request = new HttpGet("http://currencyrates.jelastic.neohost.net/rates/manage_rates/commercial");
 			}
 			else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source)) {				
 				request = new HttpGet("http://bank-ua.com/export/currrate.xml");	
@@ -71,11 +82,14 @@ public class ServiceWorker implements Runnable {
 			else if (MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)) {
 				request = new HttpGet("http://currencyrates.jelastic.neohost.net/rates/manage_rates/black_market" + ("".equalsIgnoreCase(cityCode)? "": ("?city=" + cityCode)));
 			}
+			else if (MainActivity.NBU_HISTORY_SOURCE.equalsIgnoreCase(source)) {
+				request = new HttpGet("http://currencyrates.jelastic.neohost.net/rates/manage_rates/nbu_history?currency=" + currencyCode + "&date1=" + date1 + "&date2=" + date2);
+			}
 
 			HttpResponse response = httpClient.execute(request);
 			HttpEntity entity = response.getEntity();
 			
-			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source) || MainActivity.FUEL_SOURCE.equalsIgnoreCase(source) || MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)) {
+			if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source) || MainActivity.FUEL_SOURCE.equalsIgnoreCase(source) || MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source) || MainActivity.NBU_HISTORY_SOURCE.equalsIgnoreCase(source)) {
 				in = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
 			}
 			else {
@@ -94,7 +108,7 @@ public class ServiceWorker implements Runnable {
 
 				case XmlPullParser.START_TAG:
 					
-					if ("item".equalsIgnoreCase(xpp.getName())) {
+					if ("item".equalsIgnoreCase(xpp.getName()) || "NbuHistoryItem".equalsIgnoreCase(xpp.getName())) {
 
 						if (MainActivity.COMMERCIAL_SOURCE.equalsIgnoreCase(source)) {
 							item = new CommercialRates();
@@ -110,6 +124,9 @@ public class ServiceWorker implements Runnable {
 						}
 						else if (MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)) {
 							item = new BlackMarketItem();
+						}
+						else if (MainActivity.NBU_HISTORY_SOURCE.equalsIgnoreCase(source)) {
+							item = new NbuHistoryItem();
 						}
 						
 						break;
@@ -165,7 +182,7 @@ public class ServiceWorker implements Runnable {
 							}
 						}
 					}
-					else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source) || MainActivity.METALS_SOURCE.equalsIgnoreCase(source)){
+					else if (MainActivity.NBU_SOURCE.equalsIgnoreCase(source) || MainActivity.METALS_SOURCE.equalsIgnoreCase(source)) {
 						
 						if ("date".equalsIgnoreCase(xpp.getName())) {
 							if (xpp.next() == XmlPullParser.TEXT) {
@@ -203,7 +220,7 @@ public class ServiceWorker implements Runnable {
 							}
 						}											
 					}
-					else if (MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)){
+					else if (MainActivity.FUEL_SOURCE.equalsIgnoreCase(source)) {
 						
 						if ("date".equalsIgnoreCase(xpp.getName())) {
 							if (xpp.next() == XmlPullParser.TEXT) {
@@ -261,7 +278,7 @@ public class ServiceWorker implements Runnable {
 							}
 						}
 					}
-					else if (MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)){
+					else if (MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)) {
 						
 						if ("opCode".equalsIgnoreCase(xpp.getName())) {
 							if (xpp.next() == XmlPullParser.TEXT) {
@@ -294,14 +311,38 @@ public class ServiceWorker implements Runnable {
 							}
 						}
 					}
+					else if (MainActivity.NBU_HISTORY_SOURCE.equalsIgnoreCase(source)) {
+						
+						if ("currencyCode".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((NbuHistoryItem)item).currencyCode = xpp.getText();
+							}
+						}
+						if ("date1".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((NbuHistoryItem)item).date1 = xpp.getText();
+							}
+						}
+						if ("date2".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((NbuHistoryItem)item).date2 = xpp.getText();
+							}
+						}
+						if ("history".equalsIgnoreCase(xpp.getName())) {
+							if (xpp.next() == XmlPullParser.TEXT) {
+								((NbuHistoryItem)item).history = xpp.getText();
+							}
+						}
+					}
 					
 					break;
 
 				case XmlPullParser.END_TAG:
 					
-					if ("item".equalsIgnoreCase(xpp.getName())) {
+					if ("item".equalsIgnoreCase(xpp.getName()) || "NbuHistoryItem".equalsIgnoreCase(xpp.getName())) {
 						ratesList.add(item);
 					}
+					
 					break;
 
 				default:
@@ -366,6 +407,14 @@ public class ServiceWorker implements Runnable {
 				context.sendBroadcast(intent);
 			}
 			else if (MainActivity.BLACK_MARKET_SOURCE.equalsIgnoreCase(source)) {
+				
+				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
+				intent.putExtra(MainActivity.RATES, ratesList);
+				intent.putExtra(MainActivity.SOURCE, source);
+				intent.putExtra(MainActivity.FROM, from);
+				context.sendBroadcast(intent);
+			}
+			else if (MainActivity.NBU_HISTORY_SOURCE.equalsIgnoreCase(source)) {
 				
 				Intent intent = new Intent((from.equalsIgnoreCase(MainActivity.FROM_APPLICATION) || from.equalsIgnoreCase(MainActivity.FROM_WIDGET))? MainActivity.FINISH_LOAD: MainActivity.UPDATE_HISTORY);
 				intent.putExtra(MainActivity.RATES, ratesList);

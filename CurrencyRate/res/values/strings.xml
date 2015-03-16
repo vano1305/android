@@ -131,7 +131,7 @@
     <string name="cancel">Отмена</string>
     <string name="all">Всё</string>
     
-    <string-array name="banks_dialog_key">
+    <!-- <string-array name="banks_dialog_key">
         <item>citycommercebank</item>
         <item>cominvest</item>
         <item>deltabank</item>
@@ -185,7 +185,7 @@
     	<item>Universal Bank</item>
     	<item>VAB Банк</item>
     	<item>ВТБ</item>
-    </string-array>
+    </string-array> -->
     
     <string-array name="nbu_currencys">
         <item>USD - Доллары США</item>
@@ -392,6 +392,154 @@
         <item>USD</item>
         <item>EUR</item>
         <item>RUB</item>
+    </string-array>
+    
+    <string name="bank_73">Credit Agricole</string>
+    <string name="bank_77">International Invest</string>
+    <string name="bank_76">Marfin</string>
+    <string name="bank_22">OTPBank</string>
+    <string name="bank_29">UniCredit</string>
+    <string name="bank_39">Universal Bank</string>
+    <string name="bank_2">Альфа-банк</string>
+    <string name="bank_55">Апекс-банк</string>
+    <string name="bank_3">Аркада</string>
+    <string name="bank_56">Артем-банк</string>
+    <string name="bank_57">Асвио</string>
+    <string name="bank_58">Банк 3/4</string>
+    <string name="bank_59">Банк инвестиций и сбережений</string>
+    <string name="bank_16">БМ Банк</string>
+    <string name="bank_60">Богуслав</string>
+    <string name="bank_61">ВБР</string>
+    <string name="bank_79">ВТБ</string>
+    <string name="bank_80">Глобус</string>
+    <string name="bank_42">Дельта банк</string>
+    <string name="bank_62">ДМ</string>
+    <string name="bank_64">Земельный капитал</string>
+    <string name="bank_24">Имэксбанк</string>
+    <string name="bank_66">Инвестбанк</string>
+    <string name="bank_67">Интеграл</string>
+    <string name="bank_69">Капитал</string>    
+    <string name="bank_36">Киев</string>
+    <string name="bank_37">Киевская Русь</string>
+    <string name="bank_70">Коминвестбанк</string>
+    <string name="bank_74">Кредит Днепр</string>
+    <string name="bank_41">Кредитвест банк</string>
+    <string name="bank_26">Кредобанк</string>
+    <string name="bank_45">Мета банк</string>
+    <string name="bank_78">Народный капитал</string>
+    <string name="bank_8">Ощадбанк</string>
+    <string name="bank_48">Пиреус Банк МКБ</string>
+    <string name="bank_9">Правэкс-Банк</string>
+    <string name="bank_10">ПриватБанк</string>
+    <string name="bank_47">Проминвестбанк</string>
+    <string name="bank_52">ПУМБ</string>
+    <string name="bank_4">Райффайзен Банк Аваль</string>
+    <string name="bank_35">Родовид банк</string>
+    <string name="bank_46">Сбербанк России</string>
+    <string name="bank_40">ТАСкомбанк</string>
+    <string name="bank_23">Укргазбанк</string>
+    <string name="bank_13">Укрэксимбанк</string>
+    <string name="bank_12">Финансы и кредит</string>
+    <string name="bank_30">Хрещатик</string>
+    
+    <string-array name="banks_dialog_key">
+        <item>bank_73</item>
+    	<item>bank_77</item>
+    	<item>bank_76</item>
+    	<item>bank_22</item>
+    	<item>bank_29</item>
+    	<item>bank_39</item>
+    	<item>bank_2</item>
+    	<item>bank_55</item>
+    	<item>bank_3</item>
+    	<item>bank_56</item>
+    	<item>bank_57</item>
+    	<item>bank_58</item>
+    	<item>bank_59</item>
+    	<item>bank_16</item>
+    	<item>bank_60</item>
+    	<item>bank_61</item>
+    	<item>bank_79</item>
+    	<item>bank_80</item>
+    	<item>bank_42</item>
+    	<item>bank_62</item>
+    	<item>bank_64</item>
+    	<item>bank_24</item>
+    	<item>bank_66</item>
+    	<item>bank_67</item>
+    	<item>bank_69</item>   
+    	<item>bank_36</item>
+    	<item>bank_37</item>
+    	<item>bank_70</item>
+    	<item>bank_74</item>
+    	<item>bank_41</item>
+    	<item>bank_26</item>
+    	<item>bank_45</item>
+    	<item>bank_78</item>
+    	<item>bank_8</item>
+    	<item>bank_48</item>
+    	<item>bank_9</item>
+    	<item>bank_10</item>
+    	<item>bank_47</item>
+    	<item>bank_52</item>
+    	<item>bank_4</item>
+    	<item>bank_35</item>
+    	<item>bank_46</item>
+    	<item>bank_40</item>
+    	<item>bank_23</item>
+    	<item>bank_13</item>
+    	<item>bank_12</item>
+    	<item>bank_30</item>
+    </string-array>
+    
+    <string-array name="banks_dialog_value">
+       	<item>Credit Agricole</item>
+    	<item>International Invest</item>
+    	<item>Marfin</item>
+    	<item>OTPBank</item>
+    	<item>UniCredit</item>
+    	<item>Universal Bank</item>
+    	<item>Альфа-банк</item>
+    	<item>Апекс-банк</item>
+    	<item>Аркада</item>
+    	<item>Артем-банк</item>
+    	<item>Асвио</item>
+    	<item>Банк 3/4</item>
+    	<item>Банк инвестиций и сбережений</item>
+    	<item>БМ Банк</item>
+    	<item>Богуслав</item>
+    	<item>ВБР</item>
+    	<item>ВТБ</item>
+    	<item>Глобус</item>
+    	<item>Дельта банк</item>
+    	<item>ДМ</item>
+    	<item>Земельный капитал</item>
+    	<item>Имэксбанк</item>
+    	<item>Инвестбанк</item>
+    	<item>Интеграл</item>
+    	<item>Капитал</item>    
+    	<item>Киев</item>
+    	<item>Киевская Русь</item>
+    	<item>Коминвестбанк</item>
+    	<item>Кредит Днепр</item>
+    	<item>Кредитвест банк</item>
+    	<item>Кредобанк</item>
+    	<item>Мета банк</item>
+    	<item>Народный капитал</item>
+    	<item>Ощадбанк</item>
+    	<item>Пиреус Банк МКБ</item>
+    	<item>Правэкс-Банк</item>
+    	<item>ПриватБанк</item>
+    	<item>Проминвестбанк</item>
+    	<item>ПУМБ</item>
+    	<item>Райффайзен Банк Аваль</item>
+    	<item>Родовид банк</item>
+    	<item>Сбербанк России</item>
+    	<item>ТАСкомбанк</item>
+    	<item>Укргазбанк</item>
+    	<item>Укрэксимбанк</item>
+    	<item>Финансы и кредит</item>
+    	<item>Хрещатик</item>
     </string-array>
 
 </resources>

@@ -189,7 +189,7 @@ public class BlackMarketFragment extends BaseFragment {
 		list.addView(date_stub);
 		
 		TextView current_date = (TextView) mainLayout.findViewById(R.id.black_market_date);
-		current_date.setText("—“Œ»ÃŒ—“‹ Õ¿ " + new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
+		current_date.setText(" ”–—€ Õ¿ ...");
 		
 		View black_market_head = lInflater.inflate(R.layout.black_market_head, null, false);
 		list.addView(black_market_head);
@@ -205,6 +205,8 @@ public class BlackMarketFragment extends BaseFragment {
 		for (int i = 0; i < rates.size(); i++) {
 			
 			BlackMarketItemForView ratesItem = (BlackMarketItemForView) rates.get(i);
+			
+			current_date.setText(" ”–—€ Õ¿ " + ratesItem.date);
 			
 			View item = lInflater.inflate(R.layout.black_market_item_layout, null, false);
 			
